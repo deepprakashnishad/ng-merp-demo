@@ -1,0 +1,4 @@
+<div class="container">
+	<button class="pull-right" mat-raised-button color="primary" (click)="openAddEditStoreDialog(store)" *ngIf="isAddPermitted">Add New Store</button>
+	<app-view-store [stores]="stores" [isEditPermitted]="isEditPermitted"></app-view-store>
+</div>

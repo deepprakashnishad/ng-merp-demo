@@ -1,0 +1,4 @@
+<div class="container" fxLayout="column">
+  <button class="back-button" mat-raised-button [routerLink]="'/'"><mat-icon>arrow_back</mat-icon>Back to store</button>
+  <app-cart [isCompact]="true" [displayTotalWithDelivery]="true" [buttonText]="'Continue'" [buttonRoute]="['/delivery-page']" [buttonIcon]="'arrow_forward'" class="cart"></app-cart>
+</div>

@@ -1,0 +1,19 @@
+<div class="container">
+  <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="16px grid">
+    <app-address-card 
+      *ngFor="let address of addresses; let i=index" 
+      (click)="selectAddress(address, i)"
+      (addressModified)="addressModified($event, i)"
+      [isSelected]="selectedAddress?.id===address.id"
+      [address]=address></app-address-card>
+  </div>
+  <div  *ngIf="displayAddButton && addresses.length>0" class="floating-action-button-container" fxLayout="column" fxLayoutAlign="end end">
+    <button fxHide.gt-sm mat-fab color="accent" (click)="openAddressDialog()"><mat-icon>add</mat-icon></button>
+    <button fxHide.sm fxHide.lt-sm mat-raised-button color="accent" (click)="openAddressDialog()">New Address <mat-icon>add</mat-icon></button>
+  </div>
+  <!-- <div *ngIf="addresses.length>0"><button mat-raised-button color="accent" (click)="openAddressDialog()">Add New Address<mat-icon>add</mat-icon></button></div> -->
+  <div *ngIf="addresses.length===0" fxLayout="column" fxLayoutAlign="center center">
+    <h3>No address found.</h3>
+    <button *ngIf="displayAddButton" mat-raised-button color="accent" (click)="openAddressDialog()">Add New Address<mat-icon>add</mat-icon></button>
+  </div>
+</div>

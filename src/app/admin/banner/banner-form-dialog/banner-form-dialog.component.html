@@ -1,0 +1,37 @@
+<div>
+  <div fxLayout fxLayoutAlign="space-between center">
+		<div mat-dialog-title>{{title}}</div>
+		<div>
+			<button mat-icon-button color="accent" (click)="dialogRef.close(false)">
+				<mat-icon>close</mat-icon>
+			</button>
+		</div>
+	</div>
+  <mat-dialog-content fxlayout="column">
+    <app-uploader [uploadPath]="banner.uploadPath" (imageUploaded)="uploadCompleted($event)"></app-uploader> 
+    <img *ngIf="banner.url" [src]="banner.url" height="400vh" width="800vw">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input type="text" matInput [formControl]="nameControl" [(ngModel)]="banner.name"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Url to link</mat-label>
+      <input type="text" matInput [formControl]="urlControl" [(ngModel)]="banner.link"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Index/Position</mat-label>
+      <input type="number" matInput [formControl]="indexControl" [(ngModel)]="banner.index"/>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select [(ngModel)]="banner.bannerType" placeholder="Banner Type">
+        <mat-option value="only_image">Only Image</mat-option>
+        <mat-option value="left_image">Left Image</mat-option>
+        <mat-option value="right_image">Right Image</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <quill-editor *ngIf="banner.bannerType!='only_image'" placeholder="Short Description" [(ngModel)]="banner.bannerText" maxLength="140"></quill-editor>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button color="primary" mat-raised-button (click)="save(banner)">Save</button>
+  </mat-dialog-actions>  
+</div>

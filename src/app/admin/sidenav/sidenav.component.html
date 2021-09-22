@@ -1,0 +1,54 @@
+<mat-drawer-container class="example-container" hasBackdrop="false" autosize>
+	<mat-drawer #drawer [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="isOpen">
+		<!-- <mat-toolbar color="primary">
+			<mat-toolbar-row fxLayout="row" fxLayoutAlign="end start">
+				<button mat-icon-button><mat-icon>close</mat-icon></button>
+			</mat-toolbar-row>
+		</mat-toolbar> -->
+		<mat-list>
+			<mat-list-item *ngFor="let route of routeList">
+				<button mat-button (click)="navigate(route.path)">{{route.title}}</button>
+			</mat-list-item>
+		</mat-list>
+	</mat-drawer>
+	<mat-drawer-content fxLayout="column" [@routerTransition]="o.isActivated ? o.activatedRoute : ''">
+		<!-- <mat-toolbar color="primary" role="toolbar" class=mb-4>
+			<mat-toolbar-row>
+				<span>{{title}}</span>
+				<span class="example-fill-remaining-space"></span>
+					<span>
+						<button mat-raised-button color="accent" (click)="login()" *ngIf="!isLoggedIn">Login</button>
+						<button mat-raised-button color="accent" (click)="logout()" *ngIf="isLoggedIn">Logout</button>
+					</span>
+			</mat-toolbar-row>
+		</mat-toolbar> -->
+		<div class="container">
+			<router-outlet sidebar-content="outlet" #o></router-outlet>
+			<!-- <notifier-container></notifier-container> -->
+		</div>
+	</mat-drawer-content>
+</mat-drawer-container>
+<!-- <mat-sidenav-container class="example-container"  [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+	<mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'"
+        fixedInViewport="true" fixedTopGap="130" fixedBottomGap="130" [(opened)]="isOpen">
+        <div class="list-container">
+	        <mat-nav-list>
+	        	<a mat-list-item *ngFor="let route of routeList" routerLink="{{route.path}}">{{route.title}}</a>
+	        </mat-nav-list>
+        </div>
+    </mat-sidenav>
+	<mat-sidenav-content [@routerTransition]="o.isActivated ? o.activatedRoute : ''">
+		<mat-toolbar color="primary" role="toolbar" class=mb-4>
+			<mat-toolbar-row *ngIf="!mobileQuery.matches"></mat-toolbar-row>
+			<mat-toolbar-row>
+				<span>{{title}}</span>
+				<span class="example-fill-remaining-space"></span>
+  				<span>
+  					<button mat-raised-button color="accent" (click)="login()" *ngIf="!isLoggedIn">Login</button>
+  					<button mat-raised-button color="accent" (click)="logout()" *ngIf="isLoggedIn">Logout</button>
+  				</span>
+			</mat-toolbar-row>
+		</mat-toolbar>
+		<router-outlet #o="outlet"></router-outlet>
+	</mat-sidenav-content>
+</mat-sidenav-container> -->

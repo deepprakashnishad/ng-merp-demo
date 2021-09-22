@@ -1,0 +1,5 @@
+<mat-form-field appearance="outline">
+  <mat-label>Check Pincode</mat-label>
+  <input matInput placeholder="Check Pincode" [(ngModel)]="pincode" (keyup.enter)="checkPincode()" />
+  <span matSuffix><button mat-icon-button (click)="checkPincode()"><mat-icon>search</mat-icon></button></span>
+</mat-form-field>

@@ -1,0 +1,57 @@
+<div class="main-container" fxLayout="column" fxLayoutGap="2px" fxLayoutAlign="space-between">
+	<header>
+		<button *ngIf="pwa.promptEvent" (click)="installPwa()">
+			Install
+		</button>
+		<app-progress-spinner></app-progress-spinner>
+		<app-navigation *ngIf="isShowNavigation"></app-navigation>
+	</header>
+	<!-- Main -->
+	<main class="main-container" fxFlex="grow" fxLayout="column" fxLayoutAlign="start">
+		<!--<app-navigation *ngIf="isShowNavigation"></app-navigation>-->
+		<router-outlet></router-outlet>
+
+		<notifier-container class="notifier-container"></notifier-container>
+		<!-- <app-sidenav #mSidebar fxFlex="auto"></app-sidenav> -->
+		<!-- <div class="content-container-without-sidenav" *ngIf="!isSidenav" fxFlex="auto">
+			<router-outlet #m="outlet"></router-outlet>
+		</div> -->
+	</main>
+	<!-- Footer -->
+	<footer>
+		<mat-toolbar sticky class="toolbarNav" fx.hide.gt-md fxLayout fxLayoutAlign="space-between center">
+			<button mat-icon-button routerLink="/" routerLinkActive="active-link">
+				<mat-icon class="material-icons color_blue">
+					home
+				</mat-icon>
+			</button>
+			<button mat-icon-button routerLink="/categories" routerLinkActive="active-link">
+				<mat-icon class="material-icons color_blue">
+					grid_view
+				</mat-icon>
+			</button>
+			<button *ngIf="isLoggedIn" mat-icon-button routerLink="/profile" routerLinkActive="active-link">
+				<mat-icon class="material-icons color_blue">
+					person
+				</mat-icon>
+			</button>
+			<button *ngIf="isLoggedIn" mat-icon-button routerLink="/order-list" routerLinkActive="active-link">
+				<mat-icon class="material-icons color_blue">
+					checklist_rtl
+				</mat-icon>
+			</button>
+			<button *ngIf="isLoggedIn" mat-icon-button (click)="logout()">
+				<mat-icon class="material-icons color_blue">
+					logout
+				</mat-icon>
+			</button>
+			<button *ngIf="!isLoggedIn" mat-icon-button routerLink="/login" routerLinkActive="active-link">
+				<mat-icon class="material-icons color_blue">
+					login
+				</mat-icon>
+			</button>
+		</mat-toolbar>
+	</footer>
+
+</div>
+

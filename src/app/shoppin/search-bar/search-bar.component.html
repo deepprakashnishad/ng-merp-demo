@@ -1,0 +1,10 @@
+
+<mat-form-field class="small-textbox" appearance="outline">
+	<input matInput placeholder="Search for products, brand and more" aria-label="Search Bar" [matAutocomplete]="auto" [formControl]="mCntl" required="" >
+  <mat-icon matSuffix>search</mat-icon>
+	<mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption="true" [displayWith]="displayFn" (optionSelected)="selected($event)">
+	  <mat-option *ngFor="let option of optionFilteredList | async" [value]="option">
+	    {{option.displayName}}
+	  </mat-option>
+	</mat-autocomplete>
+</mat-form-field>

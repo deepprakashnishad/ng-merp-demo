@@ -1,0 +1,22 @@
+
+.category-title{
+    height:40px;
+    background:red;
+    color:#fff;
+    font-size: larger;
+    font-weight: bold;
+    position:relative;
+    width:200px;
+    text-align:center;
+    line-height:40px;
+}
+.category-title:after{
+    content:"";
+    position:absolute;
+    height:0;
+    width:0;
+    left:100%;
+    top:0;
+    border:20px solid transparent;
+    border-left: 20px solid red;
+}

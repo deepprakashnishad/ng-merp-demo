@@ -1,0 +1,11 @@
+<div class="container" fxLayout="column" fxLayoutGap="16px">
+  <div class="container" fxLayout fxLayoutAlign="center center" *ngIf="!isProductExists"><h3>No product found.</h3></div>
+  <div class="category-product-container" *ngFor="let item of productsByCategory | keyvalue">
+    <div class="category-title">
+      {{item.key}}
+    </div>
+    <app-prod-grid-view [products]="item.value"></app-prod-grid-view>
+    <!--<app-prod-horizontal-list [slidesPerView]="slidesPerView" [products]="item.value"></app-prod-horizontal-list>-->
+  </div>
+</div>
+<app-cart-floating-button [isAbsolute]=true></app-cart-floating-button>

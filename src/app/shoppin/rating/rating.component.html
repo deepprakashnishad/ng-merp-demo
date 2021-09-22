@@ -1,0 +1,20 @@
+<div *ngIf="ratings?.length>0">
+  <mat-divider></mat-divider>
+  <div *ngFor="let rating of ratings">
+    <div fxLayout fxLayoutAlign="space-between center">
+      <div class="rating-star" fxLayout fxLayoutAlign="center center" fxLayoutGap="4px">
+        <div>{{rating.stars}}</div>  
+        <div><mat-icon [inline]="true">star</mat-icon></div>
+      </div>
+      <div fxLayout fxLayoutGap="12px">
+        <div class="title">By {{rating.byPersonName}} at {{rating.updatedAt}}</div>
+        <div></div>
+      </div>
+    </div>
+    {{rating.comment}}
+    <mat-divider></mat-divider>
+  </div>
+</div>
+<!-- <div *ngIf="ratings.length===0">
+  Be the first one to rate
+</div> -->

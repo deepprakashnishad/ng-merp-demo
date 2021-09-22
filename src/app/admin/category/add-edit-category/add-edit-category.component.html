@@ -1,0 +1,49 @@
+<div class="container" mat-dialog>
+	<div fxLayout fxLayoutAlign="space-between center">
+		<div mat-dialog-title>{{title}}</div>
+		<div>
+			<button mat-icon-button color="accent" (click)="dialogRef.close(false)">
+				<mat-icon>close</mat-icon>
+			</button>
+		</div>
+	</div>
+	
+	<mat-dialog-content [formGroup]="categoryForm" fxLayout="column" fxLayoutGap="5px">
+		<div *ngIf="errors.length" class="alert alert-danger">
+	      <ul>
+	        <li *ngFor="let error of errors">{{error}}</li>
+	      </ul>
+	    </div>
+		<mat-form-field appearance="outline">
+			<mat-label>Title</mat-label>
+			<input type="text" matInput formControlName="title" [(ngModel)]="category.title"/>
+		</mat-form-field>
+		<div fxLayout fxLayoutAlign="space-between">
+			<mat-checkbox [(ngModel)]="category.isDepartment"
+										labelPosition="before" formControlName="isDepartment">Is Department</mat-checkbox>
+			<mat-form-field appearance="outline">
+				<mat-label>Sort Index</mat-label>
+				<input type="number" matInput formControlName="sortIndex" [(ngModel)]="category.sortIndex" />
+			</mat-form-field>
+		</div>
+		
+		<app-category-chip-input #categoryInput inputLabel="Children Categories"[excludeCategory]="category"></app-category-chip-input>
+		<app-uploader *ngIf="category.id" [maxAllowedFileSize]="50" [uploadPath]="uploadPath" [isMultiple]="false" (imageUploaded)="uploadCompleted($event)"></app-uploader>
+		<mat-card *ngIf="category.imgs && category.imgs['downloadUrl']">
+			<mat-card-content fxLayout="column" fxLayoutAlign="center center">
+				<img [src]="category.imgs['downloadUrl']" height="150" width="150"/>
+			</mat-card-content>
+		</mat-card>
+		<app-facet-input #primaryFacetsInput inputLabel="Primary Facets"></app-facet-input>
+		
+		<app-facet-input #secondaryFacetsInput inputLabel="Secondary Facets"></app-facet-input>
+		<app-facet-input #filterFacetsInput inputLabel="Filter Facets"></app-facet-input>
+	</mat-dialog-content>
+	<mat-dialog-actions> 
+		<button type="button" mat-raised-button color="primary"
+		    (click)="save(category)"
+		    [disabled]="categoryForm.invalid">Save</button>
+		<button type="button" mat-button 
+		    (click)="dialogRef.close(false)">Cancel</button>
+	 </mat-dialog-actions>
+</div>

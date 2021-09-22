@@ -1,0 +1,42 @@
+<!-- <div class="item-container" fxLayout>
+  <div class="item-card" *ngFor="let category of categories; let i=index;">
+    <div class="category-item">{{category.title}}</div>
+  </div>
+</div> -->
+
+<!-- <swiper 
+  [slidesPerView]="3"
+  [spaceBetween]="50"
+  [navigation]="true"
+  >
+  <ng-template class="clickable" swiperSlide *ngFor="let category of categories; let i=index;">
+    <div [ngClass]="selectedCategoryId && selectedCategoryId===category.id?'selected-category':'category-item'" fxLayout fxLayoutAlign="center center" (click)="navigateByDepartment(category)">
+      <img *ngIf="category.imgs && category.imgs['downloadUrl']" [src]="category.imgs['downloadUrl']" height="45px" width="45px"/>
+      {{category.title}}
+    </div>
+  </ng-template>
+</swiper> -->
+
+<nav fxHide.lt-lg>
+  <div class="container megha-menu" fxLayoutAlign="center">
+      <ul class="menu-main">
+          <li *ngFor="let category of categories; let i=index;"> 
+            <button mat-button class="menu-icon" [ngClass]="{'no-img': i == 3 || i == 5}" (click)="navigateByDepartment(category)">
+              <span><img *ngIf="i != 3 && i != 5" [src]="category.imgs['downloadUrl']" height="25px" width="25px" /></span>
+              {{ category.title }} 
+            </button> 
+          </li>         
+      </ul>
+  </div>
+</nav>
+<div 
+     fxLayout="column"
+     fxLayoutGap="10px"
+     fxHide.gt-md>
+  <div class="mob-menu" *ngFor="let category of categories">
+    <button mat-button (click)="navigateByDepartment(category)">
+      <span><img [src]="category.imgs['downloadUrl']" height="25" width="25" /></span>
+      {{ category.title }}
+    </button>
+  </div>
+</div>

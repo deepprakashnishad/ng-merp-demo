@@ -1,0 +1,61 @@
+<div fxLayout="column">
+  <div class="full-width">
+    <button mat-raised-button color="accent" (click)="openCreateSectionDialog()">Create Section</button>
+  </div>
+  <div>
+    <h3 *ngIf="sectionList.length===0">No section found</h3>
+    <div class="mat-elevation-z8" *ngIf="sectionList.length>0">
+      <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef> Title </th>
+          <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="text">
+          <th mat-header-cell *matHeaderCellDef> Text </th>
+          <td mat-cell *matCellDef="let element"><div [innerHTML]="element.safeHtmlText"></div></td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef> Type </th>
+          <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+        </ng-container>
+        <ng-container matColumnDef="backgroundColor">
+          <th mat-header-cell *matHeaderCellDef> Background Color </th>
+          <td mat-cell *matCellDef="let element"><div class="cover" [style.backgroundColor]="element.backgroundColor"></div> </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+        </ng-container>
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            Is Active
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                  (change)="selectionToggle($event, element)"
+                  [checked]="element.status=='Active'">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let element;  let i = index;">
+            <div fxLayout fxLayoutGap="8px" fxLayoutAlign="center start">
+              <button mat-icon-button color="accent" matTooltip="Edit"  matTooltipPosition="below"  (click)="openEditSectionDialog(element, i)">
+                <mat-icon aria-label="Edit">edit</mat-icon>
+              </button> 
+              <button [disabled]="element.type!='Custom'" mat-icon-button color="accent" matTooltip="Edit Product List" matTooltipPosition="below" (click)="openProductSelectorDialog(element, i)">
+                <mat-icon aria-label="View">inventory_2</mat-icon>
+              </button> 
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;let i=index"></tr>
+      </table>
+    </div>
+  </div>
+</div>

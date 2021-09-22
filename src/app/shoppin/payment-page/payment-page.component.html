@@ -1,0 +1,48 @@
+<div class="container">
+  <button class="back-button" mat-raised-button [routerLink]="'/delivery-page'"><mat-icon>arrow_back</mat-icon>Back to delivery address</button>
+  <br/>
+  <mat-accordion [multi]="true">
+    <mat-expansion-panel hideToggle [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Cart
+        </mat-panel-title>
+        <mat-panel-description fxLayout fxLayoutAlign="space-between center">
+          <div>Items in cart</div>
+          <mat-icon>shopping_cart</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-cart [displayTotalWithDelivery]="true" [loadCartFromServer]=true [displayActionButton]="false" [isEditable]="false"></app-cart>
+    </mat-expansion-panel>
+    <mat-expansion-panel hideToggle [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Fulfillment Details
+        </mat-panel-title>
+        <mat-panel-description fxLayout fxLayoutAlign="space-between center">
+          <div>Method and Address for delivery</div>
+          <mat-icon>local_shipping</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="title">Fulfillment method - {{fulfillmentMethod==="delivery"?"Delivery":"Self Pick Up"}}</div>
+      <div class="sub-title" *ngIf="fulfillmentMethod==='delivery'">Delivery Address</div>
+      <div class="sub-title" *ngIf="fulfillmentMethod!=='delivery'">Pick up point</div>
+      <div>
+        <app-address-card [isEditable]="false" [address]="fulfillmentAddress"></app-address-card>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel hideToggle [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Payment
+        </mat-panel-title>
+        <mat-panel-description fxLayout fxLayoutAlign="space-between center">
+          <div>Payment method</div>
+          <mat-icon>payments</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-payment></app-payment>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>

@@ -1,0 +1,44 @@
+mat-card {
+  padding: 0px;
+  justify-content: center;
+}
+
+mat-card-content{
+    min-height: 295px;
+    max-height: fit-content;
+    padding: 0px;
+    
+}
+
+.weight{
+    font-style: italic;
+}
+
+.img-container{
+    padding: 16px;
+}
+
+.title{
+    font-weight:bold;
+}
+
+.discount{
+    color: #296003;
+    font-weight: bold;
+}
+
+.price{
+    font-size: medium;
+    font-weight: bold;
+    color: #f93a04;
+}
+
+.original{
+    text-decoration: line-through black 2px;
+}
+
+.price-container{
+    background-color: #f3f3f3;
+    padding: 8px;
+    min-height: 75px;
+}

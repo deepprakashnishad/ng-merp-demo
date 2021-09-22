@@ -1,0 +1,94 @@
+<app-progress-spinner></app-progress-spinner>
+<mat-toolbar class="navbar" #navToolbar>
+	<mat-toolbar-row class="top-section">
+		<div class="full-width" fxLayout fxLayoutAlign="center">				
+				<h5>Free shipping above {{minOrder | currency:'INR':'symbol':'3.0'}}</h5>
+			  <div fxHide fxShow.gt-md class="right-section">
+					<a class="pageLink" [routerLink]="'/static-page/about-us'">
+						About Us
+					</a>
+					<span>
+						<a class="pageLink" [routerLink]="'/order-list'"> 
+							My Orders
+						</a>
+					</span>					
+				</div> 
+			</div> 
+	</mat-toolbar-row>
+	<mat-toolbar-row *ngIf="!shrinkToolbar" class="wide-navbar" fxLayout fxLayoutAlign="space-around center" fxHide.lt-md>
+		<a class="brand" routerLink="/">
+			<span>
+				<img height="110" width="110" src="/assets/images/logo.jpeg"/>
+			</span>
+		</a>
+		<div fxLayout="column" style="padding-top: 25px; align-items: center;">
+			<div class="middle-container" fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="4px" fxHide.lt-md>				
+				<div class="full-width">
+					<app-search-bar></app-search-bar>
+				</div>
+				<div>					
+					<button class="nav-icon" mat-icon-button (click)="toggleLoginStatus(isLoggedIn)">
+						<mat-icon aria-label="isLoggedIn?:'Logout':'Login/Sign Up'">{{isLoggedIn?'logout':'lock'}}</mat-icon>
+					</button>										
+				</div>				
+			</div>
+			<div class="full-width" fxHide fxShow.gt-md style="margin-top: -15px;">
+				<app-department-bar></app-department-bar> 
+			</div> 
+		</div>
+		<div>
+			<!--<app-cart-floating-button [isAbsolute]="true"></app-cart-floating-button>-->
+			<app-pincode-checker fxShow.gt-md></app-pincode-checker>
+		</div>
+		<div fxLayout fxHide.gt-sm>
+			<div fxHide fxShow.gt-md fxFlexAlign="center">Welcome {{isLoggedIn?name:'User'}}</div>
+			<button mat-icon-button class="toggle-menu" (click)="toggleSidebar()">
+				<mat-icon *ngIf="!isSidebarOpen">menu</mat-icon>
+				<mat-icon *ngIf="isSidebarOpen">close</mat-icon>
+			</button>
+		</div>
+	</mat-toolbar-row>	
+	<mat-toolbar-row *ngIf="shrinkToolbar" class="narrow-navbar" fxLayout fxLayoutAlign="space-between center" fxHide.lt-md>
+		<a class="brand" routerLink="/">
+			<span>
+				<img height="150" width="150" src="/assets/images/logo.jpeg"/>
+			</span>
+		</a>
+		<div class="middle-container">
+			<div class="full-width">
+				<app-department-bar></app-department-bar>
+			</div>
+		</div>
+	</mat-toolbar-row>
+	<mat-toolbar-row class="narrow-navbar" fxLayout fxLayoutAlign="space-between center" fxHide.gt-sm>
+		<div fxLayout fxHide.gt-sm>
+			<div fxFlexAlign="center" class="mob-welcome-msg">Welcome {{isLoggedIn?name:'User'}}</div>
+		</div>
+	</mat-toolbar-row>
+	<mat-toolbar-row class="narrow-navbar" fxLayout fxLayoutAlign="space-between center" fxHide.gt-sm>
+		<div>
+			<app-search-bar></app-search-bar>
+			<button mat-icon-button (click)="toggleSidebar()">
+				<mat-icon *ngIf="!isSidebarOpen">menu</mat-icon>
+				<mat-icon *ngIf="isSidebarOpen">close</mat-icon>
+			</button>
+		</div>
+	</mat-toolbar-row>
+</mat-toolbar>
+<div [hidden]="isSidebarOpen" [@openClose]="isSidebarOpen?'open':'closed'" class="sidebar" fxLayout="column" fxLayoutGap="16px" fxHide.gt-sm>
+	<app-pincode-checker></app-pincode-checker>
+	<span>
+		<button mat-button (click)="openCategoryDrawer()">Categories</button>
+	</span>
+	<app-department-bar></app-department-bar>
+	<mat-divider></mat-divider>
+	<a mat-button class="mobPageLink" [routerLink]="'/static-page/about-us'">
+		About Us
+	</a>
+	<a mat-button class="mobPageLink" [routerLink]="'/order-list'">
+		My Orders
+	</a>
+	<button mat-button (click)="toggleLoginStatus(isLoggedIn)">
+		{{isLoggedIn?'Logout':'Login'}} <mat-icon aria-label="isLoggedIn?:'Logout':'Login/Sign Up'">{{isLoggedIn?'logout':'lock'}}</mat-icon>
+	</button>
+</div>

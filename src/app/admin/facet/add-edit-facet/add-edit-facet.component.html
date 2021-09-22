@@ -1,0 +1,22 @@
+<div class="container" mat-dialog>
+	<div mat-dialog-title>{{title}}</div>
+	<mat-dialog-content [formGroup]="facetForm" fxLayout="column" fxLayoutGap="5px">
+		<div *ngIf="errors.length" class="alert alert-danger">
+	      <ul>
+	        <li *ngFor="let error of errors">{{error}}</li>
+	      </ul>
+	    </div>
+		<mat-form-field appearance="outline">
+			<mat-label>Facet Title</mat-label>
+			<input type="text" matInput formControlName="facet" [(ngModel)]="facet.title"/>
+		</mat-form-field>
+		<app-facet-chip-input *ngIf="facet.id" [facet]="facet" isRemoveOnSeverFlag="true"></app-facet-chip-input>
+	</mat-dialog-content>
+	<mat-dialog-actions> 
+		<button type="button" mat-raised-button color="primary"
+		    (click)="save(facet)"
+		    [disabled]="facetForm.invalid">Save</button>
+		<button type="button" mat-button 
+		    (click)="dialogRef.close(false)">Cancel</button>
+	 </mat-dialog-actions>
+</div>

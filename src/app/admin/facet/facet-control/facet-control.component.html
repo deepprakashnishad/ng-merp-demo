@@ -1,0 +1,40 @@
+<div *ngFor="let entry of queue|keyvalue">
+	<mat-form-field fxFlex="23">
+		<input matInput aria-label="Facet" 
+			[matAutocomplete]="auto" required="" disabled="" [value]="entry.key.title">
+	</mat-form-field>
+	<mat-form-field>
+	  <mat-label>Select an option</mat-label>
+	  <mat-select [(value)]="entry.value">
+	    <mat-option value="radiobutton">Radio button</mat-option>
+	    <mat-option value="dropdown">Dropdown</mat-option>
+	    <mat-option value="toggle_button">Toggle Button</mat-option>
+	  </mat-select>
+	</mat-form-field>
+	<button mat-icon-button (click)="addFacetControl()">
+		<mat-icon>cancel</mat-icon>
+	</button>
+</div>
+
+<div>
+	<mat-form-field fxFlex="23">
+		<input matInput placeholder="Facet" aria-label="Facet" [matAutocomplete]="auto" [formControl]="facetControl" >
+		<mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption="true" [displayWith]="displayFn" (optionSelected)="selected($event)">
+		  <mat-option *ngFor="let facet of facetFilteredList | async" [value]="facet">
+		    {{facet.title}}
+		  </mat-option>
+		</mat-autocomplete>
+	</mat-form-field>
+	<mat-form-field *ngIf="facet !== undefined">
+	  <mat-label>Select an option</mat-label>
+	  <mat-select [(value)]="controlType">
+	    <mat-option value="radiobutton">Radio button</mat-option>
+	    <mat-option value="dropdown">Dropdown</mat-option>
+	    <mat-option value="toggle_button">Toggle Button</mat-option>
+	  </mat-select>
+	</mat-form-field>
+	<button mat-icon-button (click)="addFacetControl()" *ngIf="facet !== undefined">
+		<mat-icon>save</mat-icon>
+	</button>
+</div>
+<button mat-raised-button color="primary" (click)="emitFacetControls()">Save</button>

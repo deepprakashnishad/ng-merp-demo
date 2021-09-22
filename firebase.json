@@ -1,0 +1,27 @@
+{
+  "hosting": {
+    "public": "dist",
+    "redirects": [ {
+      "source": "**/api-pincode/:path",
+      "destination": "https://api.postalpincode.in/pincode/:path",
+      "type": 301
+    }],
+    "rewrites":[{
+      "source": "**",
+      "destination": "/index.html"
+    }],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  },
+
+  "emulators": {
+
+    "hosting": {
+      "port": 5000,
+      "host": "0.0.0.0"
+    }
+  }
+}

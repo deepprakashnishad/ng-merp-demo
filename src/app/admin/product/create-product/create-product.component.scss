@@ -1,0 +1,26 @@
+.cdk-virtual-scroll-data-source-example .example-viewport {
+    border: 1px solid black;
+    padding: 30px;
+    height: 170px;
+    margin: 5px;
+  }
+  
+  .cdk-virtual-scroll-data-source-example .example-viewport .cdk-virtual-scroll-content-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+
+  mat-card{
+    margin: 5px;
+  }
+
+  img{
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  .back-button{
+    align-self: flex-end;
+    top: 16px;
+    right: 16px;
+  }

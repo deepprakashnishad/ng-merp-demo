@@ -1,0 +1,82 @@
+<div class="container">
+  <div fxLayout fxLayoutGap="24px" >
+    <div>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select [formControl]="statusCntl" multiple [(ngModel)]="statuses">
+          <mat-select-trigger>
+            {{statuses ? statuses[0] : ''}}
+            <span *ngIf="statuses?.length > 1" class="example-additional-selection">
+              (+{{statuses.length - 1}} {{statuses?.length === 2 ? 'other' : 'others'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let status of statusList" [value]="status">{{status}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <button mat-raised-button color="accent" (click)="refresh()">Refresh</button>
+    </div>
+  </div>
+  <table *ngIf="orders.length>0" mat-table [dataSource]="orders" class="mat-elevation-z8 full-width">
+    <tr>
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let element; let i=index"> {{i+1}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="createdOn">
+        <th mat-header-cell *matHeaderCellDef> Item </th>
+        <td mat-cell *matCellDef="let element"> {{element.createdAt | date}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="netAmount">
+        <th mat-header-cell *matHeaderCellDef> Total Amount </th>
+        <td mat-cell *matCellDef="let element">{{element.netPrice}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="modeOfPayment">
+        <th mat-header-cell *matHeaderCellDef> Mode of payment </th>
+        <td mat-cell *matCellDef="let element">{{element.modeOfPayment}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amountPaid">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element">{{element.amountPaid===element.netPrice?'Paid': 'Pending'}}</td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Payment Status </th>
+        <td mat-cell *matCellDef="let element">
+          <!-- {{element.status}} -->
+          <mat-select [(ngModel)]="element.status" (ngModelChange)="statusUpdated(element)">
+            <mat-option *ngFor="let status of statusList" [value]="status">{{status}}</mat-option>
+          </mat-select>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element">{{element.fulfillment?.address?.toString()}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="full-width" fxlayout fxLayoutAlign="end end">
+            <a href="/order-detail/{{element.id}}" [target]="_blank">View</a>
+          </div>
+        </td>
+      </ng-container>
+    </tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <mat-paginator [length]="orders.length" [pageSize]="pageSize"></mat-paginator>
+  </table>
+  <div *ngIf="orders.length===0" class="title">No orders found.</div>
+  <button class="full-width" *ngIf="!isEndReached" mat-raised-button color="accent" (click)="fetchOrders(orders.length)">Load More</button>
+</div>

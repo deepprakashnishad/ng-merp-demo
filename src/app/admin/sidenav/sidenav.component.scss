@@ -1,0 +1,38 @@
+mat-sidenav{
+	width: 200px;
+	padding: 10px;
+}
+
+mat-sidenav-content{
+  background-color: white;
+}
+
+mat-drawer{
+  overflow: auto;
+}
+
+.mat-drawer-side{
+	border: none;
+}
+
+.example-container {
+  width: 100%;
+  height: 84vh;
+}
+
+h1.example-app-name {
+  margin-left: 8px;
+}
+
+mat-sidenav{
+  background-color: #fafafa;
+}
+
+mat-toolbar-row.progressbar-container{
+  height: 2px;
+  padding:0px;
+  position: sticky;
+  position: -webkit-sticky;
+  z-index: 1000;
+  top: 0px;
+}

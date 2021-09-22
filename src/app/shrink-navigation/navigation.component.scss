@@ -1,0 +1,154 @@
+a.pageLink, .nav-icon {
+  padding: 0 14px;
+  color:#731539;  
+}
+
+a.mobPageLink {
+  padding: 0 14px;
+  color: white;
+  align-self:flex-start;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.brand{
+	color: white;
+	text-decoration: none;
+  margin-top: 4px;
+}
+
+.mob-welcome-msg{
+    font-size:14px;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+  color: #731539;
+  border-radius: 5px;
+}
+
+form{
+  font-size: 12px;
+}
+
+a{
+  color: #f93a04;
+  text-decoration: none;
+}
+
+.sidebar{
+  background-color: #731539;
+  position: absolute;
+  right: 0;
+  width: 245px;
+  height: 80%;
+  padding: 5%;
+  z-index: 100;
+  overflow: auto;
+  top: 20%;
+
+  button{
+      color: white;
+    text-align: left;
+    padding: 0;
+  }
+}
+
+@media screen and (min-width: 400px){
+  mat-toolbar{
+    padding: 10px 60px;
+  }
+}
+
+@media screen and (max-width: 400px){
+  mat-toolbar{
+    padding: 10px 10px;
+  }
+
+  .wide-navbar {
+    justify-content: center !important;
+    overflow: hidden;
+  }
+
+  .toggle-menu {
+    position: absolute;
+    right: 0;
+    top: 12%;
+  }
+}
+
+mat-toolbar{
+  min-height: 25px;
+  height: 25px;
+  background-color: white;
+}
+
+.wide-navbar{
+  height: 18vh;
+  background-color: white;  
+}
+
+.narrow-navbar{
+  height: 8vh;
+  background-color: white;
+}
+
+.middle-container{
+  max-width: 60vw;
+  width: 100%;
+}
+
+.navbar {
+  border-bottom: 1px solid #afa6a6;
+  padding: 0;
+  height: 20vh;
+}
+
+.top-section {
+  background-color : #731539;  
+  z-index: 1;
+  height: 25px;
+  min-height: 25px;
+  div {
+    height: 25px;
+    align-items: center !important;
+  }
+
+  h5 {
+    color: #fff;
+    font-size:12px;
+  }
+
+  .right-section {
+    position: absolute;
+    right: 40px;
+    font-size: 12px;
+
+      a {        
+        color: #FFF;
+      }
+  }
+}
+
+.slider-section {
+  padding: 0;
+}
+
+.mat-divider {
+  border-top-color: #FFF;
+}
+
+::ng-deep .mat-form-field-flex > .mat-form-field-infix {
+  padding: 0.4em 0px !important;
+}
+
+::ng-deep .mat-form-field-label-wrapper {
+  top: -1.5em;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.1em) scale(.75);
+  width: 133.33333%;
+}

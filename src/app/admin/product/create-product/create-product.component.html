@@ -1,0 +1,95 @@
+<div fxLayout fxLayoutAlign="end start" style="background-color: white;">
+	<button class="back-button" mat-icon-button color="primary" (click)="navigateBack()"><mat-icon>close</mat-icon></button>	
+</div>
+
+<mat-vertical-stepper linear>
+	<mat-step [stepControl]="productForm" label="Product title &amp; brand">
+		<form [formGroup]="productForm" fxLayout="row" fxLayoutGap="16px">
+			<mat-form-field>
+				<input type="text" matInput formControlName="cntlName" required="true" [(ngModel)]="product.name" placeholder="Name" />
+			</mat-form-field>
+			<mat-form-field>
+				<input type="text" matInput formControlName="cntlLName" [(ngModel)]="product.lname" placeholder="Full Name" />
+			</mat-form-field>
+			<app-brand-selector [hidden]="!storeSettings.isBrandEnabled" matInput (brandSelected)="brandSelected($event)" [brand]="product.brand"></app-brand-selector>
+			<mat-form-field *ngIf="storeSettings.isTaxEnabled">
+				<input type="text" matInput formControlName="taxCntl" [(ngModel)]="product.tax" placeholder="Tax(SGST+CGST In percent)" />
+			</mat-form-field>
+			<mat-form-field appearance="outline">
+				<mat-label>Sort Index</mat-label>
+				<input type="number" matInput formControlName="sortIndex" [(ngModel)]="product.sortIndex" />
+			</mat-form-field>
+			
+		</form>
+		<button mat-raised-button color="primary" (click)="createProduct()">Save</button>
+	</mat-step>
+	<mat-step label="Images" optional="true">
+		<app-uploader [uploadPath]="uploadPath" [maxAllowedFileSize]="512" (imageUploaded)="uploadCompleted($event)"></app-uploader> 
+		<div class="cdk-virtual-scroll-data-source-example" *ngIf="product?.assets?.imgs.length>0">
+			<cdk-virtual-scroll-viewport orientation="horizontal" itemSize="5" class="example-viewport">
+				<div *cdkVirtualFor="let image of product?.assets?.imgs; let i = index">
+					<mat-card>
+						<mat-card-content fxLayout="column" fxLayoutAlign="center center">
+							<img [src]="image['downloadUrl']" height="150px" width="150px"/>
+							<button mat-icon-button color="error" (click)="deleteImage(image, i)"><mat-icon>delete</mat-icon></button>
+						</mat-card-content>
+					</mat-card>
+				</div>
+			</cdk-virtual-scroll-viewport>
+		</div>
+		<button mat-raised-button color="primary" matStepperPrevious>Previous</button>
+		<button mat-raised-button color="primary" (click)="updateProduct()">Save</button>
+		<button mat-raised-button color="primary" matStepperNext>Next</button>
+	</mat-step>
+	<mat-step label="Taxonomy" optional="true">
+		<div fxLayout="row">
+			<app-taxonomy-selector [selectedTaxonomies]="product.taxonomies"></app-taxonomy-selector>
+			<mat-list>
+				<mat-list-item *ngFor="let taxonomy of product.taxonomies">
+					{{taxonomy}}
+				</mat-list-item>
+			</mat-list>
+		</div>
+		<button mat-raised-button color="primary" matStepperPrevious>Previous</button>
+		<button mat-raised-button color="primary" (click)="saveTaxonomy()">Save</button>
+		<button mat-raised-button color="primary" matStepperNext>Next</button>
+	</mat-step>
+	<mat-step label="Attributes" optional="true">
+		<app-facet-value (facetValuesSelected)="saveFacets($event, 'primary')" [facetJson]="product.attrs"></app-facet-value>
+	</mat-step>
+	<mat-step label="Secondary Attributes" optional="true" *ngIf="false">
+		<app-facet-value (facetValuesSelected)="saveFacets($event, 'secondary')" [facetJson]="product.sattrs"></app-facet-value>
+	</mat-step>
+	<mat-step label="Description" optional="true">
+		<mat-label>Short Description</mat-label>
+
+		<quill-editor placeholder="Short Description" [(ngModel)]="shortDescription" maxLength="140"></quill-editor>
+		<br><br>
+		<mat-label>Long Description</mat-label>
+		<quill-editor placeholder="Long Description" [(ngModel)]="longDescription"></quill-editor>
+		<button mat-raised-button color="primary" (click)="saveDescription()">Save</button>
+	</mat-step>
+	<!-- <mat-step label="Assets" optional="true">
+		<div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="5px">
+			<mat-card *ngFor="let item of product?.assets?.imgs">
+				<img mat-card-image [src]="item|safe" *ngIf="product.assets.imgs[0]" alt="Product Image">
+				<mat-card-actions>
+				    <button mat-raised-button color="accent" (click)="removeImage(item)">Delete</button>
+				</mat-card-actions>
+			</mat-card>
+		</div>
+		<app-file-uploader [uploadUrl]="'Product/uploadImages'" [data]="product" (itemUploaded)="fileUploaded($event)"></app-file-uploader>
+	</mat-step> -->
+	<mat-step label="Price &amp; Inventory">
+		<app-price [productId]="product.id" [priceType]="'product'"></app-price>
+	</mat-step>
+	<!-- <mat-step label="Variant Attributes" optional="true">
+		<app-facet-control (facetControlSelected)="saveFacetControlType($event)" [jsonFacetControl]="product.variants?.attrs"></app-facet-control>
+	</mat-step>
+	<mat-step label="Product Variants" optional="true">
+		<app-variant [variableFacets]="variableFacets" [product]="product"></app-variant>
+	</mat-step>
+	<mat-step label="Product Variants" optional="true" *ngIf="false">
+		<app-variant [variableFacets]="variableFacets" [product]="product"></app-variant>
+	</mat-step> -->
+</mat-vertical-stepper>

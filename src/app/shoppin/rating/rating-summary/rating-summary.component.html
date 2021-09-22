@@ -1,0 +1,15 @@
+<div fxLayout fxLayoutAlign="space-between center">
+  <div class="review-summary" *ngIf="totalRatingCount===0">Be the first one to rate</div>
+  <div class="rating">
+    <div class="review-summary" fxLayout *ngIf="totalRatingCount">
+      <div class="icon" fxLayout fxLayoutAlign="center space-around" fxLayoutGap="12px">
+        <div class="rating-star" fxLayout fxLayoutAlign="space-between center" fxLayoutGap="4px">
+          <div>{{netRating}}</div>  
+          <div><mat-icon [inline]="true">star</mat-icon></div>
+        </div>
+        <div class="title">{{totalRatingCount}} ratings and {{totalReviewCount}} reviews</div>
+      </div>
+    </div>
+  </div>
+  <app-rating-button [recipientId]="recipientId" [recipientType]="recipientType" (rated)="ratingDone($event)"></app-rating-button>
+</div>

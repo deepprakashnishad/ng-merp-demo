@@ -1,0 +1,4 @@
+<div class="container">
+	<button class="pull-right" mat-raised-button color="primary" (click)="openAddEditFacetDialog(facet)" *ngIf="isAddPermitted">Add New Facet</button>
+	<app-view-facet [facets]="facets" [isEditPermitted]="isEditPermitted"></app-view-facet>
+</div>

@@ -1,0 +1,58 @@
+<mat-card>
+  <mat-card-content>
+    <div fxLayout.fxLayout.gt-sm fxLayout.lt-md="column">
+      <div 
+        class="arrow-container" 
+        fxHide.gt-sm
+        fxLayout>
+        {{section.title}}
+      </div>
+      <div 
+        fxFlex="20" 
+        fxHide.lt-md 
+        [ngStyle]="sectionImage && {'background-image': 'url('+sectionImage+')', 'background-size': 'contain', 'background-repeat':'no-repeat'} || 
+                  sectionImage===undefined && {'background-color': section.backgroundColor}" 
+        fxLayout 
+        fxLayoutAlign="center center">
+        <span [innerHTML]="section.text"></span>
+      </div>
+      <swiper 
+        [slidesPerView]="3"
+        [navigation]="true"
+        [breakpoints]="{
+          '320': {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            width: 300,
+            navigation: false
+          },
+          '640': {
+            slidesPerView: 2,
+            spaceBetween: 5,
+            width: 600,
+            navigation: false
+          },
+          '768': {
+            slidesPerView: 4,
+            spaceBetween: 20,
+            width: 1000
+          },
+          '1024': {
+            slidesPerView: 5,
+            spaceBetween: 30,
+            width: 1200
+          }
+        }"
+        >
+        <ng-template class="clickable" swiperSlide *ngFor="let prod of products; let i=index;">
+          <div fxLayout fxLayoutAlign="center center">
+            <app-prod-card [product]=prod></app-prod-card>
+          </div>
+        </ng-template>
+      </swiper>
+      <div fxFlexAlign.gt-sm="center" fxFlexAlign.lt-md="end">
+        <button mat-raised-button (click)="navigateToProductGrid()">View All <mat-icon>east</mat-icon></button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

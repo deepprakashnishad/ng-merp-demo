@@ -1,0 +1,7 @@
+<div [ngClass]= "{'bottom-floating-action-button-container': isAbsolute, 'navbar-floating-action-button-container': !isAbsolute}" fxLayout="column" fxLayoutAlign="start end" >
+  <app-cart [isCompact]="true" [@openClose]="isActive ? 'open' : 'closed'"></app-cart>
+  <button mat-fab color="accent" (click)="toggleCart()">
+    <mat-icon *ngIf="!isActive">shopping_cart</mat-icon>
+    <mat-icon *ngIf="isActive">close</mat-icon>
+  </button>
+</div>

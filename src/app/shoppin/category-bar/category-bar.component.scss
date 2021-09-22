@@ -1,0 +1,37 @@
+.basic-container {  
+    .menu-bar {
+      min-height: auto;
+  
+      .mat-toolbar-row {
+        height: auto;
+      }
+    }
+  }
+
+  button.department{
+    font-weight: bold;
+  }
+
+  .sidebar{
+    background-color: #731539;
+    color: #FFF;
+    position: absolute;
+    right: 0;
+    width: 245px;
+    height: 100%;
+    padding: 5% 15%;
+    z-index: 100;
+    overflow: auto;   
+    top: 90px;    
+  
+    button{
+      text-align: left;
+      padding: 0;
+
+      &:hover {
+        font-weight: bold !important;
+      }
+    }
+  }
+
+ 

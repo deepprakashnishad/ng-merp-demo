@@ -1,0 +1,22 @@
+<div>
+    <div fxLayout fxLayoutAlign="space-between center">
+        <h3>Product Selector</h3>
+        <button mat-icon-button (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
+    </div>
+    <mat-dialog-content>
+        <app-category-bar [navigateOnSelection]="false" (categorySelected)="categoryUpdated($event)"></app-category-bar>    
+        <div fxLayout="row wrap" fxLayoutGap="25px">
+            <div fxFlex="calc(25%-25px)" *ngFor="let product of products">
+                <app-selection-product-card
+                    [isSelected]="isProductSelected(product.id)"
+                    [product]="product"
+                    (selectionChanged)="productSelectionChanged($event, product.id)"
+                    ></app-selection-product-card>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button color="accent" (click)="dialogRef.close(selectedProductIds)">Save</button>
+        <button mat-raised-button color="danger" (click)="dialogRef.close()">Discard</button>
+    </mat-dialog-actions>
+</div>

@@ -1,0 +1,25 @@
+<button mat-raised-button color="primary" (click)="newPage()">New Page</button>
+<form [formGroup]="pageForm">
+  <div fxLayout fxLayoutGap="16px">
+    <mat-select *ngIf="pages.length>0" (selectionChange)="selectedPageChanged($event)">
+      <mat-option *ngFor="let page of pages" [value]="page">{{page.title}}</mat-option>
+    </mat-select>
+    <mat-form-field>
+      <mat-label>Page Title</mat-label>
+      <input type="text" matInput formControlName="pageTitle" required="true" [(ngModel)]="page.title" placeholder="Page Title" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Page Route Name</mat-label>
+      <input type="text" matInput formControlName="routename" required="true" [(ngModel)]="page.routeName" placeholder="Page Route" />
+    </mat-form-field>
+    <mat-slide-toggle formControlName="isActive">Is Active</mat-slide-toggle>
+  </div>
+</form>
+<div>
+  <mat-label>Page Content</mat-label>
+  <quill-editor [styles]="{height: '50vh'}" placeholder="Page Content" [(ngModel)]="page.htmlText"></quill-editor>
+</div>
+<div fxLayout>
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+  <button *ngIf="page.id!==undefined" mat-raised-button color="error" (click)="delete()">Delete</button>
+</div>

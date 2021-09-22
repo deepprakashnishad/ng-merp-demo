@@ -1,0 +1,17 @@
+<div class="container" *ngIf="banners?.length>0">
+    <swiper 
+        [slidesPerView]="1"
+        [grabCursor]="true"
+        [pagination]="true"
+        [navigation]="true"
+        [effect]="'flip'"
+        >
+        <ng-template swiperSlide *ngFor="let banner of banners; ;let i=index">
+            <img class="responsive-img" [src]="banner.url" />
+        </ng-template>
+    </swiper>
+</div>  
+<div fxLayout="column" fxLayoutGap="25px">
+    <app-view-section *ngFor="let section of sections" [section]="section"></app-view-section>
+</div>
+<app-cart-floating-button [isAbsolute]=true></app-cart-floating-button>

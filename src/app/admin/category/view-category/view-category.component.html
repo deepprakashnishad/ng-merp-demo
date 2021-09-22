@@ -1,0 +1,23 @@
+<mat-form-field appearance="outline">
+	<mat-label>Filter</mat-label>
+	<input class="full-width" matInput type="text" [(ngModel)]="filterStr">
+	<mat-hint>Type category to filter</mat-hint>		
+</mat-form-field>
+<div fxLayout fxLayoutAlign="space-between center">
+	<h3>Available Categories</h3>
+	<button mat-icon-button color="primary" (click)="openAddEditCategoryDialog()" *ngIf="isEditPermitted"><mat-icon>add</mat-icon></button>
+</div>
+
+<ul>
+	<li *ngFor="let category of categories | myfilter:['title']:filterStr:true" matTooltipPosition="left">
+		{{category.title}}
+		<span *ngIf="isEditPermitted">
+			<button mat-icon-button color="primary" (click)="openAddEditCategoryDialog(category)">
+				<mat-icon>edit</mat-icon>
+			</button>
+			<button mat-icon-button (click)="deleteCategory(category)">
+				<mat-icon>delete</mat-icon>
+			</button>
+		</span>
+	</li>
+</ul>

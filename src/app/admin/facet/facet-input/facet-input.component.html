@@ -1,0 +1,26 @@
+<mat-form-field class="full-width">
+	<mat-chip-list #facetList>
+	    <mat-chip
+	      *ngFor="let facet of facets"
+	      [selectable]="false"
+	      removable="true"
+	      (removed)="remove(facet)">
+	      {{facet.title}}
+	      <mat-icon matChipRemove>cancel</mat-icon>
+	    </mat-chip>
+  	</mat-chip-list>
+	<input
+		matInput
+      [placeholder]="inputLabel"
+      #facetInput
+      [formControl]="facetControl"
+      [matAutocomplete]="facetAuto"
+      [matChipInputFor]="facetList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="true"
+      (matChipInputTokenEnd)="add($event)" />
+		
+	<mat-autocomplete #facetAuto="matAutocomplete" (optionSelected)="selected($event)">
+	    <mat-option *ngFor="let facet of facetFilteredList | async" [value]="facet">{{facet.title}}</mat-option>
+	</mat-autocomplete>
+</mat-form-field>

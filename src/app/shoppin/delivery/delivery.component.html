@@ -1,0 +1,26 @@
+<div class="container">
+  <button class="back-button" mat-raised-button [routerLink]="'/order-review'"><mat-icon>arrow_back</mat-icon>Back to order review</button>
+  <div fxLayout="column">
+    <div class="radio-button-container" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="10%">
+      <h3>Address Book</h3>
+      <!--<mat-radio-group aria-label="Select an option"
+                       fxFlexAlign="end"
+                       fxLayout="row"
+                       fxLayout.xs="column"
+                       fxLayoutGap="50px"
+                       fxLayoutGap.xs="20px"
+                       fxLayoutAlign="center start"
+                       fxLayoutAlign.xs="start start"
+                       [(ngModel)]="fulfillmentType"
+                       (change)="fulfillmentTypeUpdated($event)">
+        <mat-radio-button value="delivery">Deliver to my address</mat-radio-button>
+        <mat-radio-button value="self_pick">Pick from one of the stores</mat-radio-button>
+      </mat-radio-group>-->
+      <div *ngIf="selectedAddress && fulfillmentType" [@inOutAnimation]>
+        <a fxHide.lt-sm mat-raised-button color="accent" [routerLink]="['/payment-page']">Continue <mat-icon>arrow_forward</mat-icon></a>
+        <a fxHide.sm fxHide.gt-sm mat-fab color="accent" [routerLink]="['/payment-page']"><mat-icon>arrow_forward</mat-icon></a>
+      </div>
+    </div>
+  </div>
+  <app-address [selectedAddress]="selectedAddress" [displayAddButton]="fulfillmentType==='delivery'" [fulfillmentType]="fulfillmentType" (addressSelected)="addressSelected($event)"></app-address>
+</div>

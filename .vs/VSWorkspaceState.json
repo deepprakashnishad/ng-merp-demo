@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\admin",
+    "\\src\\app\\admin\\sidenav",
+    "\\src\\environments"
+  ],
+  "SelectedNode": "\\src\\app\\admin\\sidenav\\sidenav.component.ts",
+  "PreviewInSolutionExplorer": false
+}

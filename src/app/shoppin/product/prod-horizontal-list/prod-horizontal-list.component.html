@@ -1,0 +1,20 @@
+<mat-card>
+  <swiper 
+    [slidesPerView]="slidesPerView"
+    [spaceBetween]="50"
+    [navigation]="true"
+    >
+    <ng-template class="clickable" swiperSlide *ngFor="let prod of products; let i=index;">
+      <div class="item-card" fxLayout fxLayoutAlign="center center">
+        <app-prod-card [product]=prod></app-prod-card>
+      </div>
+    </ng-template>
+  </swiper>
+  <!-- <div class="cdk-virtual-scroll-data-source-example">
+    <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="200" class="example-viewport">
+      <div class="item-card" *cdkVirtualFor="let prod of products; let i=index;">
+        <app-prod-card [product]=prod></app-prod-card>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div> -->
+</mat-card>

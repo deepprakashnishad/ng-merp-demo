@@ -1,0 +1,150 @@
+.full-image{
+    height: auto;
+    width: 100%;
+}
+
+//.zoomin img {
+//  height: 400px;
+//  width: 400px;
+//  -webkit-transition: all 0.5s ease;
+//  -moz-transition: all 0.5s ease;
+//  -ms-transition: all 0.5s ease;
+//  transition: all 0.5s ease;
+//}
+
+//.zoomin img:hover {
+//  width: 500px;
+//  height: 500px;
+//  z-index: 999999 !important;
+//}
+
+
+@media(min-width: 560px) {
+
+  .info-container {
+    padding: 32px;
+    max-height: 85%;
+    overflow-y: auto;
+  }
+}
+
+
+  @media(min-width: 768px) {
+    .full-image {
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .image-container {
+      padding: 32px;
+    }
+
+    .info-container {
+      padding: 32px;
+      max-height: 85%;
+      overflow-y: auto;
+    }
+  }
+
+  @media(max-width: 767px) {
+    .full-image {
+      max-width: 50%;
+    }
+
+    .image-container {
+      padding: 32px;
+    }
+
+    .info-container {
+      padding: 32px;
+      max-height: 85%;
+      overflow-y: auto;
+    }
+  }
+
+  @media(max-width: 400px) {
+    .full-image {
+      max-width: 100%;
+    }
+
+    .image-container {
+      padding: 16px;
+    }
+
+    .info-container {
+      padding: 16px;
+    }
+  }
+
+  .guide-image-container {
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    padding: 4px;
+  }
+
+  ul.discount-list {
+    li {
+      margin: 0;
+      padding: 18px 0 18px 24px;
+      list-style: none;
+      background-image: url("/assets/images/extras/list-icon.png");
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: 20px;
+    }
+  }
+
+  .product-name {
+    font-size: larger;
+    font-weight: bold;
+  }
+
+  .product-lname {
+    font-size: large;
+  }
+
+  .price {
+    font-size: large;
+    font-weight: bold;
+    color: #f93a04;
+  }
+
+  .original-price {
+    font-size: large;
+    text-decoration: line-through;
+    color: #f93a04;
+  }
+
+  .rating-container {
+    font-size: medium;
+    font-weight: bold;
+    color: #888888;
+  }
+
+  .checkout-button {
+    color: white;
+    font-size: medium;
+    font-weight: bold;
+    width: 100%;
+    min-width: unset !important;
+  }
+
+  .full-height {
+    height: 100%;
+  }
+
+  .ingredients {
+    color: #296003;
+  }
+
+  .ingredients-title {
+    color: #296003;
+    font-weight: bold;
+    font-size: large;
+  }
+
+  button, a .mat-button-wrapper {
+    font-size: medium;
+    font-weight: bold;
+    background-color: white;
+  }

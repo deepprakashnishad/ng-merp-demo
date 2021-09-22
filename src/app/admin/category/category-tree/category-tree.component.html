@@ -1,0 +1,46 @@
+<button *ngIf="allowEdit" mat-raised-button color="primary" (click)="openAddEditCategoryDialog(null, 'add')">Add New Department(Main Menu)</button>
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+	<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding  [matTreeNodePaddingIndent]=treeNodePadding>
+			<button mat-icon-button disabled [attr.aria-label]="'toggle ' + node.title"></button>
+			<span *ngIf="!enableNavigation">{{node.title}}</span>
+			<button *ngIf="enableNavigation" mat-flat-button (click)="navigate(node)">
+				{{node.title}}
+			</button>
+				<span class="controlContainer" *ngIf="allowEdit">
+					<button mat-icon-button (click)="openAddEditCategoryDialog(node, 'add')" matTooltip="Insert">
+						<mat-icon>add</mat-icon>
+					</button>
+					<!-- <button mat-icon-button (click)="openAddEditCategoryDialog(node, 'edit')" matTooltip="Edit">
+			<mat-icon>edit</mat-icon>
+		</button> -->
+					<button mat-icon-button (click)="deleteCategoryNode(node)" matTooltip="Delete">
+						<mat-icon>delete</mat-icon>
+					</button>
+				</span>
+</mat-tree-node>
+	<mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding [matTreeNodePaddingIndent]=treeNodePadding>
+		<button *ngIf="showExpansionIcon" mat-icon-button matTreeNodeToggle
+						[attr.aria-label]="'toggle ' + node.title">
+			<mat-icon class="mat-icon-rtl-mirror">
+				{{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+			</mat-icon>
+		</button>
+		<span *ngIf="showExpansionIcon">{{node.title}}</span>
+		<button *ngIf="!showExpansionIcon" mat-flat-button matTreeNodeToggle
+						[attr.aria-label]="'toggle ' + node.title">
+			{{node.title}}
+		</button>
+		<span class="controlContainer" *ngIf="allowEdit">
+			<button mat-icon-button (click)="openAddEditCategoryDialog(node, 'add')" matTooltip="Insert">
+				<mat-icon>add</mat-icon>
+			</button>
+			<!-- <button mat-icon-button (click)="openAddEditCategoryDialog(node, 'edit')" matTooltip="Edit">
+				<mat-icon>edit</mat-icon>
+			</button> -->
+			<button mat-icon-button (click)="deleteCategoryNode(node)" matTooltip="Delete">
+				<mat-icon>delete</mat-icon>
+			</button>
+		</span>
+	</mat-tree-node>
+</mat-tree>
+	

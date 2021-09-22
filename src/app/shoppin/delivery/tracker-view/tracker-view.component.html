@@ -1,0 +1,30 @@
+<div class="container" fxLayout>
+  <div fxFlex="50%">
+    <!--<mat-vertical-stepper [linear]="true" #stepper *ngIf="orderStatus!=='Cancelled'"> 
+      <mat-step [completed]="step.isCompleted" *ngFor="let step of steps">
+        <ng-template matStepLabel>{{step.status}}</ng-template>
+      </mat-step>
+    </mat-vertical-stepper>-->
+    <div *ngIf="orderStatus!=='Cancelled'" class="stepper" fxLayout="column" fxLayoutGap="32px">
+      <div fxLayout fxLayoutGap="16px" fxLayoutAlign="start center" *ngFor="let step of steps; index as i">
+        <mat-icon *ngIf="step.isCompleted && i<completedStepsCnt-1">check</mat-icon>
+        <mat-icon *ngIf="step.isCompleted && i===completedStepsCnt-1">label_important</mat-icon>
+        <mat-icon *ngIf="!step.isCompleted"></mat-icon>
+        <h3 [class.completed]="step.isCompleted">{{step.status}}</h3>
+      </div>
+    </div>
+    <div *ngIf="orderStatus==='Cancelled'">Status - Cancelled</div>
+  </div>
+  <div fxFlex="50%">
+    <div class="title">
+      <ng-container *ngIf="fulfillment?.fulfillmentType==='delivery'; else elseTemplate">
+        Recipient Address
+      </ng-container>
+      <ng-template #elseTemplate>
+        Pick up point
+      </ng-template>
+
+    </div>
+    <app-address-card [email]="email" *ngIf="fulfillment?.address" [address]="fulfillment?.address" [isEditable]=false></app-address-card>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<!-- <li *ngFor="let banner of banners; let i=index;" style="list-style: none;">
+    <div>
+        <app-banner-view [banner]=banner (imageSelected)="openAddEditBannerDialog($event)"></app-banner-view>
+        <button mat-icon-button color="error" (click)="deleteBanner(banner, i)"><mat-icon>delete</mat-icon></button>
+    </div>
+</li> -->
+
+<div class="grid-container" fxLayout="row wrap" fxLayoutGap="16px grid">
+    <div *ngFor="let banner of banners; let i=index;">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{banner.name}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <app-banner-view [banner]=banner (imageSelected)="openAddEditBannerDialog($event)"></app-banner-view>
+            </mat-card-content>
+            <mat-card-actions fxLayoutAlign="end end">
+                <button mat-icon-button color="accent" (click)="openAddEditBannerDialog(banner)"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="error" (click)="deleteBanner(banner, i)"><mat-icon>delete</mat-icon></button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div *ngIf="banners.length===0">
+        <h2>No banner found. Create a new one.</h2>
+    </div>
+</div>
+<div>
+    <button mat-raised-button color="primary" (click)="openAddEditBannerDialog(null)">Create New Banner <mat-icon>add</mat-icon></button>
+</div>

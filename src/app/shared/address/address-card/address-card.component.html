@@ -1,0 +1,24 @@
+<mat-card [ngClass]="{'selected': isSelected}">
+  <mat-card-header>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <mat-card-title>{{address.name}}</mat-card-title>
+    </div>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content fxLayout="column" fxLayoutGap="10px">
+    <div class="address-line">{{address.line1}}</div>
+    <div class="address-line" *ngIf="address.line2!==''">{{address.line2}}</div>
+    <div class="address-line">{{address.area}}</div>
+    <div class="address-line">{{address.landmark}}</div>
+    <div class="address-line">{{address.state}} - {{address.country}}</div>
+    <div class="address-line">Pincode - {{address.pincode}}</div>
+    <div class="address-line">{{address.mob1}}</div>
+    <div class="address-line" *ngIf="email">{{email}}</div>
+    <div class="address-line" *ngIf="address.mob2!==''">{{address.mob2}}</div>
+  </mat-card-content>
+  <mat-divider *ngIf="isEditable"></mat-divider>
+  <mat-card-actions *ngIf="isEditable" fxLayout="row" fxLayoutAlign="end end">
+    <button mat-icon-button color="accent" (click)="edit()"><mat-icon>edit</mat-icon></button>
+    <button mat-icon-button color="warn" (click)="delete()"><mat-icon>delete</mat-icon></button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,32 @@
+<div>
+  <div class="title" fxLayout fxLayoutAlign="space-between start">
+      <div>{{title}}</div>
+      <button mat-icon-button (click)="dialogRef.close()"><mat-icon>close</mat-icon></button>
+  </div>
+  <mat-dialog-content>
+    <form fxLayout="column" fxLayoutGap="16px">
+			<mat-form-field>
+				<input type="text" matInput name="cntlTitle" required="true" [(ngModel)]="section.title" placeholder="Title" />
+			</mat-form-field>
+      <quill-editor placeholder="Short Description" name="cntlText" [(ngModel)]="section.text" maxLength="140"></quill-editor>
+			<mat-form-field appearance="fill">
+        <mat-label>Select section type</mat-label>
+        <mat-select [(value)]="section.type">
+          <mat-option value="Bestsellers">Bestsellers</mat-option>
+          <mat-option value="Custom">Custom</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <label>Select backround color</label>
+      <input [(colorPicker)]="section.backgroundColor" [style.background]="section.backgroundColor" autocomplete="off"/>
+      <app-uploader *ngIf="section.id" [maxAllowedFileSize]="200" [uploadPath]="uploadPath" [isMultiple]="false" (imageUploaded)="uploadCompleted($event)"></app-uploader>
+      <mat-card *ngIf="section.imgs && section.imgs['downloadUrl']">
+        <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+          <img [src]="section.imgs['downloadUrl']" height="150px" width="150px"/>
+        </mat-card-content>
+      </mat-card>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="accent" (click)="saveSection()">Save</button>
+  </mat-dialog-actions>
+</div>

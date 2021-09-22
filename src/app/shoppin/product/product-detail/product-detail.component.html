@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="image-container" fxLayout.gt-sm fxLayout.lt-md="column" fxLayoutAlign="start start">
+    <div fxLayout.lt-md="column" fxLayout.gt-sm="row" fxLayoutGap="12px" class="full-height" fxFlex.gt-sm="40%">
+      <div fxFlexOrder.lt-md="2" fxFlexOrder.gt-sm="1" class="full-height">
+        <swiper 
+          [direction]="!isHandset?'vertical':'horizontal'"
+          [pagination]="{clickable: true}"
+          [slidesPerView]="6"
+          [spaceBetween]="10"
+          [width]="600"
+          [height]="600">
+          <ng-template swiperSlide *ngFor="let image of product?.assets?.imgs; let i=index">
+            <div class="guide-image-container">
+              <img           
+              [src]="image.downloadUrl"
+              width="75"
+              height="75"
+              (click)="onImageSelected(image.downloadUrl)"/>
+            </div>
+          </ng-template>
+        </swiper>
+      </div>
+      <div fxFlex="center" fxFlexOrder.lt-md="1" fxFlexOrder.gt-sm="2">
+          <img class="responsive full-width" [src]="selectedImage" [@fade]="state" (@fade.done)="onDone($event)" />
+      </div>
+    </div>
+    <div class="info-container" fxlayout="column" fxLayoutGap="10px" fxFlex="50%">
+      <div class="product-name">
+        {{product?.name}}
+      </div>
+      <br />
+      <div class="sub-title" *ngIf="storeSettings?.isBrandEnabled">Brand: {{product?.brand?.lname}}</div>
+      <div class="sub-title" *ngIf="product?.attrs && product?.attrs['Weight']">Net Weight: {{product?.attrs['Weight']}}</div>
+      <br />
+      <div class="price" *ngIf="product.discount==null || product.discount?.length===0">
+        {{product.sellPrice | currency:'INR':'symbol-narrow':'1.0-0'}}
+      </div>
+      <div *ngIf="product.discount?.length>0" fxLayout fxLayoutGap="10px">
+        <div class="original-price">{{product.sellPrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+        <div class="price">{{product.discount[0].salePrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+        <div class="secondary-title"
+             *ngIf="product.discount!=null && product.discount[0]!=null">
+          {{
+product.discount[0]?.title?
+              product.discount[0]?.title:
+              product.discount[0]?.discountPercentage+"% off"
+          }}
+        </div>
+      </div>
+      <span>(Inclusive of all taxes)</span>
+      <br /><br /><br />
+      <div fxLayout fxLayoutGap="16px">
+        <app-add-to-cart-button class="full-width" [product]="product"></app-add-to-cart-button>
+        <a class="outline-button" [routerLink]="'/'" mat-raised-button color="accent">Continue Shopping</a>
+      </div>
+      <br /><br /><br />
+      <div *ngIf="product?.attrs && product?.attrs['Ingredients']">
+        <div class="ingredients-title">Ingredients</div>
+        <div class="ingredients">
+          {{product.attrs['Ingredients']?.replace(",", ", ")}}
+        </div>
+      </div>
+      <!--Description Section-->
+      <div>
+        <span [innerHTML]="product?.desc?.shortDesc[0].val | safeHtml"></span>
+      </div>
+
+      <div>
+        <span [innerHTML]="product?.desc?.longDesc[0].val | safeHtml"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<app-cart-floating-button [isAbsolute]=true></app-cart-floating-button>

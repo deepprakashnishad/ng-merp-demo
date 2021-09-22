@@ -1,0 +1,86 @@
+[debug] [2021-04-25T19:38:30.381Z] ----------------------------------------------------------------------
+[debug] [2021-04-25T19:38:30.384Z] Command:       /home/deep/.nvm/versions/node/v10.16.3/bin/node /home/deep/.nvm/versions/node/v10.16.3/bin/firebase emulators:start
+[debug] [2021-04-25T19:38:30.384Z] CLI Version:   7.10.0
+[debug] [2021-04-25T19:38:30.384Z] Platform:      linux
+[debug] [2021-04-25T19:38:30.384Z] Node Version:  v10.16.3
+[debug] [2021-04-25T19:38:30.384Z] Time:          Mon Apr 26 2021 01:08:30 GMT+0530 (India Standard Time)
+[debug] [2021-04-25T19:38:30.384Z] ----------------------------------------------------------------------
+[debug] [2021-04-25T19:38:30.384Z] 
+[debug] [2021-04-25T19:38:30.392Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-04-25T19:38:30.392Z] > authorizing via signed-in user
+[info] i  emulators: Starting emulators: hosting
+[debug] [2021-04-25T19:38:30.407Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/fir-erp-944d6/webApps/-/config  
+ 
+[debug] [2021-04-25T19:38:31.799Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: dist
+[info] ✔  hosting: Local server: http://0.0.0.0:5000
+[info] ✔  hosting: Emulator started at http://0.0.0.0:5000
+[info] ✔  All emulators started, it is now safe to connect.
+[debug] [2021-04-25T19:39:20.680Z] ----------------------------------------------------------------------
+[debug] [2021-04-25T19:39:20.682Z] Command:       /home/deep/.nvm/versions/node/v10.16.3/bin/node /home/deep/.nvm/versions/node/v10.16.3/bin/firebase deploy
+[debug] [2021-04-25T19:39:20.682Z] CLI Version:   7.10.0
+[debug] [2021-04-25T19:39:20.682Z] Platform:      linux
+[debug] [2021-04-25T19:39:20.682Z] Node Version:  v10.16.3
+[debug] [2021-04-25T19:39:20.683Z] Time:          Mon Apr 26 2021 01:09:20 GMT+0530 (India Standard Time)
+[debug] [2021-04-25T19:39:20.683Z] ----------------------------------------------------------------------
+[debug] [2021-04-25T19:39:20.683Z] 
+[debug] [2021-04-25T19:39:20.689Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-04-25T19:39:20.689Z] > authorizing via signed-in user
+[debug] [2021-04-25T19:39:20.690Z] [iam] checking project fir-erp-944d6 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2021-04-25T19:39:20.691Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/fir-erp-944d6:testIamPermissions  
+
+[debug] [2021-04-25T19:39:22.679Z] <<< HTTP RESPONSE 200
+[debug] [2021-04-25T19:39:22.682Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/fir-erp-944d6  
+ 
+[debug] [2021-04-25T19:39:23.638Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'fir-erp-944d6'...
+[info] 
+[info] i  deploying hosting
+[debug] [2021-04-25T19:39:23.642Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/fir-erp-944d6/versions  
+
+[debug] [2021-04-25T19:39:25.878Z] <<< HTTP RESPONSE 200
+[info] i  hosting[fir-erp-944d6]: beginning deploy...
+[info] i  hosting[fir-erp-944d6]: found 20 files in dist
+[debug] [2021-04-25T19:39:26.069Z] [hosting] hash cache [ZGlzdA] stored for 20 files
+[debug] [2021-04-25T19:39:26.069Z] [hosting][hash queue][FINAL]
+[debug] [2021-04-25T19:39:26.069Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/fir-erp-944d6/versions/d44c023ff7f2c645:populateFiles  
+ <request body omitted>
+[debug] [2021-04-25T19:39:28.116Z] <<< HTTP RESPONSE 200
+[debug] [2021-04-25T19:39:28.120Z] [hosting][populate queue][FINAL]
+[debug] [2021-04-25T19:39:28.120Z] [hosting] uploads queued: 6
+[debug] [2021-04-25T19:39:34.213Z] [hosting][upload queue][FINAL]
+[info] ✔  hosting[fir-erp-944d6]: file upload complete
+[debug] [2021-04-25T19:39:34.214Z] [hosting] deploy completed after 8336ms
+[debug] [2021-04-25T19:39:34.633Z] [
+  {
+    "config": {
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "site": "fir-erp-944d6"
+    },
+    "site": "fir-erp-944d6",
+    "version": "sites/fir-erp-944d6/versions/d44c023ff7f2c645"
+  }
+]
+[info] i  hosting[fir-erp-944d6]: finalizing version...
+[debug] [2021-04-25T19:39:34.634Z] >>> HTTP REQUEST PATCH https://firebasehosting.googleapis.com/v1beta1/sites/fir-erp-944d6/versions/d44c023ff7f2c645?updateMask=status  
+
+[debug] [2021-04-25T19:39:36.759Z] <<< HTTP RESPONSE 200
+[debug] [2021-04-25T19:39:36.759Z] [hosting] finalized version for fir-erp-944d6:
+[info] ✔  hosting[fir-erp-944d6]: version finalized
+[info] i  hosting[fir-erp-944d6]: releasing new version...
+[debug] [2021-04-25T19:39:36.760Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/fir-erp-944d6/releases?version_name=sites/fir-erp-944d6/versions/d44c023ff7f2c645  
+
+[debug] [2021-04-25T19:39:38.679Z] <<< HTTP RESPONSE 200
+[debug] [2021-04-25T19:39:38.679Z] [hosting] release:
+[info] ✔  hosting[fir-erp-944d6]: release complete
+[info] 
+[info] ✔  Deploy complete!
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/fir-erp-944d6/overview
+[info] Hosting URL: https://fir-erp-944d6.firebaseapp.com

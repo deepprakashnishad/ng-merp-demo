@@ -1,0 +1,59 @@
+<mat-card *ngFor="let variant of variants">
+	<mat-card-header>
+		<div fxLayout="row wrap" fxLayoutAlign="space-around">
+			<div flex="50%">Name: {{variant.name}}	</div>
+			<div flex="50%">Full Name: {{variant.lname}}</div>
+		</div>
+	</mat-card-header>
+	<mat-card-content>
+		<mat-list>
+			<mat-list-item *ngFor="let attr of variant.attrs">
+				{{attr.name}}: {{attr.value}}
+			</mat-list-item>
+		</mat-list>
+		<app-price [productId]="variant.product" [variantId]="variant.id" [priceType]="'variant'"></app-price>
+		<div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="5px">
+			<mat-card *ngFor="let item of variant?.assets?.imgs">
+				<img mat-card-image [src]="item.img.src|safe" *ngIf="product.assets.imgs[0].img.src" alt="Product Image">
+				<mat-card-actions>
+				    <button mat-raised-button color="accent" (click)="removeImage(item)">Delete</button>
+				</mat-card-actions>
+			</mat-card>
+		</div>
+		<app-file-uploader [uploadUrl]="'Variant/uploadImages'" [data]="variant" *ngIf="variant.id!==undefined"></app-file-uploader>
+		<!-- <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="5px">
+			<div *ngFor="let item of variant?.assets?.imgs">
+				<img mat-card-image [src]="item.img.src|safe" *ngIf="product.assets.imgs[0].img.src" alt="Product Image">
+			</div>
+		</div> -->
+	</mat-card-content>
+	<mat-card-actions>
+		<button mat-raised-button color="primary" (click)="setVariantForm(variant)">Edit</button>
+	</mat-card-actions>
+</mat-card>
+<button mat-raised-button color="primary" (click)="setVariantForm(null)">Add New Variant</button>
+<div class="container" *ngIf="variant">
+	<div>
+		<mat-form-field>
+			<input type="text" matInput required="true" [(ngModel)]="variant.name" placeholder="Name" />
+		</mat-form-field>
+		<mat-form-field>
+			<input type="text" matInput required="true" [(ngModel)]="variant.lname" placeholder="Full Name" />
+		</mat-form-field>
+	</div>
+	<div>
+		<app-facet-value [facets]="variableFacets" (facetValuesSelected)="saveFacets($event)" [facetJson]="variant.attrs" [showSaveButton]="false"></app-facet-value>
+	</div>
+	<button mat-raised-button (click)="saveVariant()">
+		Save
+	</button>
+	<!-- <div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="5px">
+		<mat-card *ngFor="let item of variant?.assets?.imgs">
+			<img mat-card-image [src]="item.img.src|safe" *ngIf="product.assets.imgs[0].img.src" alt="Product Image">
+			<mat-card-actions>
+			    <button mat-raised-button color="accent" (click)="removeImage(item)">Delete</button>
+			</mat-card-actions>
+		</mat-card>
+	</div>
+	<app-file-uploader [uploadUrl]="'Variant/uploadImages'" [data]="variant" *ngIf="variant.id!==undefined"></app-file-uploader> -->
+</div>

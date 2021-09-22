@@ -1,0 +1,16 @@
+<div class="full-width">
+  <button class="outline-button" *ngIf="qty===0" mat-raised-button color="accent"  (click)="updateQuantity(qty+1)">
+    Add Item <mat-icon>add_shopping_cart</mat-icon>
+  </button>
+</div>
+<div *ngIf="qty>0" fxLayout fxLayoutAlign="center center">
+  <button color="accent" mat-icon-button (click)="updateQuantity(qty-1)"><mat-icon>remove_circle_outline</mat-icon></button>
+  <form>
+    <mat-form-field>
+      <div style="text-align:center;">
+        <input type="number" matInput [formControl]="qtyControl" [(ngModel)]="qty" readonly>
+      </div>
+    </mat-form-field>
+  </form>
+  <button color="accent" mat-icon-button  (click)="updateQuantity(qty+1)"><mat-icon>control_point</mat-icon></button>        
+</div>

@@ -1,0 +1,28 @@
+<div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="16px">
+  <!--<button mat-raised-button color="accent" (click)="placeOrder(razorpay)">Pay with Razorpay</button>-->
+  <div class="full-width">
+    <mat-radio-group 
+      class="full-width"
+      aria-label="Select an option" 
+      fxLayout="row" 
+      fxLayout.xs="column" 
+      fxLayoutGap="50px"
+      fxLayoutGap.xs="20px"
+      fxLayoutAlign="start start"
+      [(ngModel)]="modeOfPayment">
+      <mat-radio-button value="online">Online Payment</mat-radio-button>
+      <mat-radio-button value="cod">Cash on delivery</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div>
+    <div *ngIf="modeOfPayment==='cod'">
+      <button mat-raised-button color="accent" (click)="placeOrder()">Place Order</button>
+    </div>
+    <div *ngIf="modeOfPayment==='online'">
+      <h4>Different options for online payment will come here.</h4>
+      <paytm-checkout></paytm-checkout>
+      <button mat-raised-button color="accent" (click)="placeOrder(paytm)">Pay with Paytm</button>
+      <button mat-raised-button color="accent" (click)="placeOrder(razorpay)">Pay with Razorpay</button>
+    </div>
+  </div>
+</div>

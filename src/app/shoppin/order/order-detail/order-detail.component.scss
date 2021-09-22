@@ -1,0 +1,14 @@
+mat-card-title{
+    @media (max-width:750px) {
+        font-size: 3vw;   
+    }
+    @media (min-width:751px) {
+        font-size: 16px;   
+    }
+}
+
+.container > mat-card:first-child {
+    background: #731539;
+    color: #FFFFFF;
+    margin: 15px;
+}

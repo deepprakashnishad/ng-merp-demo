@@ -1,0 +1,46 @@
+<div class="container" mat-dialog>
+	<div mat-dialog-title>{{title}}</div>
+	<mat-dialog-content [formGroup]="brandForm" fxLayout="column" fxLayoutGap="5px">
+		<div *ngIf="errors.length" class="alert alert-danger">
+	      <ul>
+	        <li *ngFor="let error of errors">{{error}}</li>
+	      </ul>
+	    </div>
+		<mat-form-field appearance="outline">
+			<mat-label>Short Name</mat-label>
+			<input type="text" matInput formControlName="brand" [(ngModel)]="brand.sname"/>
+		</mat-form-field>
+		<mat-form-field appearance="outline">
+			<mat-label>Long Name</mat-label>
+			<textarea type="text" matInput formControlName="description"
+			[(ngModel)]="brand.lname"></textarea>
+		</mat-form-field>
+		<!-- <div class="brand-images" *ngIf="brand.id">
+			<input mat-raised-button type="file" ng2FileSelect [uploader]="uploader" />
+
+			<div *ngFor="let item of uploader.queue">
+				<strong *ngIf="uploader.queue.length>0">{{item?.file?.name}}</strong>
+				<span>
+					<button mat-icon-button aria-label="Upload" (click)="item.upload()" 
+				  [disabled]="item.isReady || item.isUploading || item.isSuccess">
+				    	<mat-icon>cloud_upload</mat-icon>
+				  	</button>
+				  	<button mat-icon-button aria-label="Cancel" (click)="item.cancel()" [disabled]="!item.isUploading">
+				    	<mat-icon>cancel</mat-icon>
+				  	</button>
+				  	<button mat-icon-button aria-label="Remove" (click)="item.remove()">
+				    	<mat-icon>delete</mat-icon>
+				  	</button>
+				</span>	
+				<mat-progress-bar  mode="determinate" [value]="uploader.progress"></mat-progress-bar>
+			</div> 
+		</div>-->
+	</mat-dialog-content>
+	<mat-dialog-actions> 
+		<button type="button" mat-raised-button color="primary"
+		    (click)="save(brand)"
+		    [disabled]="brandForm.invalid">Save</button>
+		<button type="button" mat-button 
+		    (click)="dialogRef.close(false)">Cancel</button>
+	 </mat-dialog-actions>
+</div>

@@ -1,0 +1,32 @@
+<div class="container" mat-dialog>
+	<div fxLayout fxLayoutAlign="space-between center">
+		<div mat-dialog-title>{{title}}</div>
+		<div>
+			<button mat-icon-button color="accent" (click)="dialogRef.close(false)">
+				<mat-icon>close</mat-icon>
+			</button>
+		</div>
+	</div>
+	<mat-dialog-content fxLayout="column" fxLayoutGap="5px">
+		<div *ngIf="errors.length" class="alert alert-danger">
+	      <ul>
+	        <li *ngFor="let error of errors">{{error}}</li>
+	      </ul>
+	    </div>
+		<mat-form-field class="example-full-width">
+			<input matInput placeholder="Category" aria-label="Category" [matAutocomplete]="auto" [formControl]="categoryCntl" required="" >
+			<mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption="true" [displayWith]="displayFn" (optionSelected)="selected($event)">
+			  <mat-option *ngFor="let category of categoryFilteredList | async" [value]="category">
+			    {{category.title}}
+			  </mat-option>
+			</mat-autocomplete>
+		</mat-form-field>	
+	</mat-dialog-content>
+	<mat-dialog-actions> 
+		<button type="button" mat-raised-button color="primary"
+		    (click)="save()"
+		    [disabled]="categoryCntl.invalid">Save</button>
+		<button type="button" mat-button 
+		    (click)="dialogRef.close(false)">Cancel</button>
+	 </mat-dialog-actions>
+</div>

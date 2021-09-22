@@ -1,0 +1,19 @@
+.container{
+    padding: 0px 24px;
+}
+
+.side-section{
+    background-color: gray;
+}
+
+main-container{
+    min-height: 80vh;
+    border: 1px solid;
+    overflow: scroll;
+}
+
+.content-container{
+    max-width: inherit;
+    overflow-wrap: break-word;
+    padding-top: 20px;
+}

@@ -1,0 +1,28 @@
+<!--<mat-toolbar>
+  <div class="full-width" fxLayout="column" fxLayoutAlign="center center">
+    <h3>Any incomplete order will be Cancelled after 12 hours of placing the order.</h3>
+    <h3>Once cancelled, it cannot be used but new order can be placed.</h3>
+  </div>
+</mat-toolbar>-->
+
+<div class="container">
+  <div class="full-width" *ngIf="orders.length===0">
+    <h2>No orders found</h2>
+  </div>
+  <mat-card class="clickable" (click)="navigateToOrderDetail(order)" *ngFor="let order of orders; let i=index" fxLayout="column" fxLayoutGap="16px">
+    <div fxLayout fxLayout.lt-md="column" fxLayoutAlign="space-between center" fxLayoutAlign.lt-md="start start">
+      <div><span fxHide.lt-md>Order </span>Id - {{order.id}}</div>
+      <div>Created At - {{order.createdAt | date}}</div>
+      <div>Total Cost - {{order.netPrice | currency:'INR'}}</div>
+      <div *ngIf="order.netSaving>0">Total Savings - {{order.netSaving | currency:'INR'}}</div>
+    </div>
+    <div fxLayout fxLayout.lt-md="column" fxLayoutAlign="space-between center" fxLayoutAlign.lt-md="start start">
+      <div>
+        Status - {{order.status | titlecase}}
+        <span *ngIf="order.status==='New'" ><button mat-icon-button matTooltip="Hurry up and complete the payment else order will be cancelled."><mat-icon>info</mat-icon></button></span>
+      </div>
+      <div>Mode of payment - {{order.modeOfPayment | uppercase}}</div>
+    </div>
+  </mat-card>
+</div>
+

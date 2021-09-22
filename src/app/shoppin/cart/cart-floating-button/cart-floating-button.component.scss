@@ -1,0 +1,25 @@
+//.bottom-floating-action-button-container{
+//    position: absolute;
+//    right: 30px;
+//    bottom: 15px;
+//    z-index: 999;
+//}
+
+//mat-icon {
+//    color: #731539;
+//}
+
+.bottom-floating-action-button-container {
+  position: absolute;
+  right: 30px;
+  bottom: 64px;
+  z-index: 999;
+
+  button {
+    background: #FFFFFF;
+  }
+}
+
+mat-icon {
+  color: #731539;
+}

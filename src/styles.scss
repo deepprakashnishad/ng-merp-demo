@@ -1,0 +1,189 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/theming';
+// @import '@angular/material/prebuilt-themes/pink-bluegrey.css';
+@import "~angular-notifier/styles.scss";
+@import "./themes/everythingsatvik.scss";
+@import '~swiper/swiper-bundle';
+@include mat-core();
+
+@import url('https://use.fontawesome.com/releases/v5.1.1/css/all.css');
+
+html, body{
+	height:100%;
+  width: 100%;
+	margin: 0px;
+	padding: 0px;
+	min-height: 100%;
+	overflow-x:hidden; 
+}
+
+
+/* $candy-app-primary: mat-palette($mat-amber);
+$candy-app-accent:  mat-palette($mat-white, A400, A200, A700);
+
+// The warn palette is optional (defaults to red).
+$candy-app-warn:    mat-palette($mat-red);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as `color` or `typography`.
+$candy-app-theme: mat-light-theme((
+  color: (
+    primary: $candy-app-primary,
+    accent: $candy-app-accent,
+    warn: $candy-app-warn,  
+  )
+));
+
+
+@include angular-material-theme($candy-app-theme); */
+
+@-webkit-keyframes fadeout {
+	0% {opacity: 1;}
+	100% {opacity: 0;}
+}
+
+@keyframes fadeout {
+	0% {opacity: 1;}
+	100% {opacity: 0;}
+}
+
+@-webkit-keyframes fadein {
+	0% {opacity: 0;}
+	100% {opacity: 1;}
+}
+
+@keyframes fadein {
+	0% {opacity: 0;}
+	100% {opacity: 1;}
+}
+
+.inline-form-group{
+  margin-left: 20px;
+}
+
+.button-row button, .button-row a{
+  margin-right: 12px;
+}
+
+.center-block{
+	text-align: center;
+}
+
+strong{
+	font-weight: bold;
+}
+
+.container{
+  background-color: white;
+	padding: 5px;
+}
+
+.deep-padding{
+    padding:16px;
+}
+
+.mouse-hand, .clickable{
+	cursor: pointer;
+}
+
+mat-form-field{
+	width: 100%;
+}
+
+.dropzone { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; 
+    min-width: 80vw;
+    font-weight: 200;
+    height: 300px;
+    border: 2px dashed #f16624;
+    border-radius: 5px;
+    background: white;
+    margin: 10px 0;
+  
+    &.hovering {
+        border: 2px solid #f16624;
+        color: #dadada !important;
+    }
+  
+    .file-label {
+        font-size: 1.2em;
+    }
+  }
+  
+  progress::-webkit-progress-value {
+    transition: width 0.1s ease;
+  }
+
+  .full-width{
+    width: 100%;
+  }
+
+  .responsive-img {
+    width: 100%;
+    height: auto;
+  }
+
+  .center{
+    text-align: center;
+  }
+
+  .title{
+    font-weight: bold;
+    font-size: large;
+  }
+
+  .primary-title{
+    color: #f93a04;
+    font-weight: bold;
+    font-size: large;
+  }
+
+  .primary-subtitle{
+    color: #f93a04;
+  }
+
+  .secondary-title{
+    color:  #296003;
+    font-weight: bold;
+    font-size: large;
+  }
+
+  .secondary-title{
+    color:  #296003;
+  }
+
+  div.floating-button-container{
+    position: fixed;
+    right: 30px;
+    bottom: 15px;
+  }
+
+.arrow-container{
+  height:40px;
+  background:red;
+  color:#fff;
+  padding-left: 8px;
+  font-size: larger;
+  font-weight: bold;
+  position:relative;
+  width:200px;
+  text-align:center;
+  line-height:40px;
+}
+.arrow-container:after{
+    content:"";
+    position:absolute;
+    height:0;
+    width:0;
+    left:100%;
+    top:0;
+    border:20px solid transparent;
+    border-left: 20px solid red;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: #731539;
+}

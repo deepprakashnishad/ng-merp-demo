@@ -1,0 +1,141 @@
+<div class="container" fxLayout="column" fxLayoutGap="12px">
+  <mat-card>
+    <mat-card-title fxLayout fxLayout.lt-lg="column" fxLayoutAlign="space-between center" fxLayoutAlign.lt-lg="start start">
+      <div><span fxHide.lt-md>Order </span>Id - {{order.id}}</div>
+      <div>Created At - {{order.createdAt | date}}</div>
+      <div>Total Cost - {{order.netPrice | currency:'INR'}}</div>
+      <div *ngIf="order.netSaving>0">Total Savings - {{order.netSaving | currency:'INR'}}</div>
+    </mat-card-title>
+    <mat-card-content>
+      <div fxLayout fxLayoutAlign="space-between center" fxLayout.lt-lg="column">
+        <div>Status - {{order.status | titlecase}}</div>
+        <div>Mode of payment - {{order.modeOfPayment | uppercase}}</div>
+        <div fxLayout>
+          <button *ngIf="order?.status?.toUpperCase()==='DELIVERED'" mat-raised-button color="accent">Repeat order</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="order.modeOfPayment?.toUpperCase()==='ONLINE'">
+    <mat-card-title>
+      Payment Details
+    </mat-card-title>
+    <mat-card-content>
+      <div fxLayout>
+        <div>Total amount paid - {{order.amountPaid}}</div>
+      </div>
+      <div>
+        <table mat-table [dataSource]="order.paymentDetails" class="mat-elevation-z8 full-width">
+          <tr>
+            <ng-container matColumnDef="position">
+              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <td mat-cell *matCellDef="let element; let i=index"> {{i+1}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="channel">
+              <th mat-header-cell *matHeaderCellDef> Payment Gateway </th>
+              <td mat-cell *matCellDef="let element"> {{element.channel}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef> Amount </th>
+              <td mat-cell *matCellDef="let element">{{element.amount}}</td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let element">{{element.status}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-raised-button color="accent" *ngIf="element.status==='created'" (click)="checkPaymentStatus(order.id, element.id, element.transactionId, element['details']['razorpay_order_id'], element.channel)">Re-Check Payment</button>
+                <app-razorpay-payment-button *ngIf="(element.status==='created' || element.status==='failed') && order.status==='New'" [paymentDetail]="{orderId: order.id, paymentId: element.id, razorpay_order_id: element.details?.razorpay_order_id, amount: element.amount}" (paymentResult)="processPaymentResult($event)"></app-razorpay-payment-button>
+              </td>
+            </ng-container>
+          </tr>
+          <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns;"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>Items</mat-card-title>
+    <mat-card-content>
+      <table mat-table [dataSource]="order.items" class="mat-elevation-z8 full-width">
+        <tr>
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element; let i=index"> {{i+1}} </td>
+            <td mat-footer-cell *matFooterCellDef><span *ngIf="order.netSaving>0">Total Savings:</span></td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Item </th>
+            <td mat-cell *matCellDef="let element">
+              <a [routerLink]="'/product/' + element.prodId" target="_blank">
+                {{element.sName}}
+              </a>
+            </td>
+            <td mat-footer-cell *matFooterCellDef><span *ngIf="order.netSaving>0">{{order?.netSaving | currency:'INR':'symbol-narrow'}}</span></td>
+          </ng-container>
+
+          <ng-container matColumnDef="brand">
+            <th mat-header-cell *matHeaderCellDef> Brand </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.brand.sname}}
+            </td>
+            <td mat-footer-cell *matFooterCellDef><span *ngIf="order.netSaving>0">{{order?.netSaving | currency:'INR':'symbol-narrow'}}</span></td>
+          </ng-container>
+
+          <ng-container matColumnDef="unitPrice">
+            <th mat-header-cell *matHeaderCellDef> Unit Price </th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="element.discount==null || element.discount?.length==0">{{element.sellPrice}}</div>
+              <div *ngIf="element.discount?.length>0">{{element?.discount[0]?.salePrice}}</div>
+            </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="qty">
+            <th mat-header-cell *matHeaderCellDef> Qty </th>
+            <td mat-cell *matCellDef="let element">
+              {{element.qty}}
+            </td>
+            <td mat-footer-cell *matFooterCellDef> Total <span [fxShow.xs]="true">:</span></td>
+          </ng-container>
+
+          <ng-container matColumnDef="subTotal">
+            <th mat-header-cell *matHeaderCellDef> Sub-Total </th>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="element?.discount==null || element?.discount?.length==0">{{element?.qty*element?.sellPrice}}</div>
+              <div *ngIf="element?.discount?.length>0">{{element?.qty*element?.discount[0]?.salePrice}}</div>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              {{order.netPrice | currency:'INR':'symbol-narrow'}}
+            </td>
+          </ng-container>
+        </tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>
+      Fulfillement
+    </mat-card-title>
+    <mat-card-content>
+      <app-tracker-view [email]="email" [fulfillment]="order.fulfillment" [orderStatus]="order.status"></app-tracker-view>
+    </mat-card-content>
+  </mat-card>
+</div>

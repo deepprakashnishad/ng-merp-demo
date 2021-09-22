@@ -1,0 +1,32 @@
+<div fxLayout="column">
+	<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4" *ngFor="let entry of facetValuesMap | keyvalue">
+		<mat-form-field fxFlex="23">
+			<input matInput placeholder="Facet" aria-label="Facet" [matAutocomplete]="auto" required="" disabled="" [value]="entry.key?.title">
+		</mat-form-field>
+		<app-facet-chip-input [facet]="entry.key" [selectedValues]="entry.value" [isSelection]="true" fxFlex="67"></app-facet-chip-input>
+		<button mat-icon-button (click)="delete(entry)">
+			<mat-icon>delete</mat-icon>
+		</button>
+	</div>
+	<div fxLayout="row" fxLayoutGap="4">
+		<mat-form-field fxFlex="23">
+			<input matInput placeholder="Facet" aria-label="Facet" [matAutocomplete]="auto" [formControl]="facetControl">
+			<mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption="true" [displayWith]="displayFn" (optionSelected)="selected($event)">
+				<mat-option *ngFor="let facet of facetFilteredList | async" [value]="facet">
+					{{facet.title}}
+				</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>
+		<app-facet-chip-input [facet]="facet" [selectedValues]="[]" [isSelection]="true" fxFlex="67"></app-facet-chip-input>
+		<div>
+			<button mat-raised-button color="primary" matTooltip="Done" [disabled]="facet===undefined" (click)="saveFacetValue()">
+				Add
+			</button>
+		</div>
+		
+		<!--<button mat-icon-button color="primary" matTooltip="Done" [disabled]="facet===undefined" (click)="saveFacetValue()">
+		<mat-icon>done</mat-icon>
+	</button>-->
+	</div>
+	<button mat-raised-button color="primary" *ngIf="showSaveButton" (click)="emitFacetValues()">Save</button>
+</div>

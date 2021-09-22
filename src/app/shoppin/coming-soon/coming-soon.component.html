@@ -1,0 +1,98 @@
+<!--<div class="container" fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="center center">
+  <img height="150vh" width="150vh" src="/assets/images/logo.jpeg" />
+  <div class="title">We are launching soon</div>-->
+<!--<div class="title">Time to go</div>-->
+<!--</div>-->
+<section class="comming_top_wrap" fxLayout="column" fxLayoutAlign="center center">
+  <div class="comming_top_content" fxLayout="column" fxLayoutAlign="center center">
+    <div class="comming_logo"
+         [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'100ms', duration: '400ms'}}">
+      <img height="150vh" width="150vh" src="/assets/images/logo-BIG.png" />
+    </div>
+
+    <h1 class="title"
+        [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'200ms', duration: '400ms'}}">
+      We Are Launching In
+    </h1>
+    <p class="t-mb-2"
+       [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'300ms', duration: '400ms'}}">
+      
+    </p>
+    <div class="count_down"
+         fxLayoutGap.gt-sm="16px"
+         fxLayout="row wrap"
+         fxLayoutAlign="center center">
+      <mat-card fxFlex.xs="40%" [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'400ms', duration: '400ms'}}">
+        <mat-card-title>
+          <h3 class="text-white">{{timerCounter.d}}</h3>
+        </mat-card-title>
+        <mat-card-content>
+          <p>days</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card fxFlex.xs="40%" [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'500ms', duration: '400ms'}}">
+        <mat-card-title>
+          <h3 class="text-white">{{timerCounter.h}}</h3>
+        </mat-card-title>
+        <mat-card-content>
+          <p>hours</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card fxFlex.xs="40%" [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'600ms', duration: '400ms'}}">
+        <mat-card-title>
+          <h3 class="text-white">{{timerCounter.m}}</h3>
+        </mat-card-title>
+        <mat-card-content>
+          <p>minutes</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card fxFlex.xs="40%" [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'700ms', duration: '400ms'}}">
+        <mat-card-title>
+          <h3 class="text-white">{{timerCounter.s}}</h3>
+        </mat-card-title>
+        <mat-card-content>
+          <p>seconds</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>
+<section class="comming_soon_form t-pb-6 t-pt-8" fxLayout="row wrap"
+         fxLayoutAlign="center center" [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'800ms', duration: '400ms'}}">
+
+  <mat-card t-pb-3 fxFlex.gt-sm="40" fxFlex.lt-xs="100" t-round fxLayout="column" fxLayoutAlign="center center">
+    <mat-card-title>
+      <h2 class="text-black text-muted t-fw-400 t-ta-center">Contact us on</h2>
+      <h2 class="text-black text-muted t-fw-400 t-ta-center">+91-7847959939</h2>
+    </mat-card-title>
+    <mat-card-content t-pb-2 fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
+
+      <!--<form #f="ngForm" (ngSubmit)="submitEmailForm(f)" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap.xs="10px">
+        <mat-form-field>
+          <input class='email_field form-control' matInput email ngModel name="email" type="email"
+                 placeholder="Your Email" required>
+        </mat-form-field>
+        <button type="submit" [disabled]='f.invalid' mat-raised-button color="" class="subscribe-btn">Notify Me</button>
+      </form>
+      <span class='t-ta-center text-success mat-primary'
+            *ngIf="result == 'success'"
+            color="primary"
+            [innerHTML]="message"
+            [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'0ms', duration: '400ms'}}">
+      </span>
+
+      <span class='t-ta-center text-warning'
+            *ngIf="result == 'error'"
+            color="primary"
+            [innerHTML]="message"
+            [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'0ms', duration: '400ms'}}"></span>-->
+
+
+
+    </mat-card-content>
+    <mat-card-footer>
+
+    </mat-card-footer>
+  </mat-card>
+
+</section>

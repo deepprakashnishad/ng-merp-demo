@@ -1,0 +1,42 @@
+<div class="basic-container" *ngIf="categories?.length>0">
+  <mat-toolbar fxHide.lt-md class="menu-bar mat-elevation-z1" fxLayout fxLayoutAlign="space-around center">
+    <div *ngFor="let item of categories">
+      <!-- Handle branch node buttons here -->
+      <span *ngIf="item.childrens && item.childrens.length > 0">
+        <button class="department" mat-button [matMenuTriggerFor]="menu.childMenu">
+          {{item.title}}
+        </button>
+        <app-menu-item #menu [items]="item.childrens"></app-menu-item>
+      </span>
+      <!-- Leaf node buttons here -->
+      <span *ngIf="!item.childrens || item.childrens.length === 0">
+        <button mat-button (click)="itemSelected(item)">
+          {{item.title}}
+        </button>
+      </span>
+    </div>
+  </mat-toolbar>
+  <div 
+    *ngIf="isCategoryBarOpen" 
+    [@openClose]="isCategoryBarOpen?'open':'closed'" 
+    class="sidebar" 
+    fxLayout="column" 
+    fxLayoutGap="10px"
+    fxHide.gt-md>
+    <div *ngFor="let item of categories"> 
+      <!-- Handle branch node buttons here -->
+      <span *ngIf="item.childrens && item.childrens.length > 0">
+        <button class="department" mat-button [matMenuTriggerFor]="menu.childMenu">
+          {{item.title}}
+        </button>
+        <app-menu-item #menu [items]="item.childrens"></app-menu-item>
+      </span>
+      <!-- Leaf node buttons here --> 
+      <span *ngIf="!item.childrens || item.childrens.length === 0">
+        <button mat-button (click)="itemSelected(item)">
+          {{item.title}}
+        </button>
+      </span>
+    </div>
+  </div>
+</div>

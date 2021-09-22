@@ -1,0 +1,8 @@
+<mat-form-field>
+	<input matInput placeholder="Variant" aria-label="Variant" [matAutocomplete]="auto" [formControl]="variantControl" required="" >
+	<mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption="true" [displayWith]="displayFn" (optionSelected)="selected($event)">
+	  <mat-option *ngFor="let variant of variantFilteredList | async" [value]="variant">
+	    {{variant.name}}
+	  </mat-option>
+	</mat-autocomplete>
+</mat-form-field>

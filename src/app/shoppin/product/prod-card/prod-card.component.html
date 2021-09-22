@@ -1,0 +1,28 @@
+<mat-card class="full-width" fxLayout="column" fxLayoutAlign="start center">
+  <mat-card-content>
+    <div class="img-container responsive-img" fxLayout="column" fxFlexAlign="center space-between">
+      <img fxFlexAlign="center" class="mouse-hand" [src]="product?.assets?.imgs[0]?.downloadUrl" height="180px" width="180px" (click)="showDetail()"/>
+      <div>{{product.brand.sname? product.brand.sname: product.brand.lname}}</div>
+      <div class="full-width title  mouse-hand"  (click)="showDetail()">{{product.name}}</div>
+      <div class="weight">{{product.attrs["Weight"]}}</div>
+    </div>
+    <div class="price-container">
+      <div fxLayout fxLayoutAlign="space-between center">
+        <div *ngIf="product.discount?.length>0" fxLayout fxLayoutAlign="center center" fxLayoutGap="10px">
+          <div class="original">
+            <span class="price">&nbsp;{{product.sellPrice | currency:'INR':'symbol-narrow':'1.0-0'}}&nbsp;</span>
+          </div>
+          <div class="price">{{product.discount[0].salePrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+          <div class="full-width center discount" 
+            *ngIf="product.discount!=null && product.discount[0]!=null">
+              {{product.discount[0]?.title?
+                product.discount[0]?.title: 
+                product.discount[0]?.discountPercentage+"% off"}}
+          </div>
+        </div>
+        <div class="price" *ngIf="product.discount==null || product.discount?.length===0">{{product.sellPrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+      </div>   
+      <app-add-to-cart-button [product]="product"></app-add-to-cart-button>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,5 @@
+<div fxLayout>
+    <div *ngIf="banner.bannerType=='right_image'" [innerHTML]="banner.bannerText"></div>
+    <img class="mouse-hand" (click)="imageClicked()" [src]="banner.url" height="150vh" width="300vw">
+    <div *ngIf="banner.bannerType=='left_image'" [innerHTML]="banner.bannerText"></div>
+</div>

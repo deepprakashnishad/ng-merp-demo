@@ -1,0 +1,4 @@
+<div class="container">
+	<button class="pull-right" mat-raised-button color="primary" (click)="openAddEditBrandDialog()" *ngIf="isAddPermitted">Add New Brand</button>
+	<app-view-brand [brands]="brands" [isEditPermitted]="isEditPermitted"></app-view-brand>
+</div>
