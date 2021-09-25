@@ -1,6 +1,5 @@
 export const environment = {
   appName: "Trendy Fashion",
-  logoUrl: "https://fir-erp-944d6.web.app/assets/images/logo.jpeg",
   production: true,
   minOrderFreeDelivery: 500,
   deliveryCharges: 100,

@@ -7,17 +7,19 @@
 	<h3>Available Categories</h3>
 	<button mat-icon-button color="primary" (click)="openAddEditCategoryDialog()" *ngIf="isEditPermitted"><mat-icon>add</mat-icon></button>
 </div>
+<div class="category-list">
+	<ul>
+		<li *ngFor="let category of categories | myfilter:['title']:filterStr:true; let i=index;" matTooltipPosition="left">
+			{{category.title}}
+			<span *ngIf="isEditPermitted">
+				<button mat-icon-button color="primary" (click)="openAddEditCategoryDialog(category, i)">
+					<mat-icon>edit</mat-icon>
+				</button>
+				<button mat-icon-button (click)="deleteCategory(category, i)">
+					<mat-icon>delete</mat-icon>
+				</button>
+			</span>
+		</li>
+	</ul>
 
-<ul>
-	<li *ngFor="let category of categories | myfilter:['title']:filterStr:true" matTooltipPosition="left">
-		{{category.title}}
-		<span *ngIf="isEditPermitted">
-			<button mat-icon-button color="primary" (click)="openAddEditCategoryDialog(category)">
-				<mat-icon>edit</mat-icon>
-			</button>
-			<button mat-icon-button (click)="deleteCategory(category)">
-				<mat-icon>delete</mat-icon>
-			</button>
-		</span>
-	</li>
-</ul>
+</div>

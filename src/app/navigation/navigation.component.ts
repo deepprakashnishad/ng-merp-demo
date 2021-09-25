@@ -57,7 +57,6 @@ export class NavigationComponent implements OnInit, AfterViewInit {
 		private renderer: Renderer2,
 		private ngZone: NgZone,
     ) {
-      console.log(this.storeSettings.logo?.downloadUrl);
     }
 
   ngAfterViewInit() {
@@ -131,5 +130,10 @@ export class NavigationComponent implements OnInit, AfterViewInit {
 
   categorySelected(category) {
     this.toggleLeftDrawer();
+  }
+
+  navigateTo(url) {
+    this.router.navigate([url]);
+    this.isLeftBarOpen = false;
   }
 }

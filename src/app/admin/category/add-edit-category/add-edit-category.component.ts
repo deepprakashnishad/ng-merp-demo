@@ -66,7 +66,7 @@ export class AddEditCategoryComponent implements OnInit {
   	if(category.id === undefined || category.id === null){
   		this.categoryService.addCategory(category)
   		.subscribe((category)=>{
-  			this.dialogRef.close({success:true, category, msg: `${category.title} category created successfully`});
+  			this.dialogRef.close({success:true, category: category, msg: `${category.title} category created successfully`});
   		}, (err)=>{
         this.notifier.notify("error", err.error.msg);
       });

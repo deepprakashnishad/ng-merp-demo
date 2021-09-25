@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Category } from './../category';
 import { CategoryService } from './../category.service';
 import { AddEditCategoryComponent } from './../add-edit-category/add-edit-category.component';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-view-category',
@@ -20,34 +21,37 @@ export class ViewCategoryComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     public snackBar: MatSnackBar,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private notifier: NotifierService
   ) { }
 
   ngOnInit() {
   }
 
-  openAddEditCategoryDialog(category){
+  openAddEditCategoryDialog(category=undefined, index=-1){
   	const dialogRef = this.dialog.open(AddEditCategoryComponent, {
       height: '700px',
       width: '900px',
       data: {
         category: category
-      },
-
+      }
     });
 
   	dialogRef.afterClosed().subscribe((result) => {
-      if(result){
-        this.snackBar.open(
-          result.msg, "Dismiss", {
-          duration: 5000
-        }); 
+      if (result['success']) {
+        if (category) {
+          this.categories[index] = result.category;
+        } else {
+          this.categories.push(result.category);
+        }
+        
+        this.notifier.notify("success", result.msg)
       }
     });
   }
 
-  deleteCategory(category){
-    const index = this.categories.indexOf(category);
+  deleteCategory(category, index){
+    //const index = this.categories.indexOf(category);
     this.categoryService.deleteCategory(category.id)
     .subscribe(category=>{
       this.categories.splice(index, 1);

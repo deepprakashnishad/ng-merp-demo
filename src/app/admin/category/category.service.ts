@@ -81,8 +81,8 @@ export class CategoryService {
        catchError(this.handleError('Delete Category', null)));
   }
 
-  fetchCategoryTree(): Observable<Array<CategoryTreeNode>>{
-    return this.http.get<CategoryTreeNode>(`${this.categoryUrl}/fetchCategoryTree`)
+  fetchCategoryTree(populateCategory: boolean = false): Observable<Array<CategoryTreeNode>>{
+    return this.http.get<CategoryTreeNode>(`${this.categoryUrl}/fetchCategoryTree?populateCategory=${populateCategory}`)
       .pipe(
         catchError(this.handleError('Get Token', null)));   
   }

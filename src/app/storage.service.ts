@@ -24,7 +24,6 @@ export class StorageService implements OnDestroy {
     } else {
       return storeSettings;
     }
-    
   }
 
   public getStorage() {

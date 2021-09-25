@@ -19,7 +19,7 @@
 		<a class="brand" routerLink="/">
 			<span>
 				<!--<img height="110" width="110" src="/assets/images/logo.jpeg"/>-->
-				<img height="110" width="110" [src]="storeSettings?.logo?.downloadUrl | safe" />
+				<img height="80" width="80" [src]="storeSettings?.logo?.downloadUrl | safe" />
 			</span>
 		</a>
 		<div fxLayout="column" style="padding-top: 25px; align-items: center;">
@@ -39,7 +39,7 @@
 		</div>
 		<div>
 			<!--<app-cart-floating-button [isAbsolute]="true"></app-cart-floating-button>-->
-			<app-pincode-checker fxShow.gt-md></app-pincode-checker>
+			<app-pincode-checker *ngIf="storeSettings?.enablePincodeChecker" fxShow.gt-md></app-pincode-checker>
 		</div>
 		<div fxLayout fxHide.gt-sm>
 			<div fxHide fxShow.gt-md fxFlexAlign="center">Welcome {{isLoggedIn?name:'User'}}</div>
@@ -52,7 +52,7 @@
 	<mat-toolbar-row *ngIf="shrinkToolbar" class="narrow-navbar" fxLayout fxLayoutAlign="space-between center" fxHide.lt-md>
 		<a class="brand" routerLink="/">
 			<span>
-				<img height="100" width="100" [src]="storeSettings?.logo?.downloadUrl | safe" />
+				<img height="30" width="30" [src]="storeSettings?.logo?.downloadUrl | safe" />
 			</span>
 		</a>
 		<div class="middle-container">
@@ -64,7 +64,7 @@
 	<mat-toolbar-row class="narrow-navbar" fxLayout fxLayoutAlign="space-between center" fxHide.gt-sm>
 		<a class="brand" routerLink="/">
 			<span>
-				<img height="60" width="60" src="/assets/images/logo.jpeg" />
+				<img height="30" width="30" [src]="storeSettings?.logo?.downloadUrl | safe" />
 			</span>
 		</a>
 		<div class="mob-welcome-msg">Welcome {{isLoggedIn?name:''}}</div>
@@ -75,21 +75,20 @@
 			<mat-icon *ngIf="isLeftBarOpen">close</mat-icon>
 		</button>
 		<app-search-bar class="full-width"></app-search-bar>
-		<button mat-icon-button (click)="toggleSidebar()">
+		<!--<button mat-icon-button (click)="toggleSidebar()">
 			<mat-icon *ngIf="!isSidebarOpen">person</mat-icon>
 			<mat-icon *ngIf="isSidebarOpen">close</mat-icon>
-		</button>
+		</button>-->
 	</mat-toolbar-row>
 </mat-toolbar>
-<div [hidden]="isSidebarOpen" [@openClose]="isSidebarOpen?'open':'closed'" class="sidebar" fxLayout="column" fxLayoutGap="16px" fxHide.gt-sm>
-	<app-pincode-checker></app-pincode-checker>
-	<a mat-button class="mobPageLink" [routerLink]="'/'">
+<!--<div [hidden]="isSidebarOpen" [@openClose]="isSidebarOpen?'open':'closed'" class="sidebar" fxLayout="column" fxLayoutGap="16px" fxHide.gt-sm>-->
+<!--<app-pincode-checker *ngIf="storeSettings?.enablePincodeChecker"></app-pincode-checker>-->
+<!--<a mat-button class="mobPageLink" [routerLink]="'/'">
 		Home
 	</a>
-	<!--<span>
-		<button mat-button (click)="openCategoryDrawer()">Categories</button>
-	</span>-->
-	<!--<app-department-bar></app-department-bar>-->
+	<a mat-button class="mobPageLink" [routerLink]="'/shoppin/categories'">
+		Categories
+	</a>
 	<a mat-button class="mobPageLink" [routerLink]="'/static-page/about-us'">
 		My Profile
 	</a>
@@ -102,12 +101,30 @@
 	<button mat-button (click)="toggleLoginStatus(isLoggedIn)">
 		{{isLoggedIn?'Logout':'Login'}} <mat-icon aria-label="isLoggedIn?:'Logout':'Login/Sign Up'">{{isLoggedIn?'logout':'lock'}}</mat-icon>
 	</button>
-</div>
+</div>-->
 
 <div [hidden]="isLeftBarOpen" [@openClose]="isLeftBarOpen?'open':'closed'" class="left-drawer" fxLayout="column" fxLayoutGap="16px" fxHide.gt-sm>
-	<app-category-tree [allowEdit]="false"
+	<button mat-button class="mobPageLink" (click)="navigateTo('/')">
+		Home
+	</button>
+	<button mat-button class="mobPageLink" (click)="navigateTo('/categories')">
+		Categories
+	</button>
+	<button mat-button class="mobPageLink" (click)="navigateTo('/static-page/about-us')">
+		My Profile
+	</button>
+	<button mat-button *ngIf="false" class="mobPageLink" (click)="navigateTo('/static-page/about-us')" >
+		My Addresses
+	</button>
+	<button mat-button *ngIf="isLoggedIn" class="mobPageLink" (click)="navigateTo('/order-list')">
+		My Orders
+	</button>
+	<button class="mobPageLink" mat-button (click)="toggleLoginStatus(isLoggedIn)">
+		{{isLoggedIn?'Logout':'Login'}} <mat-icon aria-label="isLoggedIn?:'Logout':'Login/Sign Up'">{{isLoggedIn?'logout':'lock'}}</mat-icon>
+	</button>
+	<!--<app-category-tree [allowEdit]="false"
 										 [isExpanded]="false"
 										 [showExpansionIcon]="false"
 										 [enableNavigation]="true"
-										 (categorySelected)="categorySelected($event)"></app-category-tree>
+										 (categorySelected)="categorySelected($event)"></app-category-tree>-->
 </div>

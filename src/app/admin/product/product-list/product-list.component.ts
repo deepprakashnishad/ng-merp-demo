@@ -25,13 +25,14 @@ export class ProductListComponent {
   @ViewChild(MatSort) sort: MatSort;
 
   productList: Array<Product> = [];
+  storeSettings = JSON.parse(sessionStorage.getItem("storeSettings"));
 
   constructor(
   	private productService: ProductService,
     private notifierService: NotifierService,
     private storageService: StorageService
   ) {
-    if (!this.storageService.getValueFromStoreSettings("isBrandEnabled")) {
+    if (!this.storeSettings["isBrandEnabled"]) {
       this.displayedColumns.splice(1, 1);
     }
   }

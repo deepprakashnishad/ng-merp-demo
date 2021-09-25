@@ -32,6 +32,7 @@ import { PincodeCheckerComponent } from './delivery/pincode-checker/pincode-chec
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { ProductGridViewComponent } from './product/product-grid-view/product-grid-view.component';
 import { ProfileComponent } from './profile/profile.component';
+import { CategoriesComponent } from './category-bar/categories/categories.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { ProfileComponent } from './profile/profile.component';
     ProductByCategoryComponent,
     PincodeCheckerComponent,  
     ComingSoonComponent,
-    ProfileComponent
+    ProfileComponent,
+    CategoriesComponent
   ],
   imports: [
     SharedModule,

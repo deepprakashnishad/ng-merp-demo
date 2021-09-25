@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AuthGuardService } from '../authentication/auth-guard.service';
 import { CanDeactivateGuardService } from '../authentication/can-deactivate-guard.service';
+import { CategoriesComponent } from './category-bar/categories/categories.component';
 import { ComingSoonComponent } from './coming-soon/coming-soon.component';
 import { HomeComponent } from './home/home.component';
 import { OrderDetailComponent } from './order/order-detail/order-detail.component';
@@ -66,7 +67,12 @@ const routes: Routes = [
 		canActivate: [AuthGuardService], 
 		canDeactivate:[CanDeactivateGuardService],
 		data: { title: 'Order Review', isLoggedIn: true, loginErrorMessage:"Please login to checkout", permissions: []}
-	},
+  },
+  {
+    path: 'categories',
+    component: CategoriesComponent,
+    data: { title: 'Category', permissions: [] }
+  },
 	{
 		path: 'product-by-category', 
 		component: ProductByCategoryComponent,

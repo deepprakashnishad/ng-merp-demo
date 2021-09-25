@@ -32,13 +32,15 @@ export class PaymentComponent implements OnInit {
 
   private subs: Subscription;
 
+  storeSettings = JSON.parse(sessionStorage.getItem("storeSettings"));
+
   razorPayOptions = {
     "key": "", // Enter the Key ID generated from the Dashboard
     "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     "currency": "INR",
     "name": environment.appName,
     "description": "Healthy & pure products from everything satvik",
-    "image": environment.logoUrl,
+    "image": this.storeSettings?.logo?.downloadUrl, //environment.logoUrl,
     "order_id": "", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": this.razorPayCallbackHandler.bind(this),
     "prefill": {

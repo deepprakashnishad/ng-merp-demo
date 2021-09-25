@@ -28,6 +28,7 @@ import { OrderComponent } from './admin/shoppin/order/order.component';
 import { ComingSoonComponent } from './shoppin/coming-soon/coming-soon.component';
 import { StoreSettingsComponent } from './admin/store-settings/store-settings.component';
 import { UserReportComponent } from './admin/reports/user-report/user-report.component';
+import { CategoriesComponent } from './shoppin/category-bar/categories/categories.component';
 
 const routes: Routes = [
 	 {
@@ -59,7 +60,12 @@ const routes: Routes = [
 		path: 'delivery-page',
 		component: DeliveryComponent,
 		data: { title: "Delivery" }
-	},
+  },
+  {
+    path: 'categories',
+    component: CategoriesComponent,
+    data: { title: "Categories" }
+  },
 
 	{
 		path: 'admin', 

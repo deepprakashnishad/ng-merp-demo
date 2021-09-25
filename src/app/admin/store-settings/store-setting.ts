@@ -5,12 +5,14 @@ export class StoreSettings {
   logo: any;
   isBrandEnabled: boolean;
   isTaxEnabled: boolean;
+  enablePincodeChecker: boolean;
 
   constructor() {
     this.isBrandEnabled = true;
     this.isTaxEnabled = true;
     this.headerText = "Free shipping anywhere in India above ₹500";
-    this.logo = {downloadUrl: "", uploadPath: ""}
+    this.logo = { downloadUrl: "", uploadPath: "" };
+    this.enablePincodeChecker = false;
   }
 
   static fromJSON(data) {

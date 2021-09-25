@@ -20,6 +20,7 @@ export class RazorpayButtonComponent {
   @Output("paymentProcessCompleted") paymentProcessCompleted: EventEmitter<any> = new EventEmitter();
   payment: Payment = new Payment();
   amount: number;
+  storeSettings = JSON.parse(sessionStorage.getItem("storeSettings"));
 
   razorPayOptions = {
     "key": "", // Enter the Key ID generated from the Dashboard
@@ -27,7 +28,7 @@ export class RazorpayButtonComponent {
     "currency": "INR",
     "name": environment.appName,
     "description": "Healthy & pure products from everything satvik",
-    "image": environment.logoUrl,
+    "image": this.storeSettings?.logo?.downloadUrl, //environment.logoUrl,
     "order_id": "", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     "handler": this.razorPayCallbackHandler.bind(this),
     "prefill": {

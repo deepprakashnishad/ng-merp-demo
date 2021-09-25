@@ -4,21 +4,21 @@
 			Install
 		</button>
 		<app-progress-spinner></app-progress-spinner>
-		<app-navigation *ngIf="isShowNavigation"></app-navigation>
 	</header>
 	<!-- Main -->
 	<main class="main-container" fxFlex="grow" fxLayout="column" fxLayoutAlign="start">
+		<app-navigation *ngIf="isShowNavigation"></app-navigation>
 		<!--<app-navigation *ngIf="isShowNavigation"></app-navigation>-->
 		<router-outlet></router-outlet>
 
 		<notifier-container class="notifier-container"></notifier-container>
 		<!-- <app-sidenav #mSidebar fxFlex="auto"></app-sidenav> -->
 		<!-- <div class="content-container-without-sidenav" *ngIf="!isSidenav" fxFlex="auto">
-			<router-outlet #m="outlet"></router-outlet>
-		</div> -->
+		<router-outlet #m="outlet"></router-outlet>
+	</div> -->
 	</main>
 	<!-- Footer -->
-	<footer>
+	<footer *ngIf="isShowNavigation">
 		<mat-toolbar sticky class="toolbarNav" fx.hide.gt-md fxLayout fxLayoutAlign="space-between center">
 			<button mat-icon-button routerLink="/" routerLinkActive="active-link">
 				<mat-icon class="material-icons color_blue">
@@ -52,6 +52,5 @@
 			</button>
 		</mat-toolbar>
 	</footer>
-
 </div>
 

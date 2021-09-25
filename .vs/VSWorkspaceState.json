@@ -2,11 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\app",
-    "\\src\\app\\admin",
-    "\\src\\app\\admin\\sidenav",
-    "\\src\\environments"
+    "\\src\\app\\admin\\product\\product-list",
+    "\\src\\app\\navigation",
+    "\\src\\app\\payment\\razorpay-payment-button",
+    "\\src\\app\\shoppin\\cart\\cart-floating-button",
+    "\\src\\app\\shoppin\\category-bar",
+    "\\src\\app\\shoppin\\category-bar\\categories",
+    "\\src\\app\\shoppin\\profile",
+    "\\src\\assets\\images"
   ],
-  "SelectedNode": "\\src\\app\\admin\\sidenav\\sidenav.component.ts",
+  "SelectedNode": "\\firestore.indexes.json",
   "PreviewInSolutionExplorer": false
 }
