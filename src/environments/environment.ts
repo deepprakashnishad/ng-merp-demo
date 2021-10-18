@@ -26,7 +26,8 @@ export const environment = {
   paytm: {
     merchantId: "PvIEXq67462511961659",
     merchantName: "Everything Satvik"
-  }
+  },
+  recaptcha_site_key: "6LdbScYcAAAAAMy3OZigFtko17jK8DiQvEy7YzV4"
 };
 
 export var EXTRAS = {

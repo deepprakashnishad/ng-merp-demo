@@ -5,6 +5,7 @@ import { StoreSettingsService } from './admin/store-settings/store-settings.serv
 import { SwUpdate } from '@angular/service-worker';
 import { PwaService } from './pwa.service';
 import { AuthenticationService } from './authentication/authentication.service';
+import { StorageService } from './storage.service';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
     private storeSettingService: StoreSettingsService,
     private pwaService: PwaService,
     private authenticationService: AuthenticationService,
+    private storageService: StorageService
   ) {
     this.pwa = this.pwaService;
   }
@@ -48,7 +50,7 @@ export class AppComponent implements OnInit {
     if (sessionStorage.getItem("storeSettings") === null) {
       this.storeSettingService.getStoreSettings().subscribe(result => {
         var mStoreSettings = StoreSettings.fromJSON(result);
-        sessionStorage.setItem("storeSettings", JSON.stringify(mStoreSettings));
+        this.storageService.store("storeSettings", mStoreSettings);
       });
     }
   }

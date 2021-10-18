@@ -27,8 +27,10 @@ export class CategoriesComponent implements OnInit{
     if (!this.nodes) {
       this.categoryService.fetchCategoryTree(true).subscribe(result => {
         this.nodes = result;
+        this.nodes.forEach(ele => {
+          this.displayedNodes.push(ele);
+        })
         sessionStorage.setItem("catTree", JSON.stringify(this.nodes));
-        
       });
     } else {
       this.nodes.forEach(ele => {

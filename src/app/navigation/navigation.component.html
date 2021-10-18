@@ -2,7 +2,7 @@
 <mat-toolbar class="navbar" #navToolbar>
 	<mat-toolbar-row class="top-section">
 		<div class="full-width" fxLayout fxLayoutAlign="center">
-			<h5>{{storeSettings.headerText}}</h5>
+			<h5>{{storeSettings?.headerText}}</h5>
 			<div fxHide fxShow.gt-md class="right-section">
 				<a class="pageLink" [routerLink]="'/static-page/about-us'">
 					About Us

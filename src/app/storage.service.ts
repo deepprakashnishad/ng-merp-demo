@@ -37,9 +37,13 @@ export class StorageService implements OnDestroy {
     return s;
   }
 
-  public store(key: string, data: any): void {
-    localStorage.setItem(key, JSON.stringify(data));
-    this.onSubject.next({ key: key, value: data})
+  public store(key: string, data: any, type: string = "session"): void {
+    if (type = "session") {
+      sessionStorage.setItem(key, JSON.stringify(data));
+    } else {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+    this.onSubject.next({ key: key, value: JSON.stringify(data)})
   }
 
   public clear(key) {

@@ -187,6 +187,28 @@ export class AuthenticationService {
     });
   }
 
+  requestOTP(mobile, recaptchaToken): Observable<any> {
+    return this.http.post(`${environment.baseurl}/OTP/requestOTP`, {
+      type: "mobile",
+      "token": recaptchaToken,
+      "mobile": mobile
+    });
+  }
+
+  verifyOTPAndSignIn(mobile, otp) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(mobile + ':' + otp),
+        AuthInterceptorSkipHeader: ''
+      })
+    };
+
+    return this.http.post(`${environment.baseurl}/OTP/verifyOTPAndSignIn`, {
+      type: "mobile"
+    }, httpOptions);
+  }
+
   handleForbiddenRequest(error){
     this.redirectUrl = this.router.url
     this.router.navigate(['/login', {'error':[error.error.msg]}])

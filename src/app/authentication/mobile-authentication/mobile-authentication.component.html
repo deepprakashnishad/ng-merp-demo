@@ -1,0 +1,29 @@
+<div class="full-width" fxLayout fxLayoutAlign="center center">
+  <mat-card class="login-container">
+    <div fxLayout="column">
+      <p class="h4" fxFlexAlign.gt-xs="center">Sign In/Sign Up</p>
+      <div fxLayout="column" fxLayoutGap="8px">
+        <mat-form-field appearance="outline">
+          <input matInput placeholder="Mobile Number" type="number" [(ngModel)]="mobile" class="form-control">
+          <span matPrefix>
+            +91&nbsp;&nbsp;
+          </span>
+        </mat-form-field>
+        <mat-checkbox *ngIf="" [(ngModel)]="isWhatsappNo" ngDefaultControl>Is this whatsapp number</mat-checkbox>
+        <recaptcha [size]="'invisible'"
+                   [hide]="true">
+        </recaptcha>
+        <div>
+          <button mat-icon-button (click)="requestOTP()">Request OTP</button>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline" *ngIf="isOTPSent">
+        <input matInput placeholder="OTP" type="number" [(ngModel)]="otp" class="form-control" (keyup.enter)="verifyOTP()">
+      </mat-form-field>
+      <div *ngIf="isOTPSent">
+        <button mat-raised-button color="primary" (click)="verifyOTP();">Verify OTP</button>
+      </div>
+    </div>
+  </mat-card>
+</div>

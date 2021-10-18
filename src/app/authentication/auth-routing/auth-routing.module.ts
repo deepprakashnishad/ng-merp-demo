@@ -5,13 +5,14 @@ import {CanDeactivateGuardService} from '../can-deactivate-guard.service';
 
 import { LoginComponent } from '../login/login.component';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
+import { MobileAuthenticationComponent } from '../mobile-authentication/mobile-authentication.component';
 // import {PermissionComponent} from '../../admin/permission/permission.component';
 // import {RoleComponent} from '../role/role.component';
 
 const routes: Routes = [
 	{
-		path: 'login', 
-		component: LoginComponent,
+    path: 'login',
+    component: MobileAuthenticationComponent,
 		data: { title: 'Login/Signup'}
   },
   {

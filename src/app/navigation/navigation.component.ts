@@ -7,6 +7,7 @@ import { Page } from '../admin/static-page/page';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { environment } from '../../environments/environment';
 import { DepartmentBarComponent } from '../shoppin/category-bar/department-bar/department-bar.component';
+import { StorageService } from '../storage.service';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class NavigationComponent implements OnInit, AfterViewInit {
   @ViewChild(DepartmentBarComponent) categoryBar: DepartmentBarComponent;
   @ViewChild("navToolbar") navToolbar;
   minOrder = environment.minOrderFreeDelivery;
-  storeSettings = JSON.parse(sessionStorage.getItem("storeSettings"));
+  storeSettings: any = JSON.parse(sessionStorage.getItem("storeSettings"));
 
   isLeftBarOpen: boolean = false;
 
@@ -51,8 +52,8 @@ export class NavigationComponent implements OnInit, AfterViewInit {
 
   	constructor(
 		private authenticationService: AuthenticationService,
-		private router: Router,
-		private pageService: StaticPageService,
+    private router: Router,
+    private storageService: StorageService,
 		private titleService: Title,
 		private renderer: Renderer2,
 		private ngZone: NgZone,
@@ -60,7 +61,6 @@ export class NavigationComponent implements OnInit, AfterViewInit {
     }
 
   ngAfterViewInit() {
-    console.log(this.storeSettings.logo?.downloadUrl);
   }
 
 	ngOnInit() {
@@ -76,7 +76,13 @@ export class NavigationComponent implements OnInit, AfterViewInit {
 	      if(value){
 	      	this.name = this.authenticationService.getTokenOrOtherStoredData("name");
 	      }
-	    });
+    });
+
+    this.storageService.changes.subscribe(result => {
+      if (result['key']==="storeSettings") {
+        this.storeSettings = JSON.parse(result['value']);
+      }
+    })
 
 		//this.pageService.getPages().subscribe(result=>{
 		//	this.pages = result;

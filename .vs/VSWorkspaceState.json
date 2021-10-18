@@ -2,15 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\app\\admin\\product\\product-list",
-    "\\src\\app\\navigation",
-    "\\src\\app\\payment\\razorpay-payment-button",
-    "\\src\\app\\shoppin\\cart\\cart-floating-button",
+    "\\src\\app",
+    "\\src\\app\\authentication",
+    "\\src\\app\\authentication\\mobile-authentication",
     "\\src\\app\\shoppin\\category-bar",
     "\\src\\app\\shoppin\\category-bar\\categories",
-    "\\src\\app\\shoppin\\profile",
-    "\\src\\assets\\images"
+    "\\src\\app\\shoppin\\category-bar\\department-bar",
+    "\\src\\environments"
   ],
-  "SelectedNode": "\\firestore.indexes.json",
+  "SelectedNode": "\\src\\app\\authentication\\mobile-authentication\\mobile-authentication.component.ts",
   "PreviewInSolutionExplorer": false
 }
