@@ -13,8 +13,8 @@
         <recaptcha [size]="'invisible'"
                    [hide]="true">
         </recaptcha>
-        <div>
-          <button mat-icon-button (click)="requestOTP()">Request OTP</button>
+        <div *ngIf="isOTPSent">
+          <button mat-raised-button color="primary" (click)="requestOTP()">Request OTP</button>
         </div>
       </div>
 

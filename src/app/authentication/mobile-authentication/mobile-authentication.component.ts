@@ -45,7 +45,9 @@ export class MobileAuthenticationComponent {
 
   verifyOTP() {
     this.authService.verifyOTPAndSignIn(`+91${this.mobile}`, this.otp).subscribe(result => {
-      console.log(result);
+      if (result['success']) {
+        this.notifier.notify("success", "Verification successful");
+      }
     })
   }
 }
