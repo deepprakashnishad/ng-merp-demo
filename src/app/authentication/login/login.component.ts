@@ -115,7 +115,7 @@ export class LoginComponent implements OnInit{
         console.log("In success path");
         this.authResponse = authResponse;
         if (this.authResponse) {
-          this.openSnackBar('Login successful', 'Dismiss');
+          this.notifier.notify("success", "Login successful");
           this.storeData(this.authResponse);
           this.clearForm();
           let redirectUrl = this.authService.redirectUrl ? this.authService.redirectUrl : ''

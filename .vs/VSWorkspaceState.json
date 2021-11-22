@@ -3,13 +3,11 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\authentication",
-    "\\src\\app\\authentication\\mobile-authentication",
-    "\\src\\app\\shoppin\\category-bar",
+    "\\src\\app\\shoppin",
     "\\src\\app\\shoppin\\category-bar\\categories",
     "\\src\\app\\shoppin\\category-bar\\department-bar",
     "\\src\\environments"
   ],
-  "SelectedNode": "\\src\\app\\authentication\\mobile-authentication\\mobile-authentication.component.ts",
+  "SelectedNode": "\\src\\app\\storage.service.ts",
   "PreviewInSolutionExplorer": false
 }

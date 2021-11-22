@@ -195,7 +195,7 @@ export class AuthenticationService {
     });
   }
 
-  verifyOTPAndSignIn(mobile, otp) {
+  verifyOTPAndSignIn(mobile, otp): Observable<AuthResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ export class AuthenticationService {
       })
     };
 
-    return this.http.post(`${environment.baseurl}/OTP/verifyOTPAndSignIn`, {
+    return this.http.post<AuthResponse>(`${environment.baseurl}/OTP/verifyOTPAndSignIn`, {
       type: "mobile"
     }, httpOptions);
   }

@@ -3,6 +3,8 @@ import { FormControl } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { AuthenticationService } from '../authentication.service';
 import { ReCaptchaService } from 'angular-recaptcha3';
+import { AuthResponse } from '../auth-response';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: "mobile-authentication.component.html",
@@ -13,11 +15,13 @@ export class MobileAuthenticationComponent {
   isOTPSent: boolean = true;
   mobile: number;
   otp: string;
+  authResponse: AuthResponse;
 
   constructor(
     private authService: AuthenticationService,
     private notifier: NotifierService,
-    private reCaptchaService: ReCaptchaService
+    private reCaptchaService: ReCaptchaService,
+    private router: Router
   ) {
 
   }
@@ -47,7 +51,26 @@ export class MobileAuthenticationComponent {
     this.authService.verifyOTPAndSignIn(`+91${this.mobile}`, this.otp).subscribe(result => {
       if (result['success']) {
         this.notifier.notify("success", "Verification successful");
+        this.authResponse = result;
+        this.storeData(this.authResponse);
+        let redirectUrl = this.authService.redirectUrl ? this.authService.redirectUrl : ''
+        this.router.navigate([redirectUrl]);
       }
     })
+  }
+
+  storeData(authResponse) {
+    var data = authResponse;
+    data.permissions = this.getPermissionList(authResponse.permissions);
+    data.role = authResponse.role.name
+    this.authService.storeLocalData(data, "LOCAL_STORAGE");
+  }
+
+  getPermissionList(permissions) {
+    const permissionList = [];
+    for (let i = permissions.length - 1; i >= 0; i--) {
+      permissionList.push(permissions[i].permission);
+    }
+    return permissionList.join(',');
   }
 }
