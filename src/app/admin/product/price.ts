@@ -3,48 +3,12 @@ import {SaleDetail} from './sale-detail';
 
 export class Price{
 	id:string;
-	product: string;
-	primaryStockDetails: {
-		id: string, //concatenation of storeId, product id
-		store: string,
-		location: {long: number, lat: number},
-		stock: number,
-		priceDetail:{
-			costPrice:number,
-			price: number,
-			currency: string,
-			saleList: SaleDetail[]
-		}
-	};
-	altStockDetails:[
-		{
-			id: string, //concatenation of storeId, productId
-			store: string,
-			location: {long: number, lat: number},
-			stock: number,
-			priceDetail:{
-				costPrice:number,
-				price: number,
-				currency: string,
-				saleList: SaleDetail[]			
-			},
-		}
-	];
-	variantStockDetails:[
-		{
-			id: string, //concatenation of variant id and store id
-			store: string,
-			variantId: string,
-			location: {long: number, lat: number},
-			stock: number,
-			priceDetail:{
-				costPrice: number,
-				price: number,
-				currency: string,
-				saleList: SaleDetail[]
-			},
-		}
-	];
+	location: JSON;
+	maxAlldQty: number;
+	qty: number;
+	sku: string;
+	unitPrice: number;
+	discounts: Array<SaleDetail>	
 }
 
 

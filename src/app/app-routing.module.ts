@@ -29,6 +29,7 @@ import { ComingSoonComponent } from './shoppin/coming-soon/coming-soon.component
 import { StoreSettingsComponent } from './admin/store-settings/store-settings.component';
 import { UserReportComponent } from './admin/reports/user-report/user-report.component';
 import { CategoriesComponent } from './shoppin/category-bar/categories/categories.component';
+import { AddEditStoreComponent } from './admin/store/add-edit-store/add-edit-store.component';
 
 const routes: Routes = [
 	 {
@@ -89,13 +90,20 @@ const routes: Routes = [
 				canDeactivate:[CanDeactivateGuardService],
 				data: { title: 'Brands', permissions: ['SHOP_EDITOR','CREATE_BRAND', 'UPDATE_BRAND', 'DELETE_BRAND']}
 			},
-      {
-        path: 'user-report',
-        component: UserReportComponent,
-        canActivate: [AuthGuardService],
-        canDeactivate: [CanDeactivateGuardService],
-        data: { title: 'Attributes', permissions: ['SHOP_EDITOR'] }
-      },
+			{
+				path: 'my-store', 
+				component: AddEditStoreComponent,
+				canActivate: [AuthGuardService], 
+				canDeactivate:[CanDeactivateGuardService],
+				data: { title: 'My Store', permissions: []}
+			},
+			{
+				path: 'user-report',
+				component: UserReportComponent,
+				canActivate: [AuthGuardService],
+				canDeactivate: [CanDeactivateGuardService],
+				data: { title: 'Attributes', permissions: ['SHOP_EDITOR'] }
+			},
 			{
 				path: 'facet', 
 				component: FacetComponent,

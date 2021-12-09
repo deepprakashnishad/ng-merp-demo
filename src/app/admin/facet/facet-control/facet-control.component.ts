@@ -16,7 +16,7 @@ export class FacetControlComponent implements OnInit {
 	facetControlSelected: EventEmitter<any> = new EventEmitter();
 
 	@Input()
-	jsonFacetControl:Array<any>;
+	jsonFacetControl:Array<any> = [];
 
 	queue: Map<Facet, string> = new Map();
   	facetControl: FormControl = new FormControl();
@@ -33,18 +33,17 @@ export class FacetControlComponent implements OnInit {
   	this.facetService.getFacets()
 	  	.subscribe((facets)=>{
 	  		this.facets = facets;
+			this.facetFilteredList = this.facetControl.valueChanges.pipe(
+			startWith(''),
+			map((filterStr: string | null) => {
+				return this._filter(filterStr, this.facets)
+			}));
 	  	});
-
-	  	this.facetFilteredList = this.facetControl.valueChanges.pipe(
-	    startWith(''),
-	    map((filterStr: string | null) => {
-	      return this._filter(filterStr, this.facets)
-	    }));
   	}
 
   	ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
   		for (let propName in changes) {
-	      if (propName === "jsonFacetControl") {
+	      if (propName === "jsonFacetControl" && changes[propName].currentValue) {
 	        this.jsonFacetControl = changes[propName].currentValue;
 	        if(this.jsonFacetControl){
 	        	for(var i=0;i<this.jsonFacetControl.length;i++){
@@ -91,5 +90,9 @@ export class FacetControlComponent implements OnInit {
 			variableFacets.push(key);
 		});
 		this.facetControlSelected.emit({variants: this.jsonFacetControl, variableFacets: variableFacets});
+	}
+
+	removeFacetControl(key){
+		this.queue.delete(key);
 	}
 }

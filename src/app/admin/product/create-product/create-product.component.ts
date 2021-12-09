@@ -71,11 +71,11 @@ export class CreateProductComponent implements OnInit {
           if(this.product.assets===undefined || this.product.assets===null){
             this.product.assets = {imgs:[]};
           }
-          if(this.product.desc.shortDesc !== undefined && this.product.desc.shortDesc[0].val !== undefined){
-            this.shortDescription = this.product.desc.shortDesc[0].val;
+          if(this.product?.desc?.shortDesc !== undefined && this.product?.desc?.shortDesc[0].val !== undefined){
+            this.shortDescription = this.product?.desc?.shortDesc[0].val;
           }
-          if(this.product.desc.longDesc[0].val !== undefined){
-            this.longDescription = this.product.desc.longDesc[0].val;
+          if(this.product?.desc?.longDesc[0].val !== undefined){
+            this.longDescription = this.product?.desc?.longDesc[0].val;
           }
           /* this.variableFacets=[];
           if(this.product.variants.cnt > 0 && this.product.variants!==undefined && this.product.variants.attrs!==undefined){

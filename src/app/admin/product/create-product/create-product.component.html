@@ -11,8 +11,8 @@
 			<mat-form-field>
 				<input type="text" matInput formControlName="cntlLName" [(ngModel)]="product.lname" placeholder="Full Name" />
 			</mat-form-field>
-			<app-brand-selector [hidden]="!storeSettings.isBrandEnabled" matInput (brandSelected)="brandSelected($event)" [brand]="product.brand"></app-brand-selector>
-			<mat-form-field *ngIf="storeSettings.isTaxEnabled">
+			<app-brand-selector [hidden]="!storeSettings?.isBrandEnabled" matInput (brandSelected)="brandSelected($event)" [brand]="product.brand"></app-brand-selector>
+			<mat-form-field *ngIf="storeSettings?.isTaxEnabled">
 				<input type="text" matInput formControlName="taxCntl" [(ngModel)]="product.tax" placeholder="Tax(SGST+CGST In percent)" />
 			</mat-form-field>
 			<mat-form-field appearance="outline">
@@ -81,9 +81,9 @@
 		<app-file-uploader [uploadUrl]="'Product/uploadImages'" [data]="product" (itemUploaded)="fileUploaded($event)"></app-file-uploader>
 	</mat-step> -->
 	<mat-step label="Price &amp; Inventory">
-		<app-price [productId]="product.id" [priceType]="'product'"></app-price>
+		<app-price [itemId]="product.id" [productId]="product.id" [priceType]="'PRD'"></app-price>
 	</mat-step>
-	<!-- <mat-step label="Variant Attributes" optional="true">
+	<mat-step label="Variant Attributes" optional="true">
 		<app-facet-control (facetControlSelected)="saveFacetControlType($event)" [jsonFacetControl]="product.variants?.attrs"></app-facet-control>
 	</mat-step>
 	<mat-step label="Product Variants" optional="true">
@@ -91,5 +91,5 @@
 	</mat-step>
 	<mat-step label="Product Variants" optional="true" *ngIf="false">
 		<app-variant [variableFacets]="variableFacets" [product]="product"></app-variant>
-	</mat-step> -->
+	</mat-step>
 </mat-vertical-stepper>

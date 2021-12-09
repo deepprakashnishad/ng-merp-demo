@@ -23,6 +23,7 @@ import { SectionEditorComponent } from './shoppin/section-editor/section-editor.
 import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { DeliveryConfigComponent } from './delivery-config/delivery-config.component';
 import { StoreSettingsComponent } from './store-settings/store-settings.component';
+import { AddEditStoreComponent } from './store/add-edit-store/add-edit-store.component';
 
 const routes: Routes = [
 	
@@ -39,6 +40,13 @@ const routes: Routes = [
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
 				data: { title: 'Brands', permissions: ['SHOP_EDITOR','CREATE_BRAND', 'UPDATE_BRAND', 'DELETE_BRAND']}
+			},
+			{
+				path: 'my-store', 
+				component: AddEditStoreComponent,
+				canActivate: [AuthGuardService], 
+				canDeactivate:[CanDeactivateGuardService],
+				data: { title: 'My Store', permissions: []}
 			},
 			{
 				path: 'brand', 

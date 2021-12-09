@@ -106,7 +106,9 @@ import { UserReportComponent } from './reports/user-report/user-report.component
     ActivityLogComponent,
     DeliveryConfigComponent,
     StoreSettingsComponent,
-    UserReportComponent
+    UserReportComponent,
+    AddEditStoreComponent,
+    StoreSelectorComponent
   ],
   imports: [
     SharedModule,

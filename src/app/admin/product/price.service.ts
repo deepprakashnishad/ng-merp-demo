@@ -15,7 +15,7 @@ export class PriceService {
   constructor(
   	private http: HttpClient,
   ) {
-     this.priceUrl = environment.baseurl + '/price';
+     this.priceUrl = environment.baseurl + '/inventory';
   }
 
   getPrices(
@@ -36,8 +36,8 @@ export class PriceService {
   			catchError(this.handleError('Get Token', null)));
   }
 
-  getPriceByProductId(productId): Observable<Price>{
-    return this.http.get<Price>(`${this.priceUrl}?product=${productId}`)
+  getPriceById(priceType, itemId, storeId): Observable<Array<any>>{
+    return this.http.get<Array<any>>(`${this.priceUrl}?id=${priceType}_${itemId}_${storeId}`)
       .pipe(
         catchError(this.handleError('Get Token', null))); 
   }

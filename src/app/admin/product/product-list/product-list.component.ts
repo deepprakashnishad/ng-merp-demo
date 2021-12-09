@@ -45,7 +45,7 @@ export class ProductListComponent {
       this.dataSource = new MatTableDataSource<Product>(this.productList)
       this.dataSource.filterPredicate = ((item, filter):boolean=>{
         return item.name.toLowerCase().includes(filter) || 
-          item.brand.sname.includes(filter) ||
+          item.brand?.sname.includes(filter) ||
           item.lname.toLowerCase().includes(filter)
       })
       this.dataSource.sortingDataAccessor = (item, property) => {

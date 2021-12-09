@@ -73,7 +73,8 @@ export class LoginComponent implements OnInit{
       const name = this.cardForm.get('materialFormCardNameEx').value;
       const password = this.cardForm.get('materialFormCardPasswordEx').value;
       const email = this.cardForm.get('materialFormCardEmailEx').value;
-      const mobile = this.cardForm.get('materialFormCardMobile').value;
+      var mobile = "+91" + this.cardForm.get('materialFormCardMobile').value;
+
       this.authService.signup(
         {name: name, password: password, email: email, mobile: mobile}
         ).subscribe((authResponse) =>  {
@@ -105,14 +106,16 @@ export class LoginComponent implements OnInit{
   login(): void {
     if (this.loginForm.valid) {
       this.errors = [];
-      const username = this.loginForm.get('inputUsername').value;
+      var username = this.loginForm.get('inputUsername').value;
       const password = this.loginForm.get('inputPassword').value;
       this.rememberMe = this.loginForm.controls['inputRememberMe'].value;
+      if(username.indexOf("@")<0){
+        username = "+91"+username;
+      }
+      console.log(username);
       this.authService.login(
         { username: username, password: password }
       ).subscribe((authResponse) => {
-
-        console.log("In success path");
         this.authResponse = authResponse;
         if (this.authResponse) {
           this.notifier.notify("success", "Login successful");

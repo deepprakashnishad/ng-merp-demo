@@ -10,7 +10,10 @@
 	</div>
 	<div fxLayout="row" fxLayoutGap="4">
 		<mat-form-field fxFlex="23">
-			<input matInput placeholder="Facet" aria-label="Facet" [matAutocomplete]="auto" [formControl]="facetControl">
+			<input matInput placeholder="Facet" 
+				aria-label="Facet" 
+				[matAutocomplete]="auto" 
+				[formControl]="facetControl">
 			<mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption="true" [displayWith]="displayFn" (optionSelected)="selected($event)">
 				<mat-option *ngFor="let facet of facetFilteredList | async" [value]="facet">
 					{{facet.title}}

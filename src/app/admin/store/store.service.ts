@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Store } from './store';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { StoreSettings as any } from '../store-settings/store-setting';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +17,9 @@ export class StoreService {
 
   constructor(
     private http: HttpClient,
+    private afs: AngularFireStorage
   ) {
       this.storeUrl = environment.baseurl + '/store';
-      this.getStores()
-        .subscribe(stores=>{
-        this.stores = stores;
-      });
   }
 
   getStoreByName(storeName){
@@ -34,10 +33,34 @@ export class StoreService {
     return null;
   }
 
+  getMyStores(): Observable<any> {
+    return this.http.get<any>(`${this.storeUrl}/myStores`)
+      .pipe(
+        catchError(this.handleError('Get Token', null)));
+  }
+
   getStores(): Observable<Array<Store>> {
     return this.http.get<Store>(this.storeUrl)
       .pipe(
         catchError(this.handleError('Get Token', null)));
+  }
+
+  update(store: Store): Observable<any> {
+    return this.http.put<Store>(this.storeUrl, store)
+      .pipe(
+        catchError(this.handleError('Update store settings', null)));
+  }
+
+  create(store: any): Observable<any> {
+    return this.http.post<any>(this.storeUrl, store)
+      .pipe(
+        catchError(this.handleError('Create store settings', null)));
+  }
+
+  deleteImage(event, index) {
+    this.afs.ref(event['uploadPath']).delete().subscribe(result => {
+      console.log(result);
+    });
   }
 
   addStore(store): Observable<Store> {

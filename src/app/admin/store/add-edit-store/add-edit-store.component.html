@@ -1,22 +1,31 @@
-<div class="container" mat-dialog>
-	<div mat-dialog-title>{{title}}</div>
-	<mat-dialog-content [formGroup]="storeForm" fxLayout="column" fxLayoutGap="5px">
-		<div *ngIf="errors.length" class="alert alert-danger">
-	      <ul>
-	        <li *ngFor="let error of errors">{{error}}</li>
-	      </ul>
-	    </div>
-		<mat-form-field appearance="outline">
-			<mat-label>Store Title</mat-label>
-			<input type="text" matInput formControlName="store" [(ngModel)]="store.title"/>
-		</mat-form-field>
-		
-	</mat-dialog-content>
-	<mat-dialog-actions> 
-		<button type="button" mat-raised-button color="primary"
-		    (click)="save(store)"
-		    [disabled]="storeForm.invalid">Save</button>
-		<button type="button" mat-button 
-		    (click)="dialogRef.close(false)">Cancel</button>
-	 </mat-dialog-actions>
-</div>
+<div class="container" fxLayout="column">
+
+	<mat-form-field>
+	  <input type="text"
+			 matInput
+			 [formControl]="cntlStoreName"
+			 [(ngModel)]="store.title"
+			 placeholder="Store Name" />
+	</mat-form-field>
+  
+	<mat-form-field>
+	  <input type="text"
+			 matInput
+			 [formControl]="cntlHeaderText"
+			 [(ngModel)]="store.headerText"
+			 placeholder="Header Text" />
+	</mat-form-field>
+  
+	<app-uploader [isMultiple]="false" [uploadPath]="uploadPath" [maxAllowedFileSize]="512" (imageUploaded)="uploadCompleted($event)"></app-uploader>
+	<mat-card>
+	  <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+		<img [src]="store?.logo?.downloadUrl" height="150" width="150" />
+		<button mat-icon-button color="error" (click)="deleteImage(store?.logo)"><mat-icon>delete</mat-icon></button>
+	  </mat-card-content>
+	</mat-card>
+	<!-- <mat-checkbox class="example-margin" [(ngModel)]="storeSettings.isBrandEnabled">Enable Brand</mat-checkbox> -->
+	<!-- <mat-checkbox class="example-margin" [(ngModel)]="storeSettings.isTaxEnabled">Enable Tax</mat-checkbox>
+	<mat-checkbox class="example-margin" [(ngModel)]="storeSettings.enablePincodeChecker">Enable Pincode Checker</mat-checkbox> -->
+	<button mat-raised-button color="primary" (click)="save()">Save</button>
+  </div>
+  

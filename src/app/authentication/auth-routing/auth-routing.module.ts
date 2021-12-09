@@ -12,7 +12,7 @@ import { MobileAuthenticationComponent } from '../mobile-authentication/mobile-a
 const routes: Routes = [
 	{
     path: 'login',
-    component: MobileAuthenticationComponent,
+    component: LoginComponent,
 		data: { title: 'Login/Signup'}
   },
   {

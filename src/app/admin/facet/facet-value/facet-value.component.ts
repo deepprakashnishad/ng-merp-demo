@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList, SimpleChange, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, startWith, switchMap, filter } from 'rxjs/operators';
 import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
@@ -7,6 +7,7 @@ import {FacetChipInputComponent} from './../facet-chip-input/facet-chip-input.co
 
 import { FacetService } from './../facet.service';
 import { Facet } from './../facet';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-facet-value',
@@ -45,14 +46,13 @@ export class FacetValueComponent implements OnInit {
 	  		this.facetService.getFacets()
 		  	.subscribe((facets)=>{
 		  		this.facets = facets;
+				this.facetFilteredList = this.facetControl.valueChanges.pipe(
+				startWith(''),
+				map((filterStr: string | null) => {
+					return this._filter(filterStr, this.facets)
+				}));
 		  	});
 		}
-
-	  	this.facetFilteredList = this.facetControl.valueChanges.pipe(
-	    startWith(''),
-	    map((filterStr: string | null) => {
-	      return this._filter(filterStr, this.facets)
-	    }));
   	}
 
   	ngOnChanges(changes: {[propKey: string]: SimpleChange}) {

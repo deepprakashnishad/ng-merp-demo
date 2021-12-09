@@ -13,6 +13,8 @@
 		matInput
       placeholder="Facet Values"
       #facetInput
+	  #facetInputTrigger
+	  (focus)="openPanel()"
       [formControl]="facetControl"
       [matAutocomplete]="facetAuto"
       [matChipInputFor]="facetList"

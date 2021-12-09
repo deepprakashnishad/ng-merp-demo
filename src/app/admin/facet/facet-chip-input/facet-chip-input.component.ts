@@ -3,7 +3,7 @@ import { Component, OnInit,
 		ElementRef, Inject, 
 		Input, OnChanges, SimpleChange } from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatAutocompleteSelectedEvent, MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatChipInputEvent, } from '@angular/material/chips';
 import { FormControl } from '@angular/forms';
 import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
@@ -11,6 +11,7 @@ import { map, startWith, switchMap, filter } from 'rxjs/operators';
 import { FacetService } from '../../facet/facet.service';
 
 import { Facet } from '../../facet/facet';
+import { NotifierService } from 'angular-notifier';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class FacetChipInputComponent implements OnInit {
 	public isRemoveOnSeverFlag: boolean = false;
 	@Input()
 	public isSelection: boolean = false;
+	@Input()
+	public addOnSeverFlag: boolean = true;
 
 	
 	@Input()
@@ -35,26 +38,39 @@ export class FacetChipInputComponent implements OnInit {
   	readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   	@ViewChild('facetInput') facetInput: ElementRef<HTMLInputElement>;
+	@ViewChild('facetInputTrigger', {read: MatAutocompleteTrigger}) facetInputTrigger: MatAutocompleteTrigger;
   	@ViewChild('facetAuto') facetAuto: MatAutocomplete;
   	
   	constructor(
   		private facetService: FacetService,
+		private notifier: NotifierService
   	) { }
 
   	ngOnInit() {
-  		this.filteredList = this.facetControl.valueChanges.pipe(
-	    startWith(''),
-	    map((filterStr: string) => {
-	      var list = this._filter(filterStr, this.facet.values)
-	      return list;
-	    }));
+  		// this.subscribeInput();
   	}
+
+	subscribeInput(){
+		this.filteredList = this.facetControl.valueChanges.pipe(
+			startWith(''),
+			map((filterStr: string) => {
+			  var list = this._filter(filterStr, this.facet.values)
+			  return list;
+			}));
+	}
+
+	openPanel(){
+		this.facetInputTrigger.openPanel();
+	}
 
   	ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
 	    for (let propName in changes) {
 	    	let changedProp = changes[propName];
-	    	if(!this.isSelection && propName.toLowerCase() === "facet" && changedProp.currentValue !== undefined){
-	    		this.selectedValues = changedProp.currentValue['values'];
+	    	if(propName.toLowerCase() === "facet" && changedProp.currentValue !== undefined){
+				if(!this.isSelection){
+					this.selectedValues = changedProp.currentValue['values'];
+				}
+				this.subscribeInput();
 	    	}
 	    }
 	}
@@ -67,7 +83,8 @@ export class FacetChipInputComponent implements OnInit {
 	        	&& this.selectedValues.indexOf(option)<0);  
 	        return list;
 	    } else if(list){
-	      return list.filter(option => this.facet.values.indexOf(option)<0);
+			return list;
+	    //   return list.filter(option => this.facet.values.indexOf(option)<0);
 	    }
 	  } 
 
@@ -98,11 +115,14 @@ export class FacetChipInputComponent implements OnInit {
 
 	    // Add our facet
 	    if (value.trim() !== "" && !this.facetAuto.isOpen) {
-	    	this.selectedValues.push(value);
-	      this.facetService.updateFacet(this.facet)
-	      .subscribe((facet)=>{
+			this.selectedValues.push(value);
+			if(this.addOnSeverFlag && this.facet.values.indexOf(value)<0){
+				this.facet.values.push(value);
+				this.facetService.updateFacet(this.facet)
+				.subscribe((facet)=>{
 
-	      }, (err)=>alert("Could not create facet value"));
+				}, (err)=>this.notifier.notify("error","Could not create facet value"));
+			}
 	    }
 
 	    // Reset the input value

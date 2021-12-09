@@ -1,4 +1,4 @@
-<div *ngFor="let entry of queue|keyvalue">
+<div *ngFor="let entry of queue|keyvalue; let i=index">
 	<mat-form-field fxFlex="23">
 		<input matInput aria-label="Facet" 
 			[matAutocomplete]="auto" required="" disabled="" [value]="entry.key.title">
@@ -11,7 +11,7 @@
 	    <mat-option value="toggle_button">Toggle Button</mat-option>
 	  </mat-select>
 	</mat-form-field>
-	<button mat-icon-button (click)="addFacetControl()">
+	<button mat-icon-button (click)="removeFacetControl(entry.key)">
 		<mat-icon>cancel</mat-icon>
 	</button>
 </div>
