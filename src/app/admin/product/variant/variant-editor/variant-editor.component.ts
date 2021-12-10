@@ -33,6 +33,8 @@ export class VariantEditorComponent implements OnInit {
 
     if(data['variant'] && data['variant'] !== null){
       this.variant = data['variant'];
+      this.variant = Variant.sanitizeVariant(this.variant);
+      this.uploadPath = `variants/${this.variant.id}`;
     }else{
       this.variant.name = this.product.name;
       this.variant.product = this.product.id;
@@ -46,13 +48,13 @@ export class VariantEditorComponent implements OnInit {
     })
   }
 
-  setVariantForm(variant){
+  /* setVariantForm(variant){
 		if(variant==null){
 			this.variant = Variant.newVariantFromProduct(this.product);
 		}else{
 			this.variant = variant;
 		}
-	}
+	} */
 
 	saveFacets($event, type){
 		this.variant.attrs=$event;
@@ -88,13 +90,12 @@ export class VariantEditorComponent implements OnInit {
 	}
 
   uploadCompleted($event){
-    console.log($event);
     this.variant.assets.imgs.push($event);
   }
 
   deleteImage(event, index){
-    this.product.assets.imgs.splice(index, 1);
-    if(this.product.hasOwnProperty("id") && this.product.id !== undefined){
+    this.variant.assets.imgs.splice(index, 1);
+    if(this.variant.hasOwnProperty("id") && this.variant.id !== undefined){
       this.variantService.updateVariant(this.variant)
       .subscribe((variant)=>{
         this.variant = variant;

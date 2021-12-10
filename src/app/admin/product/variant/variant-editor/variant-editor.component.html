@@ -14,9 +14,9 @@
     </mat-step>
     <mat-step label="Images" optional="true">
       <app-uploader [uploadPath]="uploadPath" [maxAllowedFileSize]="512" (imageUploaded)="uploadCompleted($event)"></app-uploader> 
-      <div class="cdk-virtual-scroll-data-source-example" *ngIf="product?.assets?.imgs.length>0">
+      <div class="cdk-virtual-scroll-data-source-example" *ngIf="variant?.assets?.imgs.length>0">
         <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="5" class="example-viewport">
-          <div *cdkVirtualFor="let image of product?.assets?.imgs; let i = index">
+          <div *cdkVirtualFor="let image of variant?.assets?.imgs; let i = index">
             <mat-card>
               <mat-card-content fxLayout="column" fxLayoutAlign="center center">
                 <img [src]="image['downloadUrl']" height="150px" width="150px"/>

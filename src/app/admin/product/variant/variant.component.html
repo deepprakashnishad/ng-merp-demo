@@ -13,10 +13,10 @@
 		</mat-list>
 		<app-price [productId]="variant.product" [itemId]="variant.id" [priceType]="'VRT'" [isViewMode]="true"></app-price>
 		<div fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="5px">
-			<mat-card *ngFor="let item of variant?.assets?.imgs">
-				<img mat-card-image [src]="item.img.src|safe" *ngIf="product.assets.imgs[0].img.src" alt="Product Image">
+			<mat-card *ngFor="let item of variant?.assets?.imgs; let i = index">
+				<img mat-card-image [src]="item.downloadUrl|safe" *ngIf="variant.assets.imgs[0].downloadUrl" alt="Variant Image">
 				<mat-card-actions>
-				    <button mat-raised-button color="accent" (click)="removeImage(item)">Delete</button>
+				    <button mat-icon-button color="error" (click)="deleteImage(variant, item, i)"><mat-icon>delete</mat-icon></button>
 				</mat-card-actions>
 			</mat-card>
 		</div>

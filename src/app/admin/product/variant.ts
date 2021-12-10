@@ -25,8 +25,18 @@ export class Variant{
     }
 
     static sanitizeVariant(variant: Variant){
-        if(){
-            
+        if(variant.assets===null){
+            variant.assets = {imgs:[]};
         }
+
+        if(variant.attrs === null){
+            variant.attrs = {};
+        }
+
+        if(variant.status===null){
+            variant.status = true;
+        }
+
+        return variant;
     }
 }

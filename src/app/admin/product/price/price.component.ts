@@ -6,6 +6,7 @@ import { Price } from './../price';
 import { ProductService } from '../product.service';
 import { NotifierService } from 'angular-notifier';
 import { MatTableDataSource } from '@angular/material/table';
+import { I } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-price',
@@ -79,6 +80,9 @@ export class PriceComponent implements OnInit {
         if(this.priceType==="VRT"){
           this.price = result['vrt'];
           this.originalProductPrice = result['prd'];
+          if(this.price.unitPrice===undefined || this.price.unitPrice===null){
+            this.isPriceSame = true;
+          }
         }else{
           this.price = result['prd'];
         }
@@ -122,11 +126,10 @@ export class PriceComponent implements OnInit {
       this.sellPrice = this.price.unitPrice;
       this.saleDetailList = this.price.discounts;
       this.dataSource.data = this.saleDetailList;
-    }else if(this.priceType==="VRT" && this.price.unitPrice===undefined){
+    }else if(this.priceType==="VRT" && (this.price.unitPrice===undefined || this.price.unitPrice===null)){
       this.sellPrice = this.originalProductPrice.unitPrice;
       this.saleDetailList = this.originalProductPrice.discounts;
       this.dataSource.data = this.saleDetailList;
-      console.log(this.saleDetailList);
     }
   }
 

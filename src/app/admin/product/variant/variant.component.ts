@@ -7,6 +7,8 @@ import {Variant} from './../variant';
 import { Product } from './../product';
 import { MatDialog } from '@angular/material/dialog';
 import { VariantEditorComponent } from './variant-editor/variant-editor.component';
+import { NotifierService } from 'angular-notifier';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-variant',
@@ -28,7 +30,9 @@ export class VariantComponent implements OnInit {
 
 	constructor(
 		private variantService: VariantService,
-		private dialog: MatDialog
+		private dialog: MatDialog,
+		private notifier: NotifierService,
+		private afs: AngularFireStorage
 	) { }
 
 	ngOnInit() {
@@ -57,5 +61,20 @@ export class VariantComponent implements OnInit {
 		dialogRef.afterClosed().subscribe(result=>{
 			console.log(result);
 		});
+	}
+
+	deleteImage(variant, image, index){
+		variant.assets.imgs.splice(index, 1);
+		if(variant.hasOwnProperty("id") && variant.id !== undefined){
+		  this.variantService.updateVariant(variant)
+		  .subscribe((variant)=>{
+			this.notifier.notify("success", `${variant.name} updated successfully`);
+			this.afs.ref(image['uploadPath']).delete().subscribe(result=>{
+			  console.log(result);
+			})
+		  });
+		}else{
+		  this.notifier.notify("success", `Product id is missing`);
+		}
 	}
 }
