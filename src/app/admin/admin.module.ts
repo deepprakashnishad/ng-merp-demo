@@ -55,6 +55,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { DeliveryConfigComponent } from './delivery-config/delivery-config.component';
 import { StoreSettingsComponent } from './store-settings/store-settings.component';
 import { UserReportComponent } from './reports/user-report/user-report.component';
+import { VariantEditorComponent } from './product/variant/variant-editor/variant-editor.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import { UserReportComponent } from './reports/user-report/user-report.component
     StoreSettingsComponent,
     UserReportComponent,
     AddEditStoreComponent,
-    StoreSelectorComponent
+    StoreSelectorComponent,
+    VariantEditorComponent
   ],
   imports: [
     SharedModule,

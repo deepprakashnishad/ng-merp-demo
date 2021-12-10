@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, Output, SimpleChange, AfterViewInit } from '@angular/core';
 import { PriceService } from './../price.service';
 import { SaleDetail } from './../sale-detail';
 import { Store } from './../../store/store'
@@ -23,6 +23,9 @@ export class PriceComponent implements OnInit {
 	@Input()
 	itemId: string;
 
+  @Input()
+  isViewMode: boolean=false;
+
   sku: string;
 
 	index: number;
@@ -38,10 +41,15 @@ export class PriceComponent implements OnInit {
 	price:Price;
 	minDate = new Date();
   saleDetailSelectedIndex: number = -1;
+  isPriceSame: boolean = false;
 
   dataSource: MatTableDataSource<SaleDetail> = new MatTableDataSource();
 
-  displayedColumns: string[] = ['mrp', 'discount', 'discountPercent', 'minQty', 'status', 'actions'];
+  displayedColumns: string[] = ['salePrice', 'discount', 'discountPercent', 'minQty', 'status', 'actions'];
+
+  initialFetchFlag: boolean = false;
+
+  originalProductPrice: Price;
 
   constructor(
     private priceService: PriceService,
@@ -55,55 +63,97 @@ export class PriceComponent implements OnInit {
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
   	for (let propName in changes) {
 	    let changedProp = changes[propName];
-	    if (propName === "itemId") {
-        this.itemId = changedProp.currentValue;
-	    }else if(propName === "priceType"){
-        this.priceType = changedProp.currentValue;
-      }
-      if((this.priceType==="PRD" ||this.priceType==="VRT") && this.itemId && this.store){
-        this.fetchPrice();
-      }else{
-        this.notifier.notify("error", "Invalid data");
+      if((this.priceType==="PRD" ||this.priceType==="VRT") && this.itemId && this.store && this.priceType && this.productId){
+        if(!this.initialFetchFlag){
+          this.initialFetchFlag = true;
+          this.fetchPrice();
+        }
       }
 	  }
   }
 
   fetchPrice(){
-    this.priceService.getPriceById(this.priceType, this.itemId, this.store.id)
+    this.priceService.getPriceById(this.priceType, this.itemId, this.store.id, this.isViewMode?this.productId:this.isPriceSame?this.productId:null)
     .subscribe(result=>{
-      if(result.length){
-        this.price = result[0];
+      if(result['success']){
+        if(this.priceType==="VRT"){
+          this.price = result['vrt'];
+          this.originalProductPrice = result['prd'];
+        }else{
+          this.price = result['prd'];
+        }
         this.populatePrice();
       }
     });
   }
 
-  storeSelected(event){
-  	this.store = event;
-    this.fetchPrice();
+  isPriceSameUpdated(event){
+    if(event && (this.originalProductPrice===undefined||this.originalProductPrice===null)){
+      this.priceService.getPriceById("PRD", this.productId, this.store.id)
+      .subscribe(result=>{
+        if(result.length>0){
+          this.originalProductPrice = result['prd'];
+          this.populatePrice();
+        }
+      });
+    }else if(this.isPriceSame){
+      this.price.unitPrice = undefined;
+    }
+    console.log(this.isPriceSame);
+    this.populatePrice();    
+  }
+
+  storeSelectionModified(event){
+    this.store = event;
+    if(this.price===undefined && (this.priceType==="PRD" ||this.priceType==="VRT") && this.itemId && this.store && this.priceType && this.productId){
+      if(!this.initialFetchFlag){
+        this.initialFetchFlag = true;
+        this.fetchPrice();
+      }
+    }
   }
 
   populatePrice(){
-    this.saleDetailList = this.price.discounts;
     this.inStockQty = this.price.qty;
     this.maxAlwdQty = this.price.maxAlldQty;
-    this.sellPrice = this.price.unitPrice;
     this.sku = this.price.sku;
 
-    this.dataSource.data = this.saleDetailList;
+    if(this.priceType==="PRD" || this.price.unitPrice){
+      this.sellPrice = this.price.unitPrice;
+      this.saleDetailList = this.price.discounts;
+      this.dataSource.data = this.saleDetailList;
+    }else if(this.priceType==="VRT" && this.price.unitPrice===undefined){
+      this.sellPrice = this.originalProductPrice.unitPrice;
+      this.saleDetailList = this.originalProductPrice.discounts;
+      this.dataSource.data = this.saleDetailList;
+      console.log(this.saleDetailList);
+    }
   }
 
   acceptSaleDetailChanges(){
+    if(this.saleDetail.discount===0 || this.saleDetail.discountPercentage===0){
+      return;
+    }
     if(this.saleDetailList ===null || this.saleDetailList === undefined){
       this.saleDetailList = [];
     }
-    if(this.saleDetailSelectedIndex === -1){
+    if(this.saleDetailSelectedIndex === -1 && this.getSaleDetailMatchingIndex(this.saleDetail.minQty) === -1){
       this.saleDetailList.push(this.saleDetail);
-    }else{
-      this.saleDetailList[this.saleDetailSelectedIndex] = this.saleDetail;
     }
-
+    this.saleDetailList[this.saleDetailSelectedIndex] = this.saleDetail;
+    this.dataSource.data = this.saleDetailList;
     this.resetSaleDetail();
+  }
+
+  getSaleDetailMatchingIndex(qty: number){
+    for(var i=0;i<this.saleDetailList.length;i++){
+      if(this.saleDetailList[i].minQty === qty){
+        this.saleDetailSelectedIndex = i;
+        return i;
+      }
+    }
+    this.saleDetailSelectedIndex = -1;
+    return -1;
   }
 
   editSaleDetail(saleDetail, index){
@@ -127,7 +177,7 @@ export class PriceComponent implements OnInit {
   }
 
   save() {
-    var data = { 
+    var priceData = { 
       priceType: this.priceType,
       itemId: this.itemId,
       store: this.store.id,
@@ -137,13 +187,15 @@ export class PriceComponent implements OnInit {
         location: this.store.location,
         qty: this.inStockQty,
         maxAlldQty: this.maxAlwdQty,
-        unitPrice: this.sellPrice,
-        discounts: this.saleDetailList
       }
     };
   	
+    if(this.priceType==="PRD" || !this.isPriceSame){
+      priceData['data']['unitPrice'] = this.sellPrice;
+      priceData['data']['discounts'] = this.saleDetailList;
+    }
   	
-  	this.priceService.addPrice(data)
+  	this.priceService.addPrice(priceData)
   	.subscribe((result)=>{
       console.log(result);
   	});
@@ -152,23 +204,19 @@ export class PriceComponent implements OnInit {
   salePriceCalculator(value, field){
   	var qty = this.saleDetail.minQty;
   	if(field==="SALE_PRICE"){
-  		this.saleDetail.discount = +(this.sellPrice*qty-value).toFixed(0);
+  		this.saleDetail.discount = +(this.sellPrice-value).toFixed(0);
   		this.saleDetail.discountPercentage = 
-  			+((this.saleDetail.discount/(this.sellPrice*qty))*100).toFixed(1);
+  			+((this.saleDetail.discount/(this.sellPrice))*100).toFixed(1);
   	}else if(field==="DISCOUNT"){
-  		this.saleDetail.salePrice = +(this.sellPrice*qty-value).toFixed(0);
+  		this.saleDetail.salePrice = +(this.sellPrice-value).toFixed(0);
   		this.saleDetail.discountPercentage = 
-  			+((value/(this.sellPrice*qty))*100).toFixed(1);
+  			+((value/(this.sellPrice))*100).toFixed(1);
   	}else if(field==="DISCOUNT_PERCENT"){
-  		this.saleDetail.discount = +((value*this.sellPrice*qty)/100).toFixed(1);
-  		this.saleDetail.salePrice = +(this.sellPrice*qty-this.saleDetail.discount).toFixed(1);
-  	}else if(field==="QUANTITY"){
+  		this.saleDetail.discount = +((value*this.sellPrice)/100).toFixed(1);
+  		this.saleDetail.salePrice = +(this.sellPrice-this.saleDetail.discount).toFixed(1);
+  	}/* else if(field==="QUANTITY"){
   		this.saleDetail.discount = +(this.saleDetail.discountPercentage * value * this.sellPrice/100).toFixed(0);
   		this.saleDetail.salePrice = +(this.sellPrice * value - this.saleDetail.discount).toFixed(0);
-  	}
-  }
-
-  storeSelectionModified(event){
-    this.store = event;
+  	} */
   }
 }

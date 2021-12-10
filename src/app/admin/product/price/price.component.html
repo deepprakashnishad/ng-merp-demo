@@ -1,13 +1,20 @@
 <div class="store-container">
 	<app-store-selector *ngIf="false" [store]="store" (storeSelected)="storeSelected($event)"></app-store-selector>
 	<div class="container" *ngIf="true">
-		<app-store-selector (storeSelected)="storeSelectionModified($event)"></app-store-selector>
+		<div fxLayout fxLayoutGap="32px">
+			<div>
+				<app-store-selector (storeSelected)="storeSelectionModified($event)"></app-store-selector>
+			</div>
+			<div *ngIf="priceType==='VRT' && !isViewMode">
+				<mat-checkbox [(ngModel)]="isPriceSame" (change)="isPriceSameUpdated($event.checked)">Is price same as original product</mat-checkbox>
+			</div>
+		</div>
 		<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="5px">
 			<mat-form-field class="small" *ngIf="false">
 				<input matInput type="number" [(ngModel)]="costPrice" placeholder="Cost price per unit">
 			</mat-form-field>
 			<mat-form-field class="small">
-				<input matInput type="number" [(ngModel)]="sellPrice" placeholder="Selling price per unit">
+				<input matInput type="number" [(ngModel)]="sellPrice" placeholder="Selling price per unit" [disabled]="isPriceSame || isViewMode">
 			</mat-form-field>
 			<mat-form-field class="small">
 				<input matInput type="number" [(ngModel)]="inStockQty" placeholder="In Stock Quantity">
@@ -18,11 +25,10 @@
 			<mat-form-field class="medium">
 				<input matInput type="text" [(ngModel)]="sku" placeholder="Sku Id">
 			</mat-form-field>
-			<div><button mat-raised-button color="primary" (click)="save()">Save</button></div>
 		</div>
 		<div class="store-container">
 			<h3>Discount Details</h3>
-			<div fxLayout="row">
+			<div fxLayout="row" *ngIf="!isViewMode && !isPriceSame">
 				<mat-form-field class="small">
 					<input matInput type="number" [(ngModel)]="saleDetail.salePrice" placeholder="Sale Price" (input)="salePriceCalculator($event.target.value, 'SALE_PRICE')">
 				</mat-form-field>
@@ -43,6 +49,11 @@
 				  <th mat-header-cell *matHeaderCellDef> M.R.P. </th>
 				  <td mat-cell *matCellDef="let element"> {{sellPrice}} </td>
 				</ng-container>
+
+				<ng-container matColumnDef="salePrice">
+				  <th mat-header-cell *matHeaderCellDef> Sale Price </th>
+				  <td mat-cell *matCellDef="let element"> {{element.salePrice}} </td>
+				</ng-container>
 	  
 				<ng-container matColumnDef="discount">
 				  <th mat-header-cell *matHeaderCellDef> Discount </th>
@@ -62,36 +73,27 @@
 				<ng-container matColumnDef="status">
 				  <th mat-header-cell *matHeaderCellDef> Status </th>
 				  <td mat-cell *matCellDef="let element; let i = index">
-					<mat-checkbox (click)="$event.stopPropagation()"
+					<mat-checkbox *ngIf="!isPriceSame && !isViewMode" (click)="$event.stopPropagation()"
 									(change)="saleDetailSelectionToggle($event, element, index)"
 									[checked]="element.status">
 					</mat-checkbox>
+					<h5  *ngIf="isPriceSame || isViewMode">{{element.status?"Active": "Inactive"}}</h5>
 				  </td>
 				</ng-container>
 				<ng-container matColumnDef="actions">
 				  <th mat-header-cell *matHeaderCellDef> Actions </th>
 				  <td mat-cell *matCellDef="let element; let i=index">
-					  <div fxLayout>
+					  <div fxLayout *ngIf="!isViewMode && !isPriceSame">
 						<button mat-icon-button (click)="editSaleDetail(element, i)" color="error"><mat-icon>edit</mat-icon></button>
 						  <button mat-icon-button (click)="deleteSaleDetail(element, i)" color="error"><mat-icon>delete</mat-icon></button>
 					  </div>
 				  </td>
 				</ng-container>
-				<ng-container matColumnDef="select">
-				  <th mat-header-cell *matHeaderCellDef>
-					  Is Active
-				  </th>
-				  <td mat-cell *matCellDef="let element">
-					<mat-checkbox (click)="$event.stopPropagation()"
-								  (change)="selectionToggle($event, element)"
-								  [checked]="element.status=='Active'">
-					</mat-checkbox>
-				  </td>
-				</ng-container>
 	  
 				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 				<tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"></tr>
-			  </table>
+			</table>
 		</div>
+		<div *ngIf="!isViewMode"><button mat-raised-button color="primary" (click)="save()">Save</button></div>
 	</div>
 </div>

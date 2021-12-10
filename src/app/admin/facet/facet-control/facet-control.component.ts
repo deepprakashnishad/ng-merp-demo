@@ -46,12 +46,12 @@ export class FacetControlComponent implements OnInit {
 	      if (propName === "jsonFacetControl" && changes[propName].currentValue) {
 	        this.jsonFacetControl = changes[propName].currentValue;
 	        if(this.jsonFacetControl){
+				this.queue.clear();
 	        	for(var i=0;i<this.jsonFacetControl.length;i++){
-		  			this.queue.set(
-		  				this.facetService.getFacetByName(
-	  					this.jsonFacetControl[i].name),
-	  					this.jsonFacetControl[i].dispType
-		  			);
+					var mFacet = this.facetService.getFacetByName(this.jsonFacetControl[i].name);
+					if(!this.queue.has(mFacet)){
+						this.queue.set(mFacet, this.jsonFacetControl[i].dispType);
+					}
 		  		}	    	  
 	        }	        
 	      }
@@ -77,7 +77,9 @@ export class FacetControlComponent implements OnInit {
 	}
 
 	addFacetControl(){
-		this.queue.set(this.facet, this.controlType);
+		if(!this.queue.has(this.facet)){
+			this.queue.set(this.facet, this.controlType);
+		}
 		this.facet = undefined;
 		this.facetControl.setValue("");
 		this.controlType = "toggle_button";
@@ -85,8 +87,11 @@ export class FacetControlComponent implements OnInit {
 
 	emitFacetControls(){
 		let variableFacets = [];
+		this.jsonFacetControl = [];
 		this.queue.forEach((value: string, key: Facet)=>{
-			this.jsonFacetControl.push({name: key.title, dispType: value});
+			if(this.jsonFacetControl.some(ele=>ele.title===key.title) === false){
+				this.jsonFacetControl.push({name: key.title, dispType: value});
+			}
 			variableFacets.push(key);
 		});
 		this.facetControlSelected.emit({variants: this.jsonFacetControl, variableFacets: variableFacets});

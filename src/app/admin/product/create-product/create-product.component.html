@@ -8,7 +8,7 @@
 			<mat-form-field>
 				<input type="text" matInput formControlName="cntlName" required="true" [(ngModel)]="product.name" placeholder="Name" />
 			</mat-form-field>
-			<mat-form-field>
+			<mat-form-field *ngIf="false">
 				<input type="text" matInput formControlName="cntlLName" [(ngModel)]="product.lname" placeholder="Full Name" />
 			</mat-form-field>
 			<app-brand-selector [hidden]="!storeSettings?.isBrandEnabled" matInput (brandSelected)="brandSelected($event)" [brand]="product.brand"></app-brand-selector>
@@ -80,16 +80,13 @@
 		</div>
 		<app-file-uploader [uploadUrl]="'Product/uploadImages'" [data]="product" (itemUploaded)="fileUploaded($event)"></app-file-uploader>
 	</mat-step> -->
-	<mat-step label="Price &amp; Inventory">
+	<mat-step label="Price &amp; Inventory" optional="true">
 		<app-price [itemId]="product.id" [productId]="product.id" [priceType]="'PRD'"></app-price>
 	</mat-step>
 	<mat-step label="Variant Attributes" optional="true">
 		<app-facet-control (facetControlSelected)="saveFacetControlType($event)" [jsonFacetControl]="product.variants?.attrs"></app-facet-control>
 	</mat-step>
 	<mat-step label="Product Variants" optional="true">
-		<app-variant [variableFacets]="variableFacets" [product]="product"></app-variant>
-	</mat-step>
-	<mat-step label="Product Variants" optional="true" *ngIf="false">
 		<app-variant [variableFacets]="variableFacets" [product]="product"></app-variant>
 	</mat-step>
 </mat-vertical-stepper>

@@ -36,8 +36,12 @@ export class PriceService {
   			catchError(this.handleError('Get Token', null)));
   }
 
-  getPriceById(priceType, itemId, storeId): Observable<Array<any>>{
-    return this.http.get<Array<any>>(`${this.priceUrl}?id=${priceType}_${itemId}_${storeId}`)
+  getPriceById(priceType: string, itemId: string, storeId: string, productId?: string): Observable<Array<any>>{
+    var url = `${this.priceUrl}?priceType=${priceType}&id=${priceType}_${itemId}_${storeId}`;
+    if(productId && priceType==='VRT'){
+      url = `${url}&prdId=PRD_${productId}_${storeId}`;
+    }
+    return this.http.get<Array<any>>(url)
       .pipe(
         catchError(this.handleError('Get Token', null))); 
   }

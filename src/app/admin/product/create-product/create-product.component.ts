@@ -31,7 +31,7 @@ export class CreateProductComponent implements OnInit {
   longDescription: string;
   uploadPath: string;
   variableFacets: Array<Facet>=[];
-  facets: Array<Facet> = [];
+  // facets: Array<Facet> = [];
 
   storeSettings = JSON.parse(sessionStorage.getItem("storeSettings"));
 
@@ -216,7 +216,6 @@ export class CreateProductComponent implements OnInit {
       if(!this.product.variants){
         this.product.variants = {cnt:0, attrs: []};
       }
-      
       this.product.variants.attrs = $event.variants;
       this.variableFacets = $event.variableFacets;
       this.updateProduct(); 

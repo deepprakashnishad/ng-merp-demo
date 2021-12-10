@@ -5,6 +5,8 @@ import { VariantService } from './../variant.service';
 import {Facet} from './../../facet/facet';
 import {Variant} from './../variant';
 import { Product } from './../product';
+import { MatDialog } from '@angular/material/dialog';
+import { VariantEditorComponent } from './variant-editor/variant-editor.component';
 
 @Component({
   selector: 'app-variant',
@@ -24,7 +26,10 @@ export class VariantComponent implements OnInit {
 
 	variant: Variant;
 
-	constructor(private variantService: VariantService) { }
+	constructor(
+		private variantService: VariantService,
+		private dialog: MatDialog
+	) { }
 
 	ngOnInit() {
 	}
@@ -43,39 +48,14 @@ export class VariantComponent implements OnInit {
 	    }
 	}
 
-	setVariantForm(variant){
-		if(variant==null){
-			this.variant = new Variant();
-			this.variant.name = this.product.name;
-			this.variant.lname = this.product.lname;
-			this.variant.product = this.product;
-		}else{
-			this.variant = variant;
-		}
-	}
+	openVariantDialog(variant: Variant){
+		const dialogRef = this.dialog.open(VariantEditorComponent, {
+			height: "500px",
+			data:{"variant": variant, product: this.product}
+		});	
 
-	saveFacets($event){
-		this.variant.attrs=$event;
-	}
-
-	saveVariant(){
-		if(this.variant.id){
-			this.variantService.updateVariant(this.variant)
-			.subscribe(variant=>{
-				var index = this.variants.indexOf(this.variant);
-				if(index>-1){
-					this.variants[index] = variant;
-				}else{
-					this.variants.push(variant);
-				}
-				this.variant=undefined;
-			});
-		}else{
-			this.variantService.addVariant(this.variant)
-			.subscribe(variant=>{
-				this.variants.push(variant);
-				this.variant=undefined;
-			});
-		}
+		dialogRef.afterClosed().subscribe(result=>{
+			console.log(result);
+		});
 	}
 }

@@ -1,0 +1,37 @@
+<div class="container">
+  <mat-vertical-stepper linear>
+    <mat-step [stepControl]="variantForm" label="Variant title">
+      <form [formGroup]="variantForm" fxLayout="column" fxLayoutGap="16px">
+        <mat-form-field>
+          <input type="text" matInput formControlName="cntlName" required="true" [(ngModel)]="variant.name" placeholder="Name" />
+        </mat-form-field>        
+        <app-facet-value (facetValuesSelected)="saveFacets($event, 'primary')" [facetJson]="variant.attrs"></app-facet-value>
+      </form>
+      <!-- <button mat-raised-button color="primary" (click)="createProduct()">Save</button> -->
+    </mat-step>
+    <mat-step label="Price &amp; Inventory" optional="true">
+      <app-price [itemId]="variant.id" [productId]="product.id" [priceType]="'VRT'"></app-price>
+    </mat-step>
+    <mat-step label="Images" optional="true">
+      <app-uploader [uploadPath]="uploadPath" [maxAllowedFileSize]="512" (imageUploaded)="uploadCompleted($event)"></app-uploader> 
+      <div class="cdk-virtual-scroll-data-source-example" *ngIf="product?.assets?.imgs.length>0">
+        <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="5" class="example-viewport">
+          <div *cdkVirtualFor="let image of product?.assets?.imgs; let i = index">
+            <mat-card>
+              <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+                <img [src]="image['downloadUrl']" height="150px" width="150px"/>
+                <button mat-icon-button color="error" (click)="deleteImage(image, i)"><mat-icon>delete</mat-icon></button>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+      <button mat-raised-button color="primary" matStepperPrevious>Previous</button>
+      <button mat-raised-button color="primary" (click)="saveVariant()">Save</button>
+    </mat-step>
+    <!-- <mat-step label="Secondary Attributes" optional="true" *ngIf="false">
+      <app-facet-value (facetValuesSelected)="saveFacets($event, 'secondary')" [facetJson]="product.sattrs"></app-facet-value>
+    </mat-step> -->
+    
+  </mat-vertical-stepper>
+</div>
