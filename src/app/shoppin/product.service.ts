@@ -29,6 +29,12 @@ export class ProductService {
   			catchError(this.handleError('Get Token', null)));
   }
 
+  getProductsByTaxonomy(taxonomy: string): Observable<any> {
+  	return this.http.get<any>(`${this.productUrl}/getProductByTaxonomy?taxonomy=${taxonomy}`)
+  		.pipe(
+  			catchError(this.handleError('Get Token', null)));
+  }
+
   getProductById(productId): Observable<Product>{
     return this.http.get<Product>(`${this.productUrl}/${productId}`)
       .pipe(

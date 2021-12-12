@@ -54,7 +54,7 @@ export class DepartmentBarComponent implements OnInit {
       this.categories = result;
     });
 
-    this.categoryService.fetchCategoryTree().subscribe(result=>{
+    this.categoryService.fetchCategoryTree(true, true).subscribe(result=>{
       this.categoryMenuItems = result;      
     });
   }

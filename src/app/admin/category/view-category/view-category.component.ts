@@ -38,7 +38,7 @@ export class ViewCategoryComponent implements OnInit {
     });
 
   	dialogRef.afterClosed().subscribe((result) => {
-      if (result['success']) {
+      if (result?.success) {
         if (category) {
           this.categories[index] = result.category;
         } else {

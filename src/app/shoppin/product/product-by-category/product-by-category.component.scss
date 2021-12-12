@@ -6,9 +6,11 @@
     font-size: larger;
     font-weight: bold;
     position:relative;
-    width:200px;
+    width:fit-content;
     text-align:center;
     line-height:40px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 .category-title:after{
     content:"";

@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, EventEmitter, ElementRef, Inject, Input } from '@angular/core';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { Component, OnInit, ViewChild, EventEmitter, ElementRef, Inject, Input, Output } from '@angular/core';
+import {COMMA, ENTER, I} from '@angular/cdk/keycodes';
 import {  MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { FormControl } from '@angular/forms';
@@ -8,6 +8,7 @@ import { map, startWith, switchMap, filter } from 'rxjs/operators';
 import { FacetService } from '../../facet/facet.service';
 
 import { Facet } from '../../facet/facet';
+import { NotifierService } from 'angular-notifier';
 
 
 @Component({
@@ -20,6 +21,9 @@ export class FacetInputComponent implements OnInit {
 	@Input()
 	inputLabel : string = "Facets..."
 
+	@Output()
+	facetListModified: EventEmitter<Array<Facet>> = new EventEmitter();
+
 	public facets: Array<Facet>=[];
   	allFacets: Array<Facet>;
   	facetFilteredList: Observable<any[]>;
@@ -31,24 +35,30 @@ export class FacetInputComponent implements OnInit {
   	
   	constructor(
   		private facetService: FacetService,
+		private notifier: NotifierService
   	) { }
 
   	ngOnInit() {
-  		this.facetService.getFacets().subscribe(facets => this.allFacets = facets);
-	  	this.facetFilteredList = this.facetControl.valueChanges.pipe(
-	    startWith(''),
-	    map((filterStr: string | null) => {
-	      return this._filter(filterStr, this.allFacets)
-	    }));
+  		this.facetService.getFacets().subscribe(facets => {
+			this.allFacets = facets
+			this.facetFilteredList = this.facetControl.valueChanges.pipe(
+			startWith(''),
+			map((filterStr: string | null) => {
+				return this._filter(filterStr, this.allFacets)
+			}));
+		});
   	}
 
   	_filter(value:string, list: Array<any>): Array<any>{
+		if(this.facets === undefined){
+			this.facets = [];
+		}
 	    if(value && typeof value==="string"){
 	      const filterValue = value.toLowerCase();
 	        return list.filter(option => (option.title.toLowerCase()
-	        	.includes(filterValue)) && this.facets.indexOf(option)<0);  
+	        	.includes(filterValue)) && this.facets?.indexOf(option)<0);  
 	    } else if(list){
-	      return list.filter(option => this.facets.indexOf(option)<0);
+	      return list.filter(option => this.facets?.indexOf(option)<0);
 	    }
 	  } 
 
@@ -56,6 +66,8 @@ export class FacetInputComponent implements OnInit {
 	    this.facets.push(event.option.value);
 	    this.facetControl.setValue(null);
 	    this.facetInput.nativeElement.value='';
+
+		this.facetListModified.emit(this.facets);
 	}
 
 	remove(facet: Facet): void {
@@ -76,7 +88,7 @@ export class FacetInputComponent implements OnInit {
 	      .subscribe((facet)=>{
 	      	this.facets.push(facet);
 	      	this.allFacets.push(facet);
-	      }, (err)=>alert("Could not create facet"));
+	      }, (err)=>this.notifier.notify("error", "Could not create facet"));
 	    }
 
 	    // Reset the input value

@@ -4,6 +4,17 @@
     border-radius: 16px;
 }
 
+.img-container{
+    overflow: hidden;
+}
+
+.cat-image{
+    width: 95%;
+    min-width: 50px;
+    min-height: 50px;
+    height: auto;
+}
+
 .container{
     padding: 16px;
 }

@@ -10,9 +10,12 @@ import { ProductService } from './../../product.service';
 export class ProductByCategoryComponent implements OnInit {
 
   selectedCategoryId: string;
-  productsByCategory: any;
+  productsByCategory: any = {};
+  ancestors: string;
   slidesPerView = 4;
   isProductExists: boolean;
+
+  categories: Map<string, string> = JSON.parse(localStorage.getItem("cat-map"))['catMap'];
 
   constructor(
     private route: ActivatedRoute,
@@ -21,16 +24,27 @@ export class ProductByCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params=>{
-      this.selectedCategoryId = params['id'];
-      this.getProductsByCategory();
+      if(params['ancestors']){
+        this.ancestors = params['ancestors'];
+
+      }
+      if(params['id']){
+        this.selectedCategoryId = params['id'];
+        this.getProductsByCategoryId();
+      }
     });
   }
 
-  getProductsByCategory(){
+  getProductsByCategoryId(){
     this.productService.getProductsByCategory(this.selectedCategoryId).subscribe(result=>{
-      delete result['success'];
       delete result['msg'];
-      this.productsByCategory = result;
+      delete result['success'];
+      for (const [key, value] of Object.entries(result)) {
+        var tempList = key.split("/");
+        var finalKey = tempList.map(ele=>this.categories[ele]).join(" / ");
+        this.productsByCategory[finalKey] = value;
+      }
+
       if(this.productsByCategory && Object.keys(this.productsByCategory).length>0){
         this.isProductExists = true;
       }else{
@@ -39,4 +53,21 @@ export class ProductByCategoryComponent implements OnInit {
     });
   }
 
+  getProductsByAncestors(){
+    this.productService.getProductsByTaxonomy(this.ancestors).subscribe(result=>{
+      delete result['msg'];
+      delete result['success'];
+      for (const [key, value] of Object.entries(result)) {
+        var tempList = key.split("/");
+        var finalKey = tempList.map(ele=>this.categories[ele]).join(" / ");
+        this.productsByCategory[finalKey] = value;
+      }
+
+      if(this.productsByCategory && Object.keys(this.productsByCategory).length>0){
+        this.isProductExists = true;
+      }else{
+        this.isProductExists = false;
+      }
+    });
+  }
 }

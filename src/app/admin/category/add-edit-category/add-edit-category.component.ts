@@ -33,7 +33,7 @@ export class AddEditCategoryComponent implements OnInit {
   	private categoryService: CategoryService,
   	private fb: FormBuilder,
   	public dialogRef: MatDialogRef<AddEditCategoryComponent>,
-    private authenticationService: AuthenticationService,
+    // private authenticationService: AuthenticationService,
     private notifier: NotifierService,
     private cdr: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -50,9 +50,9 @@ export class AddEditCategoryComponent implements OnInit {
   ngAfterViewInit(): void {
     if(this.data && this.data.category){
   		this.category = this.data.category;
-      this.categoryInput.categories = this.category.childrens;
+      /* this.categoryInput.categories = this.category.childrens;
       this.primaryFacetsInput.facets = this.category.primaryFacets;
-      this.secondaryFacetsInput.facets = this.category.secondaryFacets;
+      this.secondaryFacetsInput.facets = this.category.secondaryFacets; */
       this.filterFacetsInput.facets = this.category.filterFacets;
       this.uploadPath = `categories/${this.category.id}`;
       this.title = `Edit ${this.data.category.title}`;
@@ -71,9 +71,9 @@ export class AddEditCategoryComponent implements OnInit {
         this.notifier.notify("error", err.error.msg);
       });
   	}else{
-      category.childrens = this.categoryInput.categories;
+      /* category.childrens = this.categoryInput.categories;
       category.primaryFacets = this.primaryFacetsInput.facets;
-      category.secondaryFacets = this.secondaryFacetsInput.facets;
+      category.secondaryFacets = this.secondaryFacetsInput.facets; */
       category.filterFacets = this.filterFacetsInput.facets;
   		this.categoryService.updateCategory(category)
   		.subscribe((category)=>{
@@ -86,5 +86,9 @@ export class AddEditCategoryComponent implements OnInit {
 
   uploadCompleted($event){
     this.category.imgs = $event;
+  }
+
+  facetListUpdated(event){
+    this.category.filterFacets = event;
   }
 }

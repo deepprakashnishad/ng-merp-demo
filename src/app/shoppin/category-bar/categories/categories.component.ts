@@ -45,7 +45,7 @@ export class CategoriesComponent implements OnInit{
 
   navigateToSubCat(node: CategoryTreeNode) {
     if (node.childrens.length === 0) {
-      this.router.navigate(['/product-by-category'], { queryParams: node.category });
+      this.router.navigate(['/product-by-category'], { queryParams: {ancestors: node.ancestors} });
     } else {
       this.nodeNavigation.push(this.displayedNodes);
       this.displayedNodes = node.childrens;

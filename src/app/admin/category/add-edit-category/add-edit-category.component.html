@@ -19,7 +19,7 @@
 			<input type="text" matInput formControlName="title" [(ngModel)]="category.title"/>
 		</mat-form-field>
 		<div fxLayout fxLayoutAlign="space-between">
-			<mat-checkbox [(ngModel)]="category.isDepartment"
+			<mat-checkbox *ngIf="false" [(ngModel)]="category.isDepartment"
 										labelPosition="before" formControlName="isDepartment">Is Department</mat-checkbox>
 			<mat-form-field appearance="outline">
 				<mat-label>Sort Index</mat-label>
@@ -27,17 +27,14 @@
 			</mat-form-field>
 		</div>
 		
-		<app-category-chip-input #categoryInput inputLabel="Children Categories"[excludeCategory]="category"></app-category-chip-input>
+		<app-category-chip-input *ngIf="false" #categoryInput inputLabel="Children Categories"[excludeCategory]="category"></app-category-chip-input>
 		<app-uploader *ngIf="category.id" [maxAllowedFileSize]="50" [uploadPath]="uploadPath" [isMultiple]="false" (imageUploaded)="uploadCompleted($event)"></app-uploader>
 		<mat-card *ngIf="category.imgs && category.imgs['downloadUrl']">
 			<mat-card-content fxLayout="column" fxLayoutAlign="center center">
 				<img [src]="category.imgs['downloadUrl']" height="150" width="150"/>
 			</mat-card-content>
 		</mat-card>
-		<app-facet-input #primaryFacetsInput inputLabel="Primary Facets"></app-facet-input>
-		
-		<app-facet-input #secondaryFacetsInput inputLabel="Secondary Facets"></app-facet-input>
-		<app-facet-input #filterFacetsInput inputLabel="Filter Facets"></app-facet-input>
+		<app-facet-input #filterFacetsInput (facetListModified)="facetListUpdated($event)" inputLabel="Filter Facets"></app-facet-input>
 	</mat-dialog-content>
 	<mat-dialog-actions> 
 		<button type="button" mat-raised-button color="primary"

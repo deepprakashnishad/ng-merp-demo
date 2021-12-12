@@ -19,7 +19,7 @@
 	</main>
 	<!-- Footer -->
 	<footer *ngIf="isShowNavigation">
-		<mat-toolbar sticky class="toolbarNav" fx.hide.gt-md fxLayout fxLayoutAlign="space-between center">
+		<mat-toolbar fxHide.gt-sm="true" sticky class="toolbarNav" fx.hide.gt-md fxLayout fxLayoutAlign="space-between center">
 			<button mat-icon-button routerLink="/" routerLinkActive="active-link">
 				<mat-icon class="material-icons color_blue">
 					home

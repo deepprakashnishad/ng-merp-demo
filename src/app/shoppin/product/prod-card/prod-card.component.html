@@ -2,7 +2,7 @@
   <mat-card-content>
     <div class="img-container responsive-img" fxLayout="column" fxFlexAlign="center space-between">
       <img fxFlexAlign="center" class="mouse-hand" [src]="product?.assets?.imgs[0]?.downloadUrl" height="180px" width="180px" (click)="showDetail()"/>
-      <div>{{product.brand.sname? product.brand.sname: product.brand.lname}}</div>
+      <div>{{product.brand?.sname}}</div>
       <div class="full-width title  mouse-hand"  (click)="showDetail()">{{product.name}}</div>
       <div class="weight">{{product.attrs["Weight"]}}</div>
     </div>
@@ -15,9 +15,7 @@
           <div class="price">{{product.discount[0].salePrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
           <div class="full-width center discount" 
             *ngIf="product.discount!=null && product.discount[0]!=null">
-              {{product.discount[0]?.title?
-                product.discount[0]?.title: 
-                product.discount[0]?.discountPercentage+"% off"}}
+              {{product.discount[0]?.discountPercentage+"% discount"}}
           </div>
         </div>
         <div class="price" *ngIf="product.discount==null || product.discount?.length===0">{{product.sellPrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>

@@ -24,6 +24,8 @@ export class CategoryTreeNodeComponent implements OnInit {
 	errors: Array<string>=[];
 	categoryCntl=new FormControl();
 
+	// selectedNodeChildrens: Array<string> = [];
+
   constructor(
   	private fb: FormBuilder,
 	private snackBar: MatSnackBar,
@@ -35,10 +37,14 @@ export class CategoryTreeNodeComponent implements OnInit {
   ) { 
     if(data.node!==null && data.node!==undefined && data.mode === 'add'){
       this.parentId = data.node.id;
+	  this.title = `Add sub-category to ${data.node.title}`;
+	//   this.selectedNodeChildrens = data.node.childrens.map(ele=>ele.id);
+	//   console.log(this.selectedNodeChildrens);
     }else if(data.mode === 'edit'){
       this.category = data.node.category;
-    }else if(data.node===null && data.node===undefined && data.mode === 'add'){
+    }else if((data.node===null || data.node===undefined) && data.mode === 'add'){
     	this.parentId = null;
+		this.title = `Add new department`;
     }
     this.categories = data.categories;
   }
@@ -47,10 +53,8 @@ export class CategoryTreeNodeComponent implements OnInit {
   	if(this.data.mode=="edit"){
   		console.log(this.data.node.category);
   	  this.category = this.data.node.category;
-      this.title = `Edit ${this.data.node.title}`;
   	}else{
   		this.category = new Category();
-      this.title = "Add New Category";
   	}
 
   	this.categoryFilteredList = this.categoryCntl.valueChanges.pipe(
@@ -64,7 +68,7 @@ export class CategoryTreeNodeComponent implements OnInit {
 	    if(value && typeof value==="string"){
 	      const filterValue = value.toLowerCase();
 	        return list.filter(option => (option.title.toLowerCase()
-	        	.includes(filterValue)));  
+	        	.includes(filterValue.toLowerCase())));  
 	    } else if(list){
 	      return list;
 	    }
@@ -91,7 +95,7 @@ export class CategoryTreeNodeComponent implements OnInit {
 			updatedNode.category = this.category;
 			updatedNode.title = this.category.title;
 			updatedNode.ancestors = this.data.node.ancestors
-									.replace(this.data.node.title, this.category.title);
+									.replace(this.data.node.id, this.category.id);
 		}
 	}
 }

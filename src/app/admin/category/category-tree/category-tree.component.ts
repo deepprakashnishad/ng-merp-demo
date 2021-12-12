@@ -91,7 +91,6 @@ export class CategoryTreeComponent implements OnInit {
     }else{
       selectedNode = null;
     }
-  	
     const dialogRef = this.dialog.open(CategoryTreeNodeComponent,{
       height: '400px',
       width: '900px',

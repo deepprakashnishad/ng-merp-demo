@@ -60,7 +60,6 @@ export class CategoryService {
   }
 
   addCategoryNode(category, parent): Observable<any> {
-
     return this.http.post<CategoryTreeNode>(
       this.categoryTreeUrl, 
       {category: category, parent: parent})
@@ -81,8 +80,10 @@ export class CategoryService {
        catchError(this.handleError('Delete Category', null)));
   }
 
-  fetchCategoryTree(populateCategory: boolean = false): Observable<Array<CategoryTreeNode>>{
-    return this.http.get<CategoryTreeNode>(`${this.categoryUrl}/fetchCategoryTree?populateCategory=${populateCategory}`)
+  fetchCategoryTree(populateCategory: boolean = false, onlyDepartments: boolean = false): Observable<Array<CategoryTreeNode>>{
+    return this.http.get<CategoryTreeNode>(
+      `${this.categoryUrl}/fetchCategoryTree?populateCategory=${populateCategory}&onlyDepartments=${onlyDepartments}`
+      )
       .pipe(
         catchError(this.handleError('Get Token', null)));   
   }
