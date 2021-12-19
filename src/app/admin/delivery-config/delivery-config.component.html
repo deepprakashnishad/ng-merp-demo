@@ -6,4 +6,35 @@
     <mat-icon>attach_file</mat-icon>
     Select File
   </button>
+  <mat-card>
+    <mat-card-title>New Pincode</mat-card-title>
+    <mat-card-content>
+      <div fxLayout fxLayoutGap="32px">
+        <div>
+          <app-store-selector (storeSelected)="storeSelectionModified($event)"></app-store-selector>
+        </div>
+        <div>
+          <mat-checkbox [(ngModel)]="status">Is Active</mat-checkbox>
+        </div>
+        <mat-form-field class="small">
+          <input matInput type="text" [(ngModel)]="pincode" placeholder="Pincode">
+        </mat-form-field>
+        <div>
+          <button mat-raised-button (click)="save()" color="primary">Save</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <div>
+    <h3>Existing Pincode List</h3>
+    <mat-list>
+      <mat-list-item *ngFor="let item of items; let i=index">
+        <div fxLayout fxLayoutAlign="start center" fxLayoutGap="32px">
+          <h4>{{item.pincode}}</h4>
+          <mat-checkbox [(ngModel)]="item.status" (change)="pincodeStatusUpdated(item)">Is Active</mat-checkbox>
+          <div><button mat-icon-button color="error" (click)="removePincode(item, i)"><mat-icon>delete</mat-icon></button></div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
 </div>

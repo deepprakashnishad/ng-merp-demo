@@ -11,6 +11,7 @@ export class Order{
     items: Array<OrderItem>;
     netPrice: number;
     netSaving: number;
+    deliveryCharge: number;
     amountPaid: number;
     status: string;
     modeOfPayment: string;
@@ -24,6 +25,7 @@ export class Order{
         order.netPrice = data['netPrice'];
         order.netSaving = data['netSaving'];
         order.amountPaid = data['amountPaid'];
+        order.deliveryCharge = data['deliveryCharge'];
         order.status = data['status'];
         order.modeOfPayment = data['modeOfPayment'];
         if (fetchDetail) {
@@ -67,27 +69,32 @@ export class Fulfillment{
 
 export class OrderItem{
     id: string;
-    prodId: string;
+    product: string;
+    variant: string;
     brand: Brand;
-    sName: string;
-    lName: string;
+    name: string;
     qty: number;
     sellPrice: number;
     discount: Array<SaleDetail>;
     tax: number;
+    attrs: any;
 
     static fromJSONArray(data){
         var items = [];
         data.forEach(ele => {
             var item = new OrderItem();
-            item.sName = ele['name'];
-            item.prodId = ele['prodId'];
+            item.name = ele['name'];
+            item.product = ele['product'];
+            item.variant = ele['variant'];
             item.id = ele['id'];
             item.qty = ele['qty'];
             item.tax = ele['tax'];
             item.discount = ele['discount'];
-          item.sellPrice = ele['sellPrice'];
-          item.brand = ele['brand'];
+            item.sellPrice = ele['sellPrice'];
+            item.brand = ele['brand'];
+            if(ele['attrs']){
+                item.attrs = ele['attrs'];
+            }
             items.push(item);
         });
         return items;

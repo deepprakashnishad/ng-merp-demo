@@ -41,6 +41,11 @@ const routes: Routes = [
 		data: { title: 'Product Detail', permissions: []}
 	},
 	{
+		path: 'product/:id/:variantId', 
+		component: ProductDetailComponent,
+		data: { title: 'Product Detail', permissions: []}
+	},
+	{
 		path: 'order-detail/:id', 
 		component:OrderDetailComponent,
 		canActivate: [AuthGuardService], 

@@ -38,22 +38,22 @@ export class NavigationComponent implements OnInit, AfterViewInit {
 	isLoggedIn: boolean  = false;
 	isSidebarOpen: boolean = false;
 	name: String;
-  pages: Array<Page> = [];
-  @ViewChild(DepartmentBarComponent) categoryBar: DepartmentBarComponent;
-  @ViewChild("navToolbar") navToolbar;
-  minOrder = environment.minOrderFreeDelivery;
-  storeSettings: any = JSON.parse(sessionStorage.getItem("storeSettings"));
+	pages: Array<Page> = [];
+	@ViewChild(DepartmentBarComponent) categoryBar: DepartmentBarComponent;
+	@ViewChild("navToolbar") navToolbar;
+	minOrder = environment.minOrderFreeDelivery;
+	storeSettings: any = JSON.parse(sessionStorage.getItem("storeSettings"));
 
-  isLeftBarOpen: boolean = false;
+	isLeftBarOpen: boolean = false;
 
 	private readonly SHRINK_TOP_SCROLL_POSITION = 5;
 	shrinkToolbar = false;
-  elementPosition: any;
+  	elementPosition: any;
 
   	constructor(
 		private authenticationService: AuthenticationService,
-    private router: Router,
-    private storageService: StorageService,
+		private router: Router,
+		private storageService: StorageService,
 		private titleService: Title,
 		private renderer: Renderer2,
 		private ngZone: NgZone,

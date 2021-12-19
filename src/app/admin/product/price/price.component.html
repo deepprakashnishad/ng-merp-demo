@@ -14,13 +14,13 @@
 				<input matInput type="number" [(ngModel)]="costPrice" placeholder="Cost price per unit">
 			</mat-form-field>
 			<mat-form-field class="small">
-				<input matInput type="number" [(ngModel)]="sellPrice" placeholder="Selling price per unit" [disabled]="isPriceSame || isViewMode">
+				<input matInput type="number" [(ngModel)]="sellPrice"  min="0.01" (input)="unitPriceUpdated($event.target.value)" placeholder="Selling price per unit" [disabled]="isPriceSame || isViewMode">
 			</mat-form-field>
 			<mat-form-field class="small">
-				<input matInput type="number" [(ngModel)]="inStockQty" placeholder="In Stock Quantity">
+				<input matInput type="number" [(ngModel)]="inStockQty" min="0" placeholder="In Stock Quantity">
 			</mat-form-field>
 			<mat-form-field class="medium">
-				<input matInput type="number" [(ngModel)]="maxAlwdQty" placeholder="Max Allowed Qty for purchase">
+				<input matInput type="number" [(ngModel)]="maxAlwdQty" min="0" placeholder="Max Allowed Qty for purchase">
 			</mat-form-field>
 			<mat-form-field class="medium">
 				<input matInput type="text" [(ngModel)]="sku" placeholder="Sku Id">

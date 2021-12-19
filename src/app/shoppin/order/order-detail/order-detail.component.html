@@ -79,9 +79,15 @@
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Item </th>
             <td mat-cell *matCellDef="let element">
-              <a [routerLink]="'/product/' + element.prodId" target="_blank">
-                {{element.sName}}
+              <a *ngIf="element.variant==undefined || element.variant==null" 
+              [routerLink]="'/product/' + element.product" target="_blank">
+                {{element.name}}
               </a>
+              <a *ngIf="element.variant!=undefined || element.variant!=null" 
+              [routerLink]="'/product/' + element.product+'/'+element.variant" target="_blank">
+                {{element.name}}
+              </a>
+              <div class="attributes">{{getAttributeString(element.attrs)}}</div>
             </td>
             <td mat-footer-cell *matFooterCellDef><span *ngIf="order.netSaving>0">{{order?.netSaving | currency:'INR':'symbol-narrow'}}</span></td>
           </ng-container>
@@ -89,9 +95,9 @@
           <ng-container matColumnDef="brand">
             <th mat-header-cell *matHeaderCellDef> Brand </th>
             <td mat-cell *matCellDef="let element">
-              {{element.brand.sname}}
+              <div *ngIf="element.brand!=undefined && element.brand!=null">{{element.brand.sname}}</div>
             </td>
-            <td mat-footer-cell *matFooterCellDef><span *ngIf="order.netSaving>0">{{order?.netSaving | currency:'INR':'symbol-narrow'}}</span></td>
+            <td mat-footer-cell *matFooterCellDef><span>{{order.deliveryCharge>0?"Delivery Charge": "Free Delivery"}}</span></td>
           </ng-container>
 
           <ng-container matColumnDef="unitPrice">
@@ -100,7 +106,7 @@
               <div *ngIf="element.discount==null || element.discount?.length==0">{{element.sellPrice}}</div>
               <div *ngIf="element.discount?.length>0">{{element?.discount[0]?.salePrice}}</div>
             </td>
-            <td mat-footer-cell *matFooterCellDef> </td>
+            <td mat-footer-cell *matFooterCellDef><span *ngIf="order.deliveryCharge>0">{{order.deliveryCharge}}</span></td>
           </ng-container>
 
           <!-- Symbol Column -->

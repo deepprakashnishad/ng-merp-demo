@@ -154,10 +154,6 @@ export class CreateProductComponent implements OnInit {
     }
 
   	createProduct(){
-  		if(this.product.brand === null || this.product.brand === undefined){
-  			alert("Brand is required.");
-        return;
-  		}
 
       if(this.product.id === undefined){
         this.productService.addProduct(this.product)
@@ -234,8 +230,6 @@ export class CreateProductComponent implements OnInit {
     }
 
     navigateBack(){
-      console.log("Hare Krishna");
-      
       this.location.back();
     }
 }

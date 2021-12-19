@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import readXlsxFile from 'read-excel-file';
+import { Store } from '../store/store';
 import { DeliveryService } from './delivery.service';
 
 @Component({
@@ -14,12 +15,24 @@ export class DeliveryConfigComponent implements OnInit {
   tempPincodes: Array<any> = [];
   csvContent: string;
 
+  status: boolean = true;
+  pincode: string;
+  selectedStore: Store = new Store();
+
+  items: Array<any> = [];
+
   constructor(
     private deliveryService: DeliveryService,
     private notifier: NotifierService
   ) { }
 
   ngOnInit() {
+  }
+
+  fetchPincodes(){
+    this.deliveryService.getPincodeListByStore(this.selectedStore.id).subscribe(result=>{
+      this.items = result;
+    })
   }
 
   onClickFileInputButton(): void {
@@ -47,7 +60,6 @@ export class DeliveryConfigComponent implements OnInit {
             this.tempPincodes.push({pincode: allTextLines[i], status:"Active"});
           }
         }
-        console.log(this.tempPincodes);
         this.deliveryService.bulkUploadPincodes(this.tempPincodes).subscribe((result)=>{
           this.notifier.notify("success", "Data updates successfully");
         });
@@ -56,17 +68,46 @@ export class DeliveryConfigComponent implements OnInit {
   
   }
 
-  /* onChangeFileInput(input: HTMLInputElement): void {
-    const files: File[] = this.fileInput.nativeElement.files;
-    readXlsxFile(files[0]).then((rows) => {
-      rows.forEach(row => {
-        this.tempPincodes.push({"pincode": row[0], "status": "Active"});        
-      });
-    })
-    this.deliveryService.bulkUploadPincodes(this.tempPincodes).subscribe((result)=>{
-      this.notifier.notify("success", "Data updates successfully");
-    });
-  
-  } */
+  storeSelectionModified(store){
+    if(store){
+      this.selectedStore = store;
+      this.fetchPincodes();
+    }
+  }
 
+  pincodeStatusUpdated(item){
+    this.deliveryService.savePincode(
+      {pincode: item.pincode, store: item.store, status: item.status}
+    ).subscribe(result=>{
+      if(result['success']){
+        this.notifier.notify("success", result['msg']);
+      }else{
+        this.notifier.notify("error",  result['msg']);
+      }
+    });
+  }
+
+  save(){
+    this.deliveryService.savePincode(
+      {pincode: this.pincode, store: this.selectedStore.id, status: this.status}
+    ).subscribe(result=>{
+      if(result['success']){
+        this.items.push({pincode: this.pincode, store: this.selectedStore.id, status: this.status});
+        this.notifier.notify("success", result['msg']);
+      }else{
+        this.notifier.notify("error",  result['msg']);
+      }
+    });
+  }
+
+  removePincode(item, index){
+    this.deliveryService.deletePincode(item.pincode, this.selectedStore.id).subscribe(result=>{
+      if(result['success']){
+        this.items.splice(index,1);
+        this.notifier.notify("success", result['msg']);
+      }else{
+        this.notifier.notify("error",  result['msg']);
+      }
+    });
+  }
 }

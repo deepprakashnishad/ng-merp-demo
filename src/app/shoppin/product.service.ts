@@ -35,8 +35,8 @@ export class ProductService {
   			catchError(this.handleError('Get Token', null)));
   }
 
-  getProductById(productId): Observable<Product>{
-    return this.http.get<Product>(`${this.productUrl}/${productId}`)
+  getProductById(productId): Observable<Array<Product>>{
+    return this.http.get<Array<Product>>(`${this.productUrl}/${productId}`)
       .pipe(
         catchError(this.handleError('Get Token', null))); 
   }

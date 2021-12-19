@@ -11,6 +11,7 @@ import { Product } from 'src/app/admin/product/product';
 import { CartItem } from 'src/app/shoppin/cart/cart';
 import { J } from '@angular/cdk/keycodes';
 import { NotifierService } from 'angular-notifier';
+import { Price } from 'src/app/admin/product/price';
 
 @Injectable({
   providedIn: 'root'
@@ -55,10 +56,10 @@ export class CartService implements OnDestroy {
   getTotalAmount(): number{
     var cartItems: Array<CartItem> = CartItem.fromJSON(JSON.parse(localStorage.getItem("cart")));
     return cartItems.reduce((total, item)=>{
-      if(item['product'].discount?.length>0){
-        total = total + item['product'].discount[0].salePrice*item.qty;
+      if(item.selectedPrice?.discounts?.length>0){
+        total = total + this.getDiscountedPrice(item.qty, item.selectedPrice.discounts).salePrice*item.qty;
       }else{
-        total = total + item['product'].sellPrice*item.qty;
+        total = total + item.selectedPrice?.unitPrice*item.qty;
       }
       return total;
     }, 0);
@@ -67,11 +68,26 @@ export class CartService implements OnDestroy {
   getTotalSavings(): number{
     var cartItems: Array<CartItem> = CartItem.fromJSON(JSON.parse(localStorage.getItem("cart")));
     return cartItems.reduce((total, item)=>{
-      if(item['product'].discount?.length>0){
-        total = total + item['product'].discount[0].discount*item.qty;
+      if(item.selectedPrice.discounts?.length>0){
+        total = total + this.getDiscountedPrice(item.qty, item.selectedPrice.discounts).discount*item.qty;
       }
       return total;
     }, 0);
+  }
+
+  getDiscountedPrice(qty, discounts){
+    var selectedDiscount;
+    for(var i=0; i < discounts.length;i++){
+      if(discounts[i]?.minQty === 1 && selectedDiscount === undefined && (qty===0||qty===undefined)){
+        selectedDiscount = discounts[i];
+      }else if(discounts[i]?.minQty <= qty && (selectedDiscount?.minQty < discounts[i]?.minQty || selectedDiscount===undefined)){
+        selectedDiscount = discounts[i];
+      }else if(discounts[i]?.minQty <= qty && qty<selectedDiscount?.minQty && selectedDiscount?.minQty > discounts[i].minQty){
+        selectedDiscount = discounts[i];
+      }
+    }
+
+    return selectedDiscount;
   }
 
   getItemQty(productId){
@@ -87,11 +103,11 @@ export class CartService implements OnDestroy {
     return 0;
   }
 
-  updateCart(product: Product, qty){
+  updateCart(product: any, qty: number, selectedPrice: Price){
     var cart = JSON.parse(localStorage.getItem("cart"));
     var FOUND_FLAG = false
     if(cart == null){
-      cart = [{product: product, qty: qty}];
+      cart = [{product: product, qty: qty, "selectedPrice": selectedPrice}];
     }else{
       for(let i=0;i<cart.length;i++){
         if(cart[i]['product']['id'] === product.id && qty!==0){
@@ -105,14 +121,24 @@ export class CartService implements OnDestroy {
         }
       }
       if(!FOUND_FLAG && qty>0){
-        cart.push({product: product, qty: qty});
+        cart.push({product: product, qty: qty, "selectedPrice": selectedPrice});
       }
     }
     localStorage.setItem("cart", JSON.stringify(cart));
     this.onSubject.next({ key: "cart", value: cart});
     if(this.authService.isLoggedIn.getValue()){
+      var postData = {
+        qty: qty, 
+        "selectedPrice": selectedPrice.id
+      };
+      if(product.product !== undefined && product.product !== null){
+        postData['product'] = product.product;
+        postData['variant'] = product.id;
+      }else{
+        postData['product'] = product.id;
+      }
       return this.http.put<any>(
-        this.url, {product: product, qty: qty})
+        this.url, postData)
         .pipe(
           catchError(this.handleError('Update cart', null))
         );
@@ -133,11 +159,11 @@ export class CartService implements OnDestroy {
     this.onSubject.next({ key: "cart", value: [] });
   }
 
-  updateLocalCart(product: Product, qty){
+  updateLocalCart(product: Product, qty: number, selectedPrice: Price){
     var cart = JSON.parse(localStorage.getItem("cart"));
     var FOUND_FLAG = false
     if(cart == null){
-      cart = [{product: product, qty: qty}];
+      cart = [{product: product, qty: qty, selectedPrice: selectedPrice}];
     }else{
       for(let i=0;i<cart.length;i++){
         if(cart[i]['product']['id'] === product.id && qty!==0){
@@ -151,7 +177,7 @@ export class CartService implements OnDestroy {
         }
       }
       if(!FOUND_FLAG && qty>0){
-        cart.push({product: product, qty: qty});
+        cart.push({product: product, qty: qty, selectedPrice: selectedPrice});
       }
     }
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -160,16 +186,25 @@ export class CartService implements OnDestroy {
 
   syncCart(){
     var cartItems: Array<CartItem> = JSON.parse(localStorage.getItem("cart"));
-    if(cartItems!==null && cartItems.length>0){
-      var cart = cartItems.map(item=>{
-        return {id: item.id, product: item.product.id, qty: item.qty};
-      });
-      return this.http.put<any>(
-        this.url+"/syncCart", cart)
-        .pipe(
-          catchError(this.handleError('Sync cart', null))
-        );
-    }
+    var cart = cartItems?.map(item=>{
+      var cartItemData = {
+        id: item.id, 
+        qty: item.qty, 
+        selectedPrice: item.selectedPrice?.id
+      };
+      if(item.product.product !== undefined && item.product.product !== null){
+        cartItemData['variant'] = item.product.id;
+        cartItemData['product'] = item.product.product;
+      }else{
+        cartItemData['product'] = item.product.id;
+      }
+      return cartItemData;
+    });
+    return this.http.put<any>(
+      this.url+"/syncCart", cart)
+      .pipe(
+        catchError(this.handleError('Sync cart', null))
+      );
   }
 
   getCart(){
@@ -189,18 +224,18 @@ export class CartService implements OnDestroy {
     return JSON.parse(localStorage.getItem("cart"));
   }
 
-  validateNewQuantity(product, qty) {
-    if (qty > product.maxAlwdQty) {
-      this.notifier.notify("error", `Maximum allowed quantity is ${product.maxAlwdQty}`);
+  validateNewQuantity(product, qty, selectedPrice: Price) {
+    if (qty > selectedPrice.maxAlldQty) {
+      this.notifier.notify("error", `Maximum allowed quantity is ${selectedPrice.maxAlldQty}`);
       return false;
     }
 
-    if (qty > product.qty) {
-      var msg = `Only ${product.qty} ${product.qty === 1 ? 'is' : 'are'} available`;
+    if (qty > selectedPrice.qty) {
+      var msg = `Only ${selectedPrice.qty} ${selectedPrice.qty === 1 ? 'is' : 'are'} available`;
       if (product.qty === 0) {
         msg = "Out of stock";
       }
-      this.notifier.notify("error", `Only ${product.qty} ${product.qty === 1 ? 'is' : 'are'} available`);
+      this.notifier.notify("error", `Only ${selectedPrice.qty} ${selectedPrice.qty === 1 ? 'is' : 'are'} available`);
       return false;
     }
     return true;

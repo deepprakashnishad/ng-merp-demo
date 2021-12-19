@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
+import { Price } from 'src/app/admin/product/price';
 import { Product } from 'src/app/admin/product/product';
 import { CartService } from '../cart.service';
 
@@ -12,6 +13,8 @@ import { CartService } from '../cart.service';
 export class AddToCartButtonComponent implements OnInit {
 
   @Input("product") product: Product;
+
+  @Input("selectedPrice") selectedPrice: Price;
   qtyControl = new FormControl('');
   qty: number;
 
@@ -35,9 +38,9 @@ export class AddToCartButtonComponent implements OnInit {
   }
 
   updateQuantity(qty) {
-    if (this.cartService.validateNewQuantity(this.product, qty)) {
+    if (this.cartService.validateNewQuantity(this.product, qty, this.selectedPrice)) {
       this.qty = qty;
-      this.cartService.updateCart(this.product, this.qty).subscribe(result => {
+      this.cartService.updateCart(this.product, this.qty, this.selectedPrice).subscribe(result => {
         if (result) {
           this.notifierService.notify("success", "Cart updated successfully");
         } else {

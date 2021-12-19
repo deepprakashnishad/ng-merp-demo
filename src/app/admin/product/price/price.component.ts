@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, SimpleChange, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, SimpleChange, AfterViewInit, Inject, Optional } from '@angular/core';
 import { PriceService } from './../price.service';
 import { SaleDetail } from './../sale-detail';
 import { Store } from './../../store/store'
@@ -7,6 +7,7 @@ import { ProductService } from '../product.service';
 import { NotifierService } from 'angular-notifier';
 import { MatTableDataSource } from '@angular/material/table';
 import { I } from '@angular/cdk/keycodes';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-price',
@@ -16,7 +17,7 @@ import { I } from '@angular/cdk/keycodes';
 export class PriceComponent implements OnInit {
 
   @Input()
-  priceType: string;
+  priceType: string = "PRD";
 
   @Input()
   productId: string;
@@ -54,8 +55,24 @@ export class PriceComponent implements OnInit {
 
   constructor(
     private priceService: PriceService,
-    private notifier: NotifierService
-  ) { }
+    private notifier: NotifierService,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+  ) { 
+    if(data!==null){
+      if(data['priceType']!=undefined && data['priceType']!=null){
+        this.priceType = data['priceType'];
+      }
+      if(data['productId']!=undefined && data['productId']!=null){
+        this.productId = data['productId'];
+      }
+      if(data['itemId']!=undefined && data['itemId']!=null){
+        this.itemId = data['itemId'];
+      }
+      if(data['isViewMode']!=undefined && data['isViewMode']!=null){
+        this.isViewMode = data['isViewMode'];
+      }
+    }
+  }
 
   ngOnInit() {
   	this.saleDetailList=[];
@@ -79,10 +96,11 @@ export class PriceComponent implements OnInit {
       if(result['success']){
         if(this.priceType==="VRT"){
           this.price = result['vrt'];
+          this.isPriceSame = this.price.isPriceSame;
           this.originalProductPrice = result['prd'];
-          if(this.price.unitPrice===undefined || this.price.unitPrice===null){
+          /* if(this.price?.unitPrice===undefined || this.price?.unitPrice===null){
             this.isPriceSame = true;
-          }
+          } */
         }else{
           this.price = result['prd'];
         }
@@ -95,7 +113,7 @@ export class PriceComponent implements OnInit {
     if(event && (this.originalProductPrice===undefined||this.originalProductPrice===null)){
       this.priceService.getPriceById("PRD", this.productId, this.store.id)
       .subscribe(result=>{
-        if(result.length>0){
+        if(result['success']){
           this.originalProductPrice = result['prd'];
           this.populatePrice();
         }
@@ -103,7 +121,6 @@ export class PriceComponent implements OnInit {
     }else if(this.isPriceSame){
       this.price.unitPrice = undefined;
     }
-    console.log(this.isPriceSame);
     this.populatePrice();    
   }
 
@@ -118,17 +135,17 @@ export class PriceComponent implements OnInit {
   }
 
   populatePrice(){
-    this.inStockQty = this.price.qty;
-    this.maxAlwdQty = this.price.maxAlldQty;
-    this.sku = this.price.sku;
+    this.inStockQty = this.price?.qty;
+    this.maxAlwdQty = this.price?.maxAlldQty;
+    this.sku = this.price?.sku;
 
-    if(this.priceType==="PRD" || this.price.unitPrice){
-      this.sellPrice = this.price.unitPrice;
-      this.saleDetailList = this.price.discounts;
+    if(this.priceType==="PRD" || this.price?.unitPrice){
+      this.sellPrice = this.price?.unitPrice;
+      this.saleDetailList = this.price?.discounts;
       this.dataSource.data = this.saleDetailList;
-    }else if(this.priceType==="VRT" && (this.price.unitPrice===undefined || this.price.unitPrice===null)){
-      this.sellPrice = this.originalProductPrice.unitPrice;
-      this.saleDetailList = this.originalProductPrice.discounts;
+    }else if(this.priceType==="VRT" && (this.price?.unitPrice===undefined || this.price?.unitPrice===null)){
+      this.sellPrice = this.originalProductPrice?.unitPrice;
+      this.saleDetailList = this.originalProductPrice?.discounts;
       this.dataSource.data = this.saleDetailList;
     }
   }
@@ -180,6 +197,10 @@ export class PriceComponent implements OnInit {
   }
 
   save() {
+    if(this.inStockQty===undefined || this.maxAlwdQty===undefined){
+      this.notifier.notify("error", "Stock quantity and maxAllowedQty are required")
+      return;
+    }
     var priceData = { 
       priceType: this.priceType,
       itemId: this.itemId,
@@ -196,12 +217,32 @@ export class PriceComponent implements OnInit {
     if(this.priceType==="PRD" || !this.isPriceSame){
       priceData['data']['unitPrice'] = this.sellPrice;
       priceData['data']['discounts'] = this.saleDetailList;
+    } else if(this.priceType==="VRT" && this.isPriceSame){
+      priceData['data']['unitPrice'] = this.originalProductPrice.unitPrice;
+      priceData['data']['discounts'] = this.originalProductPrice.discounts;
     }
+    priceData['isPriceSame'] = this.isPriceSame;
   	
   	this.priceService.addPrice(priceData)
   	.subscribe((result)=>{
-      console.log(result);
+      if(result['success']){
+        this.notifier.notify("success", "Price and inventory updated successfully");
+      }else{
+        this.notifier.notify("error", "No changes made to prices");
+      }
   	});
+  }
+
+  unitPriceUpdated(){
+    for(var i=0;i<this.saleDetailList?.length;i++){
+      var saleDetail = this.saleDetailList[i];
+
+      saleDetail.discount = +((saleDetail.discountPercentage*this.sellPrice)/100).toFixed(1);
+  		saleDetail.salePrice = +(this.sellPrice-saleDetail.discount).toFixed(1);
+      this.saleDetailList[i] = saleDetail;
+    }
+
+    this.dataSource.data = this.saleDetailList;
   }
 
   salePriceCalculator(value, field){

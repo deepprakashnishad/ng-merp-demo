@@ -3,6 +3,8 @@ import { NotifierService } from 'angular-notifier';
 import { CartItem } from './cart';
 import { environment } from '../../../environments/environment';
 import { CartService } from './cart.service';
+import { Product } from 'src/app/admin/product/product';
+import { L } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-cart',
@@ -42,16 +44,16 @@ export class CartComponent implements OnInit {
     });
     if(this.loadCartFromServer){
       this.cartService.getCart().subscribe(result=>{
-        this.cart = result;
+        this.cart = CartItem.fromJSON(result);
       });
     }else{
       this.cart = this.cartService.getCartFromStorage();
     }
   }
 
-  updateQuantity(element, qty) {
-    if (this.cartService.validateNewQuantity(element.product, qty)) {
-      this.cartService.updateCart(element.product, qty).subscribe(result => {
+  updateQuantity(element: CartItem, qty) {
+    if (this.cartService.validateNewQuantity(element.product, qty, element.selectedPrice)) {
+      this.cartService.updateCart(element.product, qty, element.selectedPrice).subscribe(result => { 
         if (result) {
           this.notifier.notify("success", "Cart updated successfully");
         } else {
@@ -59,6 +61,23 @@ export class CartComponent implements OnInit {
         }
       });
     }    
+  }
+
+  getDiscountedPrice(cartItem: CartItem){
+    var discounts = cartItem.selectedPrice.discounts;
+    var selectedDiscount;
+    var qty = cartItem.qty;
+    for(var i=0; i < discounts.length;i++){
+      if(discounts[i]?.minQty === 1 && selectedDiscount === undefined && (qty===0||qty===undefined)){
+        selectedDiscount = discounts[i];
+      }else if(discounts[i]?.minQty <= qty && (selectedDiscount?.minQty < discounts[i]?.minQty || selectedDiscount===undefined)){
+        selectedDiscount = discounts[i];
+      }else if(discounts[i]?.minQty <= qty && qty<selectedDiscount?.minQty && selectedDiscount?.minQty > discounts[i].minQty){
+        selectedDiscount = discounts[i];
+      }
+    }
+
+    return selectedDiscount.salePrice;
   }
 
   getTotalCost(){
@@ -75,5 +94,17 @@ export class CartComponent implements OnInit {
     } else {
       this.displayedColumns = ['position', 'name', 'unitPrice', 'qty', 'subTotal', 'action'];
     };
+  }
+
+  getAttributeString(attrs){
+    var attrStr="";
+    if(attrs == undefined || attrs==null){
+      return;
+    }
+    var keys = Object.keys(attrs);
+    for(var key of keys){
+      attrStr = `${key}: ${attrs[key]}`;
+    }
+    return attrStr;
   }
 }

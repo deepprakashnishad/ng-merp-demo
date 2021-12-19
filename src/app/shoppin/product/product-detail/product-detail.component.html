@@ -9,7 +9,7 @@
           [spaceBetween]="10"
           [width]="600"
           [height]="600">
-          <ng-template swiperSlide *ngFor="let image of product?.assets?.imgs; let i=index">
+          <ng-template swiperSlide *ngFor="let image of selectedProduct?.assets?.imgs; let i=index">
             <div class="guide-image-container">
               <img           
               [src]="image.downloadUrl"
@@ -26,47 +26,81 @@
     </div>
     <div class="info-container" fxlayout="column" fxLayoutGap="10px" fxFlex="50%">
       <div class="product-name">
-        {{product?.name}}
+        {{selectedProduct?.name}}
       </div>
       <br />
       <div class="sub-title" *ngIf="storeSettings?.isBrandEnabled">Brand: {{product?.brand?.lname}}</div>
-      <div class="sub-title" *ngIf="product?.attrs && product?.attrs['Weight']">Net Weight: {{product?.attrs['Weight']}}</div>
+      <div class="sub-title" *ngIf="selectedProduct?.attrs && selectedProduct?.attrs['Weight']">Net Weight: {{selectedProduct?.attrs['Weight']}}</div>
       <br />
-      <div class="price" *ngIf="product.discount==null || product.discount?.length===0">
-        {{product.sellPrice | currency:'INR':'symbol-narrow':'1.0-0'}}
+      <div class="price" *ngIf="selectedPrice.discounts==null || selectedPrice.discounts?.length===0">
+        {{selectedPrice.unitPrice | currency:'INR':'symbol-narrow':'1.0-0'}}
       </div>
-      <div *ngIf="product.discount?.length>0" fxLayout fxLayoutGap="10px">
-        <div class="original-price">{{product.sellPrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
-        <div class="price">{{product.discount[0].salePrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+      <div *ngIf="selectedPrice.discounts?.length>0" fxLayout fxLayoutGap="10px">
+        <div class="original-price">{{selectedPrice.unitPrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+        <div class="price">{{this.selectedDiscount?.salePrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
         <div class="secondary-title"
-             *ngIf="product.discount!=null && product.discount[0]!=null">
-          {{
-product.discount[0]?.title?
-              product.discount[0]?.title:
-              product.discount[0]?.discountPercentage+"% off"
-          }}
+             *ngIf="selectedPrice.discounts!=null && selectedPrice.discounts!=null">
+          {{this.selectedDiscount?.discountPercentage+"% off"}}
         </div>
       </div>
       <span>(Inclusive of all taxes)</span>
       <br /><br /><br />
       <div fxLayout fxLayoutGap="16px">
-        <app-add-to-cart-button class="full-width" [product]="product"></app-add-to-cart-button>
+        <app-add-to-cart-button class="full-width" [product]="selectedProduct" [selectedPrice]="selectedPrice"></app-add-to-cart-button>
         <a class="outline-button" [routerLink]="'/'" mat-raised-button color="accent">Continue Shopping</a>
       </div>
       <br /><br /><br />
-      <div *ngIf="product?.attrs && product?.attrs['Ingredients']">
+      <div *ngIf="selectedProduct?.attrs && selectedProduct?.attrs['Ingredients']">
         <div class="ingredients-title">Ingredients</div>
         <div class="ingredients">
           {{product.attrs['Ingredients']?.replace(",", ", ")}}
         </div>
       </div>
       <!--Description Section-->
-      <div>
-        <span [innerHTML]="product?.desc?.shortDesc[0].val | safeHtml"></span>
+      <div *ngIf="selectedProduct.desc!==null">
+        <span [innerHTML]="selectedProduct?.desc?.shortDesc[0].val | safeHtml"></span>
       </div>
 
-      <div>
-        <span [innerHTML]="product?.desc?.longDesc[0].val | safeHtml"></span>
+      <div class="monospaced">
+        <table>
+          <tr>
+            <th [colSpan]="2">Attributes</th>
+            <th>Other Varities</th>
+          </tr>
+          <tr *ngFor="let attr of selectedProduct?.attrs | keyvalue; let i=index">
+            <td>{{attr?.key}}:&emsp;</td>
+            <td>{{attr?.value}}</td>
+            <td class=variant-col>
+              <div *ngIf="products[0]?.variants?.attrs[attr?.key]==='dropdown'">
+                <mat-select [(ngModel)]="attrSelectedValueMap[attr?.key]" (selectionChange)="attrSelectionUpdated()">
+                  <mat-option *ngFor="let attrValue of variantAttrMap[attr?.key]" [value]="attrValue">
+                    {{attrValue}}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div *ngIf="products[0]?.variants?.attrs[attr?.key]==='toggle_button'">
+                <mat-button-toggle-group [(ngModel)]="attrSelectedValueMap[attr?.key]" (change)="attrSelectionUpdated()">
+                  <mat-button-toggle  *ngFor="let attrValue of variantAttrMap[attr?.key]" [value]="attrValue">
+                    {{attrValue}}
+                  </mat-button-toggle>
+                </mat-button-toggle-group>                
+              </div>
+              <div *ngIf="products[0]?.variants?.attrs[attr?.key]==='radiobutton'">
+                <mat-radio-group [(ngModel)]="attrSelectedValueMap[attr?.key]">
+                  <mat-radio-button *ngFor="let attrValue of variantAttrMap[attr?.key]" value="attrValue">{{attrValue}}</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <!-- <mat-list>
+          <mat-list-item *ngFor="let attr of selectedProduct?.attrs | keyvalue; let i=index">
+            <div class="monospaced">{{attr.key}}:&emsp;{{attr.value}}</div>
+          </mat-list-item>
+        </mat-list> -->
+      </div>
+      <div *ngIf="selectedProduct.desc!==null">
+        <span [innerHTML]="selectedProduct?.desc?.longDesc[0].val | safeHtml"></span>
       </div>
     </div>
   </div>

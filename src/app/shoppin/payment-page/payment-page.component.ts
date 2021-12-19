@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Address } from 'cluster';
+import { CartItem } from '../cart/cart';
 import { CartService } from '../cart/cart.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class PaymentPageComponent implements OnInit {
     this.fulfillmentMethod = sessionStorage.getItem("fulfillmentType");
 
     this.cartService.syncCart()?.subscribe(result=>{
+      result = CartItem.fromJSON(result);
       this.cartService.replaceCart(result);
     });
   }

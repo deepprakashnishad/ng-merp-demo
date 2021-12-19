@@ -23,7 +23,12 @@ export class FacetService {
       });
   }
 
+  isFacetsInitialized(){
+    return this.facets!==undefined && this.facets!==null;
+  }
+
   getFacetByName(facetName){
+    // console.log(this.facets);
     if(this.facets !== undefined){
       for(var i=0;i<this.facets.length;i++){
         if(facetName === this.facets[i].title){

@@ -29,10 +29,10 @@ export class OrderDetailComponent implements OnInit {
     this.activatedRoute.params.subscribe(result=>{
       this.orderService.getOrderDetail(result['id']).subscribe(order=>{
         this.order = Order.fromJSON(order);
+        console.log(this.order.items);
         if (order['personId'] && order['personId']['email']) {
           this.email = order['personId']['email'];
         }
-        
       }, error=>{
         if(error.error?.msg){
           this.notifier.notify("error", error.error.msg);
@@ -41,6 +41,18 @@ export class OrderDetailComponent implements OnInit {
         }
       });
     });
+  }
+
+  getAttributeString(attrs){
+    var attrStr="";
+    if(attrs == undefined || attrs==null || attrs==""){
+      return;
+    }
+    var keys = Object.keys(attrs);
+    for(var key of keys){
+      attrStr = `${key}: ${attrs[key]}`;
+    }
+    return attrStr;
   }
 
   checkPaymentStatus(orderId, paymentId, transactionId, pg_order_id, channel){

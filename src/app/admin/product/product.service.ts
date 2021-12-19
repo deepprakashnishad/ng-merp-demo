@@ -17,8 +17,20 @@ export class ProductService {
      this.productUrl = environment.baseurl + '/product';
   }
 
+  bulkUploadProducts(products: Array<any>): Observable<any>{
+    return this.http.post<Array<Product>>(`${this.productUrl}/bulkUpload`, products)
+  		.pipe(
+  			catchError(this.handleError('Get Token', null)));
+  }
+
   getProducts(): Observable<Array<Product>> {
   	return this.http.get<Array<Product>>(this.productUrl)
+  		.pipe(
+  			catchError(this.handleError('Get Token', null)));
+  }
+
+  getProductsByStoreId(storeId): Observable<Array<Product>> {
+  	return this.http.get<Array<Product>>(`${this.productUrl}/getByStoreId/${storeId}`)
   		.pipe(
   			catchError(this.handleError('Get Token', null)));
   }
@@ -51,6 +63,12 @@ export class ProductService {
       }
     }
     return this.http.get<Product>(`${this.productUrl}/getByFilter?${criteriaStr}`)
+      .pipe(
+        catchError(this.handleError('Get Token', null))); 
+  }
+
+  getBySearchText(filterCriteria): Observable<Array<Product>>{
+    return this.http.get<Product>(`${this.productUrl}/getBySearchText?q=${filterCriteria}`)
       .pipe(
         catchError(this.handleError('Get Token', null))); 
   }

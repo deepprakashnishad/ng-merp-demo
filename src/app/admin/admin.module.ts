@@ -56,6 +56,7 @@ import { DeliveryConfigComponent } from './delivery-config/delivery-config.compo
 import { StoreSettingsComponent } from './store-settings/store-settings.component';
 import { UserReportComponent } from './reports/user-report/user-report.component';
 import { VariantEditorComponent } from './product/variant/variant-editor/variant-editor.component';
+import { SearchProductComponent } from './product/search-product/search-product.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { VariantEditorComponent } from './product/variant/variant-editor/variant
     UserReportComponent,
     AddEditStoreComponent,
     StoreSelectorComponent,
-    VariantEditorComponent
+    VariantEditorComponent,
+    SearchProductComponent
   ],
   imports: [
     SharedModule,

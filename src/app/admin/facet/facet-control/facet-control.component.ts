@@ -16,7 +16,7 @@ export class FacetControlComponent implements OnInit {
 	facetControlSelected: EventEmitter<any> = new EventEmitter();
 
 	@Input()
-	jsonFacetControl:Array<any> = [];
+	jsonFacetControl: any = {};
 
 	queue: Map<Facet, string> = new Map();
   	facetControl: FormControl = new FormControl();
@@ -47,10 +47,14 @@ export class FacetControlComponent implements OnInit {
 	        this.jsonFacetControl = changes[propName].currentValue;
 	        if(this.jsonFacetControl){
 				this.queue.clear();
-	        	for(var i=0;i<this.jsonFacetControl.length;i++){
-					var mFacet = this.facetService.getFacetByName(this.jsonFacetControl[i].name);
+				var keys = Object.keys(this.jsonFacetControl);
+	        	for(var i=0;i<keys.length;i++){
+					if(this.facetService.isFacetsInitialized()){
+						setTimeout(()=>{}, 500);
+					}
+					var mFacet = this.facetService.getFacetByName(keys[i]);
 					if(!this.queue.has(mFacet)){
-						this.queue.set(mFacet, this.jsonFacetControl[i].dispType);
+						this.queue.set(mFacet, this.jsonFacetControl[keys[i]]);
 					}
 		  		}	    	  
 	        }	        
@@ -87,11 +91,17 @@ export class FacetControlComponent implements OnInit {
 
 	emitFacetControls(){
 		let variableFacets = [];
-		this.jsonFacetControl = [];
+		if(this.jsonFacetControl===undefined || this.jsonFacetControl===null){
+			this.jsonFacetControl = {};
+		}else{
+
+		}
+		Object.keys(this.jsonFacetControl).forEach(key => delete this.jsonFacetControl[key]);
 		this.queue.forEach((value: string, key: Facet)=>{
-			if(this.jsonFacetControl.some(ele=>ele.title===key.title) === false){
+			this.jsonFacetControl[key.title] = value;
+			/* if(this.jsonFacetControl.some(ele=>ele.title===key.title) === false){
 				this.jsonFacetControl.push({name: key.title, dispType: value});
-			}
+			} */
 			variableFacets.push(key);
 		});
 		this.facetControlSelected.emit({variants: this.jsonFacetControl, variableFacets: variableFacets});

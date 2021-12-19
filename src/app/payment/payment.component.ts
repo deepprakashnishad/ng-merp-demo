@@ -90,7 +90,7 @@ export class PaymentComponent implements OnInit {
         "fulfillmentAddress": JSON.parse(sessionStorage.getItem("selectedAddress"))
       }).subscribe(result=>{
         if (result['success']) {
-          this.cartService.deleteLocalCart();
+          // this.cartService.deleteLocalCart();
           if (result['payment_details']) {
             this.payment = Payment.fromJSON(result['payment_details']);
           }
@@ -193,6 +193,7 @@ export class PaymentComponent implements OnInit {
       if (result['success']) {
         this.notifier.notify("success", result['msg']);
         this.notifier.notify("success", "Track your order from My Orders")
+        this.cartService.deleteLocalCart();
         this.openConfirmationDialog();
         this.router.navigate(['/order-list']);
       } else {

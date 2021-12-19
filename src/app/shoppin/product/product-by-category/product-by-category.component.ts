@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Product } from 'src/app/admin/product/product';
 import { ProductService } from './../../product.service';
 
 @Component({
@@ -11,6 +12,9 @@ export class ProductByCategoryComponent implements OnInit {
 
   selectedCategoryId: string;
   productsByCategory: any = {};
+
+  products: Array<Product> = [];
+  
   ancestors: string;
   slidesPerView = 4;
   isProductExists: boolean;
@@ -26,16 +30,23 @@ export class ProductByCategoryComponent implements OnInit {
     this.route.queryParams.subscribe(params=>{
       if(params['ancestors']){
         this.ancestors = params['ancestors'];
-
-      }
-      if(params['id']){
+        this.getProductsByAncestors();
+      }else if(params['id']){
         this.selectedCategoryId = params['id'];
-        this.getProductsByCategoryId();
+        this.getProductListByCategoryId();
       }
     });
   }
 
-  getProductsByCategoryId(){
+  getProductListByCategoryId(){
+    this.productService.getProductsByCategory(this.selectedCategoryId).subscribe(result=>{
+      delete result['msg'];
+      delete result['success'];
+      this.products = Product.fromJSON(result);
+    });
+  }
+
+  getCategoryWiseProductsByCategoryId(){
     this.productService.getProductsByCategory(this.selectedCategoryId).subscribe(result=>{
       delete result['msg'];
       delete result['success'];
@@ -57,17 +68,7 @@ export class ProductByCategoryComponent implements OnInit {
     this.productService.getProductsByTaxonomy(this.ancestors).subscribe(result=>{
       delete result['msg'];
       delete result['success'];
-      for (const [key, value] of Object.entries(result)) {
-        var tempList = key.split("/");
-        var finalKey = tempList.map(ele=>this.categories[ele]).join(" / ");
-        this.productsByCategory[finalKey] = value;
-      }
-
-      if(this.productsByCategory && Object.keys(this.productsByCategory).length>0){
-        this.isProductExists = true;
-      }else{
-        this.isProductExists = false;
-      }
+      this.products = Product.fromJSON(result);
     });
   }
 }

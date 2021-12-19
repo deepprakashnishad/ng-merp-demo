@@ -37,6 +37,10 @@ $candy-app-theme: mat-light-theme((
 
 @include angular-material-theme($candy-app-theme); */
 
+.monospaced{
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
 @-webkit-keyframes fadeout {
 	0% {opacity: 1;}
 	100% {opacity: 0;}

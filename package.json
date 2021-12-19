@@ -49,6 +49,7 @@
     "rxjs-compat": "^6.4.0",
     "swiper": "^6.7.1",
     "window-scroll-manager": "^1.1.4",
+    "xlsx-import": "^2.4.4",
     "zone.js": "^0.11.4"
   },
   "devDependencies": {

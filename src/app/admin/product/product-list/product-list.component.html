@@ -1,72 +1,93 @@
-<a mat-raised-button color="accent" routerLink="add">Add New Product</a>
-	<h3 *ngIf="productList.length===0">No product found</h3>
-	<div class="mat-elevation-z8" [hidden]="productList.length<=0">
-		<mat-form-field>
-			<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-		</mat-form-field>
-		<table class="full-width" mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
-		  <ng-container matColumnDef="name">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-		    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-		  </ng-container>
+<div fxLayout fxLayoutGap="16px">
+	<app-store-selector (storeSelected)="storeSelectionModified($event)"></app-store-selector>
+	<app-search-product fxFlex (itemSelected)="searchItemSelected($event)"></app-search-product>
+	<!-- <input type="file" style="display: none" 
+	#fileInput accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
+	[multiple]="false" (change)="onChangeFileInput($event.target)" />
+	<div>
+		<button mat-raised-button color="primary" class="file-select-button" (click)="onClickFileInputButton()">
+			<mat-icon>attach_file</mat-icon>
+			Select File
+		</button>
+	</div> -->
+	<div><a mat-raised-button color="accent" routerLink="add">Add New Product</a></div>
+</div>
+<h3 *ngIf="productList.length===0">No product found</h3>
+<div class="mat-elevation-z8" [hidden]="productList.length<=0">
+	<mat-form-field>
+		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+	</mat-form-field>
+	<table class="full-width" mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+		<ng-container matColumnDef="name">
+		<th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+		<td mat-cell *matCellDef="let element"> {{element.name}} </td>
+		</ng-container>
 
-		  <ng-container matColumnDef="brand">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> Brand </th>
-		    <td mat-cell *matCellDef="let element"> {{element.brand?.sname}} </td>
-		  </ng-container>
+		<ng-container matColumnDef="brand">
+		<th mat-header-cell *matHeaderCellDef mat-sort-header> Brand </th>
+		<td mat-cell *matCellDef="let element"> {{element.brand?.sname}} </td>
+		</ng-container>
 
-		  <ng-container matColumnDef="price">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> M.R.P. </th>
-		    <td mat-cell *matCellDef="let element"> {{element.sellPrice}} </td>
-		  </ng-container>
+		<ng-container matColumnDef="price">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header> M.R.P. </th>
+			<td mat-cell *matCellDef="let element"> {{element.prices[0].unitPrice}} </td>
+		</ng-container>
+		<ng-container matColumnDef="discountPercent">
+			<th mat-header-cell *matHeaderCellDef mat-sort-header> Disc% </th>
+			<td mat-cell *matCellDef="let element"> {{getUnitQtyDiscount(element.prices[0].discounts)}}% </td>
+		</ng-container>
 
-		  <ng-container matColumnDef="qty">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
-		    <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
-		  </ng-container>
+		<ng-container matColumnDef="qty">
+		<th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
+		<td mat-cell *matCellDef="let element"> {{element.prices[0].qty}} </td>
+		</ng-container>
 
-		  <ng-container matColumnDef="taxonomies">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> Taxonomies </th>
-		    <td mat-cell *matCellDef="let element"> <pre>{{element.taxonomies?.join("\r\n")}}</pre> </td>
-		  </ng-container>
+		<ng-container matColumnDef="taxonomies">
+		<th mat-header-cell *matHeaderCellDef mat-sort-header> Taxonomies </th>
+		<td mat-cell *matCellDef="let element">
+			<pre>
+				{{getTaxonomy(element.taxonomies)}}
+			</pre> 
+		</td>
+		</ng-container>
 
-		  <ng-container matColumnDef="attr">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> Max Qty </th>
-		    <td mat-cell *matCellDef="let element"> {{element.maxAlwdQty}} </td>
-		  </ng-container>
+		<ng-container matColumnDef="attr">
+		<th mat-header-cell *matHeaderCellDef mat-sort-header> Max Qty </th>
+		<td mat-cell *matCellDef="let element"> {{element.prices[0].maxAlldQty}} </td>
+		</ng-container>
 
-		  <ng-container matColumnDef="status">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-		    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-		  </ng-container>
-		  <ng-container matColumnDef="actions">
-		    <th mat-header-cell *matHeaderCellDef> Actions </th>
-		    <td mat-cell *matCellDef="let element; let i=index">
-		    	<div fxLayout>
-			    	<a mat-icon-button target="_blank" [routerLink]="['/product',element.id]" color="primary" matTooltip="View">
-			    		<mat-icon aria-label="View">remove_red_eye</mat-icon>
-			    	</a>
-			    	<a mat-icon-button [routerLink]="['/admin/product/edit',element.id]" color="accent" matTooltip="Edit">
-			    		<mat-icon aria-label="View">edit</mat-icon>
-			    	</a>
-					<button mat-icon-button (click)="delete(element, i)" color="error"><mat-icon>delete</mat-icon></button>
-		    	</div>
-		    </td>
-		  </ng-container>
-		  <ng-container matColumnDef="select">
-			<th mat-header-cell *matHeaderCellDef>
-				Is Active
-			</th>
-			<td mat-cell *matCellDef="let element">
-			  <mat-checkbox (click)="$event.stopPropagation()"
-							(change)="selectionToggle($event, element)"
-							[checked]="element.status=='Active'">
-			  </mat-checkbox>
-			</td>
-		  </ng-container>
+		<ng-container matColumnDef="status">
+		<th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+		<td mat-cell *matCellDef="let element"> {{element.status}} </td>
+		</ng-container>
+		<ng-container matColumnDef="actions">
+		<th mat-header-cell *matHeaderCellDef> Actions </th>
+		<td mat-cell *matCellDef="let element; let i=index">
+			<div fxLayout>
+				<a mat-icon-button target="_blank" [routerLink]="['/product',element.id]" color="primary" matTooltip="View">
+					<mat-icon aria-label="View">remove_red_eye</mat-icon>
+				</a>
+				<a mat-icon-button [routerLink]="['/admin/product/edit',element.id]" color="accent" matTooltip="Edit">
+					<mat-icon aria-label="View">edit</mat-icon>
+				</a>
+				<button mat-icon-button (click)="delete(element, i)" color="error"><mat-icon>delete</mat-icon></button>
+			</div>
+		</td>
+		</ng-container>
+		<ng-container matColumnDef="select">
+		<th mat-header-cell *matHeaderCellDef>
+			Is Active
+		</th>
+		<td mat-cell *matCellDef="let element">
+			<mat-checkbox (click)="$event.stopPropagation()"
+						(change)="selectionToggle($event, element)"
+						[checked]="element.status=='Active'">
+			</mat-checkbox>
+		</td>
+		</ng-container>
 
-		  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-		  <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"></tr>
-		</table>
-		<!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator> -->
-	</div>
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"></tr>
+	</table>
+	<!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator> -->
+</div>

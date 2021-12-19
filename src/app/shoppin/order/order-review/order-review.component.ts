@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CartItem } from '../../cart/cart';
 import { CartService } from '../../cart/cart.service';
 
 @Component({
@@ -14,10 +15,8 @@ export class OrderReviewComponent implements OnInit {
 
   ngOnInit() {
     this.cartService.syncCart().subscribe(result=>{
+      result = CartItem.fromJSON(result);
       this.cartService.replaceCart(result);
-      /* result.forEach(element => {
-        this.cartService.updateLocalCart(element['product'], element['qty']);
-      }); */
     });
   }
 

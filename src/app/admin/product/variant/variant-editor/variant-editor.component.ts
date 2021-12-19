@@ -6,6 +6,7 @@ import { Product } from '../../product';
 import { Variant } from '../../variant';
 import { VariantService } from '../../variant.service';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { F } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-variant-editor',
@@ -58,16 +59,29 @@ export class VariantEditorComponent implements OnInit {
 
 	saveFacets($event, type){
 		this.variant.attrs=$event;
-    if(this.variant.attrs===undefined || this.variant.attrs===null || Object.keys(this.variant.attrs).length===0){
+    if(this.variant?.attrs===undefined || this.variant?.attrs===null || Object.keys(this.variant.attrs).length===0){
       this.notifier.notify("error", "Variant attributes missing. Please select atleast one attribute");
       return;
+    }
+    var varAttrKeys = Object.keys(this.variant?.attrs);
+    for(var key of Object.keys(this.product?.variants?.attrs)){
+      if(varAttrKeys.indexOf(key)===-1){
+        this.notifier.notify("error", `${key} is missing`);
+        return;
+      }
     }
     this.saveVariant();
 	}
 
 	saveVariant(){
+    if(this.variant['msg']){
+      delete this.variant['msg'];
+    }
+
+    if(this.variant['success']){
+      delete this.variant['success'];
+    }
 		if(this.variant.id){
-      console.log(this.variant);
 			this.variantService.updateVariant(this.variant)
 			.subscribe(result=>{
         if(result['success']){

@@ -51,8 +51,8 @@ export class AppComponent implements OnInit {
     );
 
     var refreshTimeInMillis = 15*24*60*60*1000;
-
-    if(JSON.parse(localStorage.getItem("cat-map"))['timestamp']+refreshTimeInMillis < new Date().getTime()){
+    var catmap = JSON.parse(localStorage.getItem("cat-map"));
+    if(catmap===null || (catmap?.timestamp+refreshTimeInMillis < new Date().getTime())){
       this.categoryService.getCategories().subscribe((categories: Array<Category>)=>{
         var tempMap = {};
         for(var category of categories){
