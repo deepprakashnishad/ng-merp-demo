@@ -57,6 +57,8 @@ import { StoreSettingsComponent } from './store-settings/store-settings.componen
 import { UserReportComponent } from './reports/user-report/user-report.component';
 import { VariantEditorComponent } from './product/variant/variant-editor/variant-editor.component';
 import { SearchProductComponent } from './product/search-product/search-product.component';
+import { SalePointComponent } from './sale-point/sale-point.component';
+import { StoreProductSelectorComponent } from './product/store-product-selector/store-product-selector.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +114,9 @@ import { SearchProductComponent } from './product/search-product/search-product.
     AddEditStoreComponent,
     StoreSelectorComponent,
     VariantEditorComponent,
-    SearchProductComponent
+    SearchProductComponent,
+    SalePointComponent,
+    StoreProductSelectorComponent
   ],
   imports: [
     SharedModule,

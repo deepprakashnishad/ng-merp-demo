@@ -154,7 +154,6 @@ export class CreateProductComponent implements OnInit {
     }
 
   	createProduct(){
-
       if(this.product.id === undefined){
         this.productService.addProduct(this.product)
         .subscribe((product)=>{

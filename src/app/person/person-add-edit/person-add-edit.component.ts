@@ -57,6 +57,9 @@ export class PersonAddEditComponent implements OnInit {
   }
 
   save(person){
+    if(person.mobile.indexOf("@")<0 && person.mobile.length===10){
+      person.mobile = "+91"+person.mobile;
+    }
   	if(person.id === undefined || person.id === null){
   		this.personService.add(person)
   		.subscribe((person)=>{

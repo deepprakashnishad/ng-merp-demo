@@ -53,8 +53,11 @@ export class CartService implements OnDestroy {
     this.onSubject.complete();
   }
 
-  getTotalAmount(): number{
-    var cartItems: Array<CartItem> = CartItem.fromJSON(JSON.parse(localStorage.getItem("cart")));
+  getTotalAmount(cartItems?: Array<CartItem>): number{
+    if(cartItems==undefined || cartItems){
+      cartItems = CartItem.fromJSON(JSON.parse(localStorage.getItem("cart")));
+    }
+    // var cartItems: Array<CartItem> = CartItem.fromJSON(JSON.parse(localStorage.getItem("cart")));
     return cartItems.reduce((total, item)=>{
       if(item.selectedPrice?.discounts?.length>0){
         total = total + this.getDiscountedPrice(item.qty, item.selectedPrice.discounts).salePrice*item.qty;
@@ -65,8 +68,11 @@ export class CartService implements OnDestroy {
     }, 0);
   }
 
-  getTotalSavings(): number{
-    var cartItems: Array<CartItem> = CartItem.fromJSON(JSON.parse(localStorage.getItem("cart")));
+  getTotalSavings(cartItems?: Array<CartItem>): number{
+    if(cartItems==undefined || cartItems){
+      cartItems = CartItem.fromJSON(JSON.parse(localStorage.getItem("cart")));
+    }
+    // var cartItems: Array<CartItem> = CartItem.fromJSON(JSON.parse(localStorage.getItem("cart")));
     return cartItems.reduce((total, item)=>{
       if(item.selectedPrice.discounts?.length>0){
         total = total + this.getDiscountedPrice(item.qty, item.selectedPrice.discounts).discount*item.qty;

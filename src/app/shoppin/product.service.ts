@@ -23,6 +23,12 @@ export class ProductService {
   			catchError(this.handleError('Get Token', null)));
   }
 
+  getStoreFullProductList(storeid): Observable<Array<any>> {
+  	return this.http.get<Array<any>>(`${this.productUrl}/getStoreFullProductList/${storeid}`)
+  		.pipe(
+  			catchError(this.handleError('Get Token', null)));
+  }
+
   getProductsByCategory(selectedCategoryId: string): Observable<any> {
   	return this.http.get<any>(`${this.productUrl}/getProductByCategoryId?categoryId=${selectedCategoryId}`)
   		.pipe(

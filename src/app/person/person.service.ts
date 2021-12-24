@@ -26,8 +26,8 @@ export class PersonService {
   			catchError(this.handleError('Get Token', null)));
   }
 
-  getCustomers(limit, offset) {
-    return this.http.get<Person>(`${this.PersonUrl}/getCustomers?limit=${limit}&offset=${offset}`)
+  getCustomers(limit, offset, searchStr:string='') {
+    return this.http.get<Person>(`${this.PersonUrl}/queryCustomers?q=${searchStr}&l=${limit}&o=${offset}`)
       .pipe(
         catchError(this.handleError('Get Customers', null)));
   }

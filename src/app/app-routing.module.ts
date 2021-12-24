@@ -30,6 +30,7 @@ import { StoreSettingsComponent } from './admin/store-settings/store-settings.co
 import { UserReportComponent } from './admin/reports/user-report/user-report.component';
 import { CategoriesComponent } from './shoppin/category-bar/categories/categories.component';
 import { AddEditStoreComponent } from './admin/store/add-edit-store/add-edit-store.component';
+import { SalePointComponent } from './admin/sale-point/sale-point.component';
 
 const routes: Routes = [
 	 {
@@ -82,7 +83,13 @@ const routes: Routes = [
 				canDeactivate:[CanDeactivateGuardService],
 				data: { title: 'Brands', permissions: ['SHOP_EDITOR','CREATE_BRAND', 'UPDATE_BRAND', 'DELETE_BRAND']},
 			},
-			
+			{
+				path: 'sale-point', 
+				component: SalePointComponent,
+				canActivate: [AuthGuardService], 
+				canDeactivate:[CanDeactivateGuardService],
+				data: { title: 'Sale Point', permissions: ['CREATE_ORDER','UPDATE_ORDER', 'DELETE_ORDER']}
+			},
 			{
 				path: 'brand', 
 				component: BrandComponent,

@@ -35,6 +35,12 @@ export class ProductService {
   			catchError(this.handleError('Get Token', null)));
   }
 
+  getStoreFullProductList(storeid): Observable<any> {
+  	return this.http.get<any>(`${environment.baseurl}/shoppin/getStoreFullProductList/${storeid}`)
+  		.pipe(
+  			catchError(this.handleError('Get Token', null)));
+  }
+
   getProductsByCategory(selectedCategoryId: string): Observable<any> {
   	return this.http.get<any>(`${this.productUrl}/getProductByCategoryId?categoryId=${selectedCategoryId}`)
   		.pipe(

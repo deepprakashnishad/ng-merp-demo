@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,6 +17,9 @@ import { ProductService } from '../product.service';
 export class SearchProductComponent implements OnInit {
 
   @Output() itemSelected: EventEmitter<any> = new EventEmitter();
+
+  @Input() isInventoryEditable: boolean = true;
+  @Input() isProductEditable: boolean = true;
 
 	cntl: FormControl = new FormControl();
 	item: any;

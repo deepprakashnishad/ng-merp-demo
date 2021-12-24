@@ -1,20 +1,20 @@
 <div fxLayout="row" fxFlex>
-  <mat-form-field>
+  	<mat-form-field>
 		<input type="text" placeholder="Type product name" matInput [formControl]="cntl" [matAutocomplete]="auto">
 		<mat-hint>eg: haldiram</mat-hint>
-		</mat-form-field>
-		
-		<mat-autocomplete #auto="matAutocomplete" 
-			[displayWith]="displayFn" (optionSelected)="selected($event)">
+	</mat-form-field>
+	
+	<mat-autocomplete #auto="matAutocomplete" 
+		[displayWith]="displayFn" (optionSelected)="selected($event)">
 		<mat-option *ngFor="let item of filteredItems" [value]="item">	
 			<div fxLayout fxLayoutAlign="space-between start">
 				<div>{{item.name}}</div>
 				<div>
-					<button mat-icon-button (click)="editInventory(item)"><mat-icon>inventory</mat-icon></button>
-					<button mat-icon-button (click)="editProduct(item)"><mat-icon>edit</mat-icon></button>
+					<button mat-icon-button *ngIf="isInventoryEditable" (click)="editInventory(item)"><mat-icon>inventory</mat-icon></button>
+					<button mat-icon-button *ngIf="isProductEditable" (click)="editProduct(item)"><mat-icon>edit</mat-icon></button>
 				</div>
 			</div>
-      		<div *ngIf="item.brand?.name" class="brand">{{item.brand?.name}}</div>
+			<div *ngIf="item.brand?.name" class="brand">{{item.brand?.name}}</div>
 		</mat-option>
-		</mat-autocomplete>
+	</mat-autocomplete>
 </div>

@@ -3,12 +3,12 @@
     <div fxLayout="column" fxFlexAlign="center space-between">
       <img class="mouse-hand" [src]="product?.assets?.imgs[0]?.downloadUrl" height="180px" width="180px" (click)="selected()"/>
       <div class="full-width center title  mouse-hand" (click)="showDetail()">{{product?.name}}</div>
-      <div class="full-width center discount" *ngIf="product.discount!=null">
+      <div class="full-width center discount" *ngIf="product?.prices[0]?.discount!=null">
         <div *ngIf="product?.discount[0]?.title">{{product?.discount[0]?.title}}</div>
         <div *ngIf="product?.discount[0]?.title===undefined">{{product?.discount[0].discountPercentage}}% off</div>
       </div>
-      <div class="price center" *ngIf="product?.discount==null || product?.discount?.length===0">{{product?.sellPrice | currency:'INR':'symbol-narrow'}}</div>
-      <div *ngIf="product?.discount?.length>0" fxLayout fxLayoutAlign="center center" fxLayoutGap="10px">
+      <div class="price center" *ngIf="product?.prices[0]?.discount==null || product?.prices[0]?.discount?.length===0">{{product?.sellPrice | currency:'INR':'symbol-narrow'}}</div>
+      <div *ngIf="product?.prices[0]?.discount?.length>0" fxLayout fxLayoutAlign="center center" fxLayoutGap="10px">
         <div class="price">{{product?.discount[0].salePrice | currency:'INR':'symbol-narrow'}}</div>
         <div class="original-price">{{product?.sellPrice | currency:'INR':'symbol-narrow'}}</div>
       </div>

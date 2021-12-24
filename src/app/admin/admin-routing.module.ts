@@ -24,6 +24,7 @@ import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { DeliveryConfigComponent } from './delivery-config/delivery-config.component';
 import { StoreSettingsComponent } from './store-settings/store-settings.component';
 import { AddEditStoreComponent } from './store/add-edit-store/add-edit-store.component';
+import { SalePointComponent } from './sale-point/sale-point.component';
 
 const routes: Routes = [
 	
@@ -40,6 +41,13 @@ const routes: Routes = [
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
 				data: { title: 'Brands', permissions: ['SHOP_EDITOR','CREATE_BRAND', 'UPDATE_BRAND', 'DELETE_BRAND']}
+			},
+			{
+				path: '', 
+				component: SalePointComponent,
+				canActivate: [AuthGuardService], 
+				canDeactivate:[CanDeactivateGuardService],
+				data: { title: 'Sale Point', permissions: ['CREATE_ORDER','UPDATE_ORDER', 'DELETE_ORDER']}
 			},
 			{
 				path: 'my-store', 
