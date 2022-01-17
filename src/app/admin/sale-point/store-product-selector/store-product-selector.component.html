@@ -1,0 +1,19 @@
+<div fxLayout="row" fxFlex>
+  <mat-form-field appearance="outline">
+  <input type="text" placeholder="Type product name or sku id" matInput [formControl]="cntl" [matAutocomplete]="auto">
+  <mat-hint>eg: haldiram</mat-hint>
+  <span matSuffix>
+    <button mat-icon-button (click)="refreshStoreProductList()"><mat-icon>refresh</mat-icon></button>
+  </span>
+</mat-form-field>
+
+<mat-autocomplete #auto="matAutocomplete"  autoActiveFirstOption
+  [displayWith]="displayFn" (optionSelected)="selected($event)">
+  <mat-option *ngFor="let item of filteredItems" [value]="item">	
+    <div fxLayout="column" fxLayoutAlign="space-between start">
+      <div>{{item.name}}</div>
+    </div>
+    <div *ngIf="item.brand?.name" class="brand">{{item.brand?.name}}</div>
+  </mat-option>
+</mat-autocomplete>
+</div>

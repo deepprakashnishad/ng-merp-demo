@@ -68,18 +68,21 @@ export class SearchProductComponent implements OnInit {
   selected($event){
     this.item = $event.option.value;
     this.itemSelected.emit(this.item);
+    if(this.isInventoryEditable){
+      this.editInventory(this.item);
+    }
   }
 
   editInventory(item){
-    this.dialog.open(PriceComponent, {
+    const dialogRef = this.dialog.open(PriceComponent, {
       data: {
         productId: item.id,
         itemId: item.id,
         priceType: "PRD"
       }
-    })
+    });
   }
-
+  
   editProduct(item){
     console.log(`/admin/product/edit/${item.id}`);
     this.router.navigate([`/admin/product/edit/${item.id}`]);

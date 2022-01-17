@@ -1,13 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { debounceTime } from 'rxjs/operators';
-import { ProductService } from './../product.service';
+import { ProductService } from '../../product/product.service';
 import { Store } from '../../store/store';
-import { Product } from '../product';
+import { Product } from '../../product/product';
 import { get, set, getMany, setMany } from 'idb-keyval';
 import { ITEM_STORE, MyIdbService, TS_STORE } from 'src/app/my-idb.service';
+import { Observable } from 'rxjs';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 const productRefreshDays = 30;
 const productRefreshTimeInMillis = productRefreshDays*24*60*60*1000;
@@ -36,7 +38,9 @@ export class StoreProductSelectorComponent implements OnInit {
 
   selectedStore: Store;
 
-  productList: Array<Product> = [];
+  productList: Array<any> = [];
+
+  @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
 
   constructor(
     private productService: ProductService,
@@ -44,12 +48,20 @@ export class StoreProductSelectorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.cntl.valueChanges.pipe(debounceTime(500)).subscribe(val => {
-      if(typeof val === "string" && val.length > 3){
-        this.searchStr = val;
-        this.offset = 0;
-      }
-  	});
+    this.dbService.getAll(ITEM_STORE).then(items=>{
+      this.productList = items;
+      this.cntl.valueChanges.pipe(debounceTime(500)).subscribe(val => {
+        if(typeof val === "string"){
+          this.filteredItems = this.productList.filter(ele=>{
+            if(ele.name?.toLowerCase().indexOf(val.toLowerCase())>-1 || ele.prices[0]?.sku?.toLowerCase().indexOf(val.toLowerCase())>-1){
+              return ele;
+            }
+          });
+        }else{
+          this.productList;
+        }
+      });
+    });
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChanges}): void {
@@ -60,7 +72,6 @@ export class StoreProductSelectorComponent implements OnInit {
           if(val + productRefreshTimeInMillis<Date.now()){
             this.refreshStoreProductList();
           }
-          this.refreshStoreProductList();
         });
       }
     }    
@@ -87,6 +98,8 @@ export class StoreProductSelectorComponent implements OnInit {
   selected($event){
     this.item = $event.option.value;
     this.itemSelected.emit(this.item);
+
+    this.cntl.setValue("");
   }
 
 }

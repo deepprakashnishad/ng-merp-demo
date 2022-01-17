@@ -43,6 +43,12 @@ export class OrderService {
        catchError(this.handleError('Add Order', null)));
   }
 
+  addOrderFromSalePoint(order): Observable<any> {
+    return this.http.post<any>(`${this.orderUrl}/createOrderOnSalePoint`, order)
+    .pipe(
+       catchError(this.handleError('Add Order On Sale Point', null)));
+  }
+
   update(order): Observable<Order> {
     return this.http.put<Order>(this.orderUrl, order)
       .pipe(
@@ -61,6 +67,32 @@ export class OrderService {
      return this.http.delete<Order>(this.orderUrl +'/'+ orderId)
     .pipe(
        catchError(this.handleError('Delete Order', null)));
+  }
+
+  getTotalCost(items: Array<any>){
+    if(items==undefined || items===null || items.length===0){
+      return 0;
+    }
+    return items.reduce((total, item)=>{
+      if(item.discount?.length>0){
+        total = total + item.discount[0].salePrice*item.qty;
+      }else{
+        total = total + item.sellPrice*item.qty;
+      }
+      return total;
+    }, 0);
+  }
+
+  getTotalSavings(items: Array<any>){
+    if(items==undefined || items===null||items.length===0){
+      return 0;
+    }
+    return items.reduce((total, item)=>{
+      if(item.discount?.length>0){
+        total = total + item.discount[0].discount*item.qty;
+      }
+      return total;
+    }, 0);
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

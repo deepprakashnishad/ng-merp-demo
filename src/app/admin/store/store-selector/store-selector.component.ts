@@ -12,6 +12,7 @@ import { Store } from './../store';
 })
 export class StoreSelectorComponent implements OnInit {
 
+	@Input() tabIndex="100";
 	@Input() store: Store;
 	@Output() storeSelected = new EventEmitter<Store>();
 

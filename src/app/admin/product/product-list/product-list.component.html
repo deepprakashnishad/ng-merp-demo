@@ -34,7 +34,7 @@
 		</ng-container>
 		<ng-container matColumnDef="discountPercent">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header> Disc% </th>
-			<td mat-cell *matCellDef="let element"> {{getUnitQtyDiscount(element.prices[0].discounts)}}% </td>
+			<td mat-cell *matCellDef="let element"> {{getUnitQtyDiscount(element.prices[0].discounts)}}<span *ngIf="getUnitQtyDiscount(element.prices[0].discounts)">%</span> </td>
 		</ng-container>
 
 		<ng-container matColumnDef="qty">

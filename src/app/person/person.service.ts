@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Person } from './person';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { NotifierService } from 'angular-notifier';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class PersonService {
 
   	constructor(
   	private http: HttpClient,
+    private notifier: NotifierService
   ) {
      this.PersonUrl = environment.baseurl+'/Person';
      this.UserLoginUrl = environment.baseurl+'/UserLogin';
@@ -45,8 +47,8 @@ export class PersonService {
   			catchError(this.handleError('Get Token', null)));
   }
 
-  add(Person): Observable<Person> {
-    return this.http.post<Person>(this.PersonUrl, Person)
+  add(person): Observable<Person> {
+    return this.http.post<Person>(this.PersonUrl, person)
     .pipe(
        catchError(this.handleError('Add Person', null)));
   }
@@ -84,6 +86,9 @@ export class PersonService {
     	if (error instanceof ErrorEvent) {
     		return throwError('Unable to submit request. Please check your internet connection.');
     	} else {
+        if(error['msg']){
+          this.notifier.notify("error", error['msg']);
+        }
     		return throwError(error);
     	}
     };

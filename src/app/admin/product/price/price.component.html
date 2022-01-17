@@ -1,9 +1,9 @@
 <div class="store-container">
-	<app-store-selector *ngIf="false" [store]="store" (storeSelected)="storeSelected($event)"></app-store-selector>
+	<app-store-selector [tabIndex]="-1" *ngIf="false" [store]="store" (storeSelected)="storeSelected($event)"></app-store-selector>
 	<div class="container" *ngIf="true">
 		<div fxLayout fxLayoutGap="32px">
 			<div>
-				<app-store-selector (storeSelected)="storeSelectionModified($event)"></app-store-selector>
+				<app-store-selector [tabIndex]="-1" (storeSelected)="storeSelectionModified($event)"></app-store-selector>
 			</div>
 			<div *ngIf="priceType==='VRT' && !isViewMode">
 				<mat-checkbox [(ngModel)]="isPriceSame" (change)="isPriceSameUpdated($event.checked)">Is price same as original product</mat-checkbox>

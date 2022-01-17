@@ -3,5 +3,28 @@ table{
 }
 
 mat-form-field.small{
-    width: 20em;
+    width: 10em;
+}
+
+.display-revert{
+    display: revert !important;
+}
+
+.original-price{
+    text-decoration: line-through black 2px;
+    color: grey;
+}
+
+.attributes{
+    font-size: small;
+    color: grey;
+}
+
+.input-xs{
+    max-width: 60px;
+}
+
+.bold-highlighted{
+    font-weight: bold;
+    font-size: large;
 }

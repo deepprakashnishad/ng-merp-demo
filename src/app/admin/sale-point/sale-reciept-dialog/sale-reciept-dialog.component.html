@@ -1,0 +1,28 @@
+<div class="container">
+  <div fxLayout fxLayoutAlign="center center">{{store.title}}</div>
+  <div *ngIf="store?.address && store?.address!=null">{{store.address}}</div>
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Item</th>
+      <th>Unit Price</th>
+      <th>Discount</th>
+      <th>Qty</th>
+      <th>Sub-Total</th>
+    </tr>
+    <tr *ngFor="let item of order?.items; let i=index">
+      <td class="center">{{i+1}}</td>
+      <td class="center">{{item.name}}</td>
+      <td class="center">{{item.sellPrice}}</td>
+      <td class="center"><span *ngIf="item.discount && item.discount.length>0">{{item.discount[0]?.discountPercentage}}%</span></td>
+      <td class="center">{{item.qty}}</td>
+      <td class="center">{{item.discount && item.discount.length>0?item.discount[0].salePrice*item.qty:item.sellPrice*item.qty}}</td>
+    </tr>
+    <tr>
+      <td>Total Saving</td>
+      <td>{{getTotalSavings()}}</td>
+      <td>Total</td>
+      <td>{{getTotalCost()}}</td>
+    </tr>
+  </table>
+</div>

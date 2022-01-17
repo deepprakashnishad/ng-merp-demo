@@ -24,7 +24,6 @@ export class CartItem{
                 cart.push(item);
             }
         }
-        return cart;
-        
+        return cart;   
     }
 }

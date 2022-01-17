@@ -10,13 +10,13 @@ export const TS_STORE = "ts_store";
   providedIn: 'root'
 })
 export class MyIdbService {
-  static db: any;
+  db: any;
   constructor() { 
     this.upgradeDB()
   }
 
   async upgradeDB(){
-    MyIdbService.db = await openDB("mydb", 2, {
+    this.db = await openDB("mydb", 2, {
       upgrade(db){
         db.createObjectStore(ITEM_STORE);
         db.createObjectStore(PRICE_STORE);
@@ -32,8 +32,8 @@ export class MyIdbService {
       return;
     }
     keys.forEach(key => {
-      MyIdbService.db.put(storeName, data[key], key)
-      .then(result=>console.log("success", result))
+      this.db.put(storeName, data[key], key)
+      .then(result=>{})
       .catch(err=>{console.log("error", err)});
     });
     if(storeName){
@@ -45,7 +45,7 @@ export class MyIdbService {
     if(storeName===undefined || storeName===null || key===undefined){
       return;
     }
-    var promise = MyIdbService.db.get(storeName, key);
+    var promise = this.db.get(storeName, key);
     return promise;
   }
 
@@ -53,7 +53,7 @@ export class MyIdbService {
     if(storeName===undefined || storeName===null){
       return;
     }
-    var promise = MyIdbService.db.getAllKeys(storeName);
+    var promise = this.db.getAllKeys(storeName);
     return promise;
   }
 
@@ -61,7 +61,10 @@ export class MyIdbService {
     if(storeName===undefined || storeName===null){
       return;
     }
-    var promise = MyIdbService.db.getAll(storeName);
+    if(this.db === undefined || this.db===null){
+      this.db = await openDB("mydb", 2);
+    }
+    var promise = this.db.getAll(storeName);
     return promise;
   }
 }

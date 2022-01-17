@@ -58,7 +58,8 @@ import { UserReportComponent } from './reports/user-report/user-report.component
 import { VariantEditorComponent } from './product/variant/variant-editor/variant-editor.component';
 import { SearchProductComponent } from './product/search-product/search-product.component';
 import { SalePointComponent } from './sale-point/sale-point.component';
-import { StoreProductSelectorComponent } from './product/store-product-selector/store-product-selector.component';
+import { StoreProductSelectorComponent } from './sale-point/store-product-selector/store-product-selector.component';
+import { SaleRecieptDialogComponent } from './sale-point/sale-reciept-dialog/sale-reciept-dialog.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +117,8 @@ import { StoreProductSelectorComponent } from './product/store-product-selector/
     VariantEditorComponent,
     SearchProductComponent,
     SalePointComponent,
-    StoreProductSelectorComponent
+    StoreProductSelectorComponent,
+    SaleRecieptDialogComponent
   ],
   imports: [
     SharedModule,
