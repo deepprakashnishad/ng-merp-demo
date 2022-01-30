@@ -8,6 +8,7 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { StorageService } from './storage.service';
 import { CategoryService } from './admin/category/category.service';
 import { Category } from './admin/category/category';
+import { MyIdbService } from './my-idb.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ export class AppComponent implements OnInit {
     private pwaService: PwaService,
     private authenticationService: AuthenticationService,
     private categoryService: CategoryService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private dbService: MyIdbService
   ) {
     this.pwa = this.pwaService;
   }

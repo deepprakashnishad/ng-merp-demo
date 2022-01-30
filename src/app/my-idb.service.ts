@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { openDB } from 'idb';
+import { noop } from 'rxjs';
 
 export const ITEM_STORE = "item";
 export const PRICE_STORE = "price";
@@ -10,20 +11,23 @@ export const TS_STORE = "ts_store";
   providedIn: 'root'
 })
 export class MyIdbService {
-  db: any;
+  static db: any;
   constructor() { 
+    console.log("Upgrading DB");
     this.upgradeDB()
   }
 
   async upgradeDB(){
-    this.db = await openDB("mydb", 2, {
-      upgrade(db){
-        db.createObjectStore(ITEM_STORE);
-        db.createObjectStore(PRICE_STORE);
-        db.createObjectStore(STORE_SETTINGS_STORE);
-        db.createObjectStore(TS_STORE);
-      }
-    });
+    if(MyIdbService.db===undefined){
+      MyIdbService.db = await openDB("mydb", 2, {
+        upgrade(db){
+          db.createObjectStore(ITEM_STORE);
+          db.createObjectStore(PRICE_STORE);
+          db.createObjectStore(STORE_SETTINGS_STORE);
+          db.createObjectStore(TS_STORE);
+        }
+      });
+    }
   }
 
   async setValue(storeName, data){
@@ -31,8 +35,11 @@ export class MyIdbService {
     if(storeName===undefined || storeName===null || keys===undefined || keys.length===0){
       return;
     }
+    if(MyIdbService.db===undefined){
+      await this.upgradeDB();
+    }
     keys.forEach(key => {
-      this.db.put(storeName, data[key], key)
+      MyIdbService.db.put(storeName, data[key], key)
       .then(result=>{})
       .catch(err=>{console.log("error", err)});
     });
@@ -45,7 +52,10 @@ export class MyIdbService {
     if(storeName===undefined || storeName===null || key===undefined){
       return;
     }
-    var promise = this.db.get(storeName, key);
+    if(MyIdbService.db===undefined){
+      await this.upgradeDB();
+    }
+    var promise = MyIdbService.db.get(storeName, key);
     return promise;
   }
 
@@ -53,7 +63,10 @@ export class MyIdbService {
     if(storeName===undefined || storeName===null){
       return;
     }
-    var promise = this.db.getAllKeys(storeName);
+    if(MyIdbService.db===undefined){
+      await this.upgradeDB();
+    }
+    var promise = MyIdbService.db.getAllKeys(storeName);
     return promise;
   }
 
@@ -61,10 +74,10 @@ export class MyIdbService {
     if(storeName===undefined || storeName===null){
       return;
     }
-    if(this.db === undefined || this.db===null){
-      this.db = await openDB("mydb", 2);
+    if(MyIdbService.db===undefined){
+      await this.upgradeDB();
     }
-    var promise = this.db.getAll(storeName);
+    var promise = MyIdbService.db.getAll(storeName);
     return promise;
   }
 }

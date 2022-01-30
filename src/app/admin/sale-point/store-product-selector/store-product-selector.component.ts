@@ -6,7 +6,7 @@ import { debounceTime } from 'rxjs/operators';
 import { ProductService } from '../../product/product.service';
 import { Store } from '../../store/store';
 import { Product } from '../../product/product';
-import { get, set, getMany, setMany } from 'idb-keyval';
+// import { get, set, getMany, setMany } from 'idb-keyval';
 import { ITEM_STORE, MyIdbService, TS_STORE } from 'src/app/my-idb.service';
 import { Observable } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -68,11 +68,16 @@ export class StoreProductSelectorComponent implements OnInit {
     for (let propName in changes) {
       let changedProp = changes[propName];
       if(propName.toLowerCase() === "store" && changedProp.currentValue !== undefined){
-        get("product_refresh_timestamp").then(val=>{
+        this.dbService.getValue(TS_STORE, ITEM_STORE).then(val=>{
           if(val + productRefreshTimeInMillis<Date.now()){
             this.refreshStoreProductList();
           }
         });
+        /* get("product_refresh_timestamp").then(val=>{
+          if(val + productRefreshTimeInMillis<Date.now()){
+            this.refreshStoreProductList();
+          }
+        }); */
       }
     }    
   }

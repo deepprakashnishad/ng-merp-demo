@@ -3,7 +3,7 @@ export const environment = {
   production: true,
   minOrderFreeDelivery: 500,
   deliveryCharges: 100,
-  baseurl: "https://merp-demo.herokuapp.com",
+  baseurl: "https://giriraj-store.herokuapp.com",
   // baseurl: "https://fir-erp-944d6.web.app/api",
   // baseurl: "http://localhost:5000",
   firebase: {
