@@ -27,8 +27,7 @@ export class AppComponent implements OnInit {
     private pwaService: PwaService,
     private authenticationService: AuthenticationService,
     private categoryService: CategoryService,
-    private storageService: StorageService,
-    private dbService: MyIdbService
+    private storageService: StorageService
   ) {
     this.pwa = this.pwaService;
   }

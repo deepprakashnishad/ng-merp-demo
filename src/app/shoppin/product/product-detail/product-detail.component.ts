@@ -110,20 +110,21 @@ export class ProductDetailComponent implements OnInit {
   }
 
   initializeVariantAttrMap(){
-    var mainProd = this.products[0];
-    var varAttrs = Object.keys(this.products[0]?.variants?.attrs);
+    if(this.products[0]?.variants !== null && this.products[0]?.variants?.attrs !== null){
+      var varAttrs = Object.keys(this.products[0]?.variants?.attrs);
 
-    for(var attr of varAttrs){
-      for(var product of this.products){
-        if(this.variantAttrMap[attr]===undefined || this.variantAttrMap[attr]===null){
-          this.variantAttrMap[attr] = [];
+      for(var attr of varAttrs){
+        for(var product of this.products){
+          if(this.variantAttrMap[attr]===undefined || this.variantAttrMap[attr]===null){
+            this.variantAttrMap[attr] = [];
+          }
+          if(product.attrs[attr]){
+            this.variantAttrMap[attr].push(product.attrs[attr]);
+          }
         }
-        if(product.attrs[attr]){
-          this.variantAttrMap[attr].push(product.attrs[attr]);
-        }
+
+        this.attrSelectedValueMap[attr] = this.selectedProduct.attrs[attr];
       }
-
-      this.attrSelectedValueMap[attr] = this.selectedProduct.attrs[attr];
     }
   }
 

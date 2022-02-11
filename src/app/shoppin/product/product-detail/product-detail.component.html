@@ -37,10 +37,10 @@
       </div>
       <div *ngIf="selectedPrice.discounts?.length>0" fxLayout fxLayoutGap="10px">
         <div class="original-price">{{selectedPrice.unitPrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
-        <div class="price">{{this.selectedDiscount?.salePrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+        <div class="price">{{selectedDiscount?.salePrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
         <div class="secondary-title"
              *ngIf="selectedPrice.discounts!=null && selectedPrice.discounts!=null">
-          {{this.selectedDiscount?.discountPercentage+"% off"}}
+          {{selectedDiscount?.discountPercentage+"% off"}}
         </div>
       </div>
       <span>(Inclusive of all taxes)</span>

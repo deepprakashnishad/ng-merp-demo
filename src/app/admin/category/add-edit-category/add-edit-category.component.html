@@ -28,7 +28,7 @@
 		</div>
 		
 		<app-category-chip-input *ngIf="false" #categoryInput inputLabel="Children Categories"[excludeCategory]="category"></app-category-chip-input>
-		<app-uploader *ngIf="category.id" [maxAllowedFileSize]="50" [uploadPath]="uploadPath" [isMultiple]="false" (imageUploaded)="uploadCompleted($event)"></app-uploader>
+		<app-uploader *ngIf="category.id" [maxAllowedFileSize]="250" [uploadPath]="uploadPath" [isMultiple]="false" (imageUploaded)="uploadCompleted($event)"></app-uploader>
 		<mat-card *ngIf="category.imgs && category.imgs['downloadUrl']">
 			<mat-card-content fxLayout="column" fxLayoutAlign="center center">
 				<img [src]="category.imgs['downloadUrl']" height="150" width="150"/>
