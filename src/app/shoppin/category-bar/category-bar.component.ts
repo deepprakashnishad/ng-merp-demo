@@ -1,9 +1,11 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { MyIdbService, STORE_SETTINGS_STORE, TS_STORE } from 'src/app/my-idb.service';
 import { Category } from '../../admin/category/category';
 import { CategoryService } from '../../admin/category/category.service';
 import { CategoryTreeNode } from '../../admin/category/CategoryTreeNode';
+import { catRefreshTimeInMillis } from './categories/categories.component';
 
 @Component({
   selector: 'app-category-bar',
@@ -38,13 +40,34 @@ export class CategoryBarComponent implements OnInit {
 
   constructor(
     private categoryService: CategoryService,
+    private dbService: MyIdbService,
     private router: Router
   ) { 
   }
 
   ngOnInit() {
-    this.categoryService.fetchCategoryTree().subscribe(result=>{
+    this.dbService.getValue(STORE_SETTINGS_STORE, "CAT_TREE").then(res=>{
+      this.categories = res;
+      this.updateCategoryTree();
+      if (!this.categories) {
+        this.updateCategoryTree(); 
+      } else {
+        this.categories = res;
+      }
+    });
+    this.dbService.getValue(TS_STORE, "CAT_TREE").then(res=>{
+      if(res+catRefreshTimeInMillis<Date.now()){
+        this.updateCategoryTree();
+      }
+    })
+  }
+
+  updateCategoryTree(){
+    this.categoryService.fetchCategoryTree(true).subscribe(result => {
       this.categories = result;
+      sessionStorage.setItem("catTree", JSON.stringify(result));
+      this.dbService.setValue(STORE_SETTINGS_STORE, {"CAT_TREE": result});
+      this.dbService.setValue(TS_STORE, {"CAT_TREE": Date.now()})
     });
   }
 

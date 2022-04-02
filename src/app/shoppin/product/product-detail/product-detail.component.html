@@ -29,7 +29,7 @@
         {{selectedProduct?.name}}
       </div>
       <br />
-      <div class="sub-title" *ngIf="storeSettings?.isBrandEnabled">Brand: {{product?.brand?.lname}}</div>
+      <div class="sub-title" *ngIf="storeSettings?.isBrandEnabled">Brand: {{selectedProduct?.brand?.sname}}</div>
       <div class="sub-title" *ngIf="selectedProduct?.attrs && selectedProduct?.attrs['Weight']">Net Weight: {{selectedProduct?.attrs['Weight']}}</div>
       <br />
       <div class="price" *ngIf="selectedPrice.discounts==null || selectedPrice.discounts?.length===0">
@@ -65,12 +65,12 @@
         <table>
           <tr>
             <th [colSpan]="2">Attributes</th>
-            <th>Other Varities</th>
+            <th class="variant-col">Other Variants</th>
           </tr>
           <tr *ngFor="let attr of selectedProduct?.attrs | keyvalue; let i=index">
             <td>{{attr?.key}}:&emsp;</td>
             <td>{{attr?.value}}</td>
-            <td class=variant-col>
+            <td class="variant-col">
               <div *ngIf="products[0]?.variants?.attrs[attr?.key]==='dropdown'">
                 <mat-select [(ngModel)]="attrSelectedValueMap[attr?.key]" (selectionChange)="attrSelectionUpdated()">
                   <mat-option *ngFor="let attrValue of variantAttrMap[attr?.key]" [value]="attrValue">

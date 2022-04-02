@@ -43,7 +43,7 @@ export class ProdCardComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['product'] && changes['product']['currentValue']){
       this.product = changes['product']['currentValue'];
-
+      console.log(this.product);
       this.selectedPrice = this.product.prices[0];
       this.updateDiscountIndex();
     }    
@@ -85,6 +85,7 @@ export class ProdCardComponent implements OnInit {
         this.selectedDiscount = this.unitDiscount;
       } */
     }
+    console.log(this.selectedDiscount);
   }
 
   showDetail(){

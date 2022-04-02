@@ -5,6 +5,8 @@ import { Category } from 'src/app/admin/category/category';
 import { CategoryService } from 'src/app/admin/category/category.service';
 import { CategoryTreeNode } from '../../../admin/category/CategoryTreeNode';
 import SwiperCore, { Navigation } from 'swiper/core';
+import { MyIdbService, STORE_SETTINGS_STORE, TS_STORE } from 'src/app/my-idb.service';
+import { catRefreshTimeInMillis } from '../categories/categories.component';
 
 SwiperCore.use([Navigation]);
 
@@ -41,6 +43,7 @@ export class DepartmentBarComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private route: ActivatedRoute,
+    private dbService: MyIdbService,
     private router: Router
   ) { }
 
@@ -54,8 +57,28 @@ export class DepartmentBarComponent implements OnInit {
       this.categories = result;
     });
 
-    this.categoryService.fetchCategoryTree(true, true).subscribe(result=>{
-      this.categoryMenuItems = result;      
+    this.dbService.getValue(STORE_SETTINGS_STORE, "CAT_TREE").then(res=>{
+      this.categories = res;
+      this.updateCategoryTree();
+      if (!this.categories) {
+        this.updateCategoryTree(); 
+      } else {
+        this.categoryMenuItems = res;
+      }
+    });
+    this.dbService.getValue(TS_STORE, "CAT_TREE").then(res=>{
+      if(res+catRefreshTimeInMillis<Date.now()){
+        this.updateCategoryTree();
+      }
+    });
+  }
+
+  updateCategoryTree(){
+    this.categoryService.fetchCategoryTree(true).subscribe(result => {
+      this.categoryMenuItems = result;
+      sessionStorage.setItem("catTree", JSON.stringify(result));
+      this.dbService.setValue(STORE_SETTINGS_STORE, {"CAT_TREE": result});
+      this.dbService.setValue(TS_STORE, {"CAT_TREE": Date.now()})
     });
   }
 

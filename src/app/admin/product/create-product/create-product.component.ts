@@ -158,6 +158,7 @@ export class CreateProductComponent implements OnInit {
         this.productService.addProduct(this.product)
         .subscribe((product)=>{
           this.product = product;
+          this.uploadPath = `products/${this.product.id}`;
           this.notifierService.notify("success", `${this.product.name} created successfully`);
         });
       }else{

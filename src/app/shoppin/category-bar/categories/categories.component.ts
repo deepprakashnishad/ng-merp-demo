@@ -5,8 +5,8 @@ import { Category } from "../../../admin/category/category";
 import { CategoryService } from "../../../admin/category/category.service";
 import { CategoryTreeNode } from "../../../admin/category/CategoryTreeNode";
 
-const catRefreshDays = 30;
-const catRefreshTimeInMillis = catRefreshDays*24*60*60*1000;
+export const catRefreshDays = 30;
+export const catRefreshTimeInMillis = catRefreshDays*24*60*60*1000;
 
 @Component({
   templateUrl: "./categories.component.html",
@@ -33,7 +33,7 @@ export class CategoriesComponent implements OnInit{
       this.nodes = res;
       this.updateCategoryTree();
       if (!this.nodes) {
-        // this.updateCategoryTree(); 
+        this.updateCategoryTree(); 
       } else {
         this.displayedNodes.splice(0, this.displayedNodes.length);
         this.nodes.forEach(ele => {
