@@ -31,7 +31,7 @@ export class CategoriesComponent implements OnInit{
     // this.nodes = JSON.parse(sessionStorage.getItem("catTree"));
     this.dbService.getValue(STORE_SETTINGS_STORE, "CAT_TREE").then(res=>{
       this.nodes = res;
-      this.updateCategoryTree();
+      // this.updateCategoryTree();
       if (!this.nodes) {
         this.updateCategoryTree(); 
       } else {

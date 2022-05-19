@@ -1,7 +1,8 @@
 <mat-card class="full-width" fxLayout="column" fxLayoutAlign="start center">
   <mat-card-content>
     <div class="img-container responsive-img" fxLayout="column" fxFlexAlign="center space-between">
-      <img fxFlexAlign="center" class="mouse-hand" [src]="product?.assets?.imgs[0]?.downloadUrl" height="180px" width="180px" (click)="showDetail()"/>
+      <img fxFlexAlign="center" class="mouse-hand" [src]="product?.assets?.imgs[0]?.downloadUrl" 
+      height="180px" width="180px" (click)="showDetail()" loading="lazy"/>
       <div>{{product.brand?.sname}}</div>
       <div class="full-width title  mouse-hand"  (click)="showDetail()">{{product.name}}</div>
       <div class="weight">{{product.attrs["Weight"]}}</div>

@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "girirajstore1",
+    "site": "ng-erp-3dcfb",
     "public": "dist",
     "redirects": [
       {
@@ -13,13 +13,36 @@
       {
         "source": "**",
         "destination": "/index.html"
+      },
+      {
+        "source": "/api/:path*",
+        "destination": "https://giriraj-store.herokuapp.com/:path"
       }
     ],
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "headers": [ {
+      "source": "**/*.@(eot|otf|ttf|ttc|woff|font.css)",
+      "headers": [ {
+        "key": "Access-Control-Allow-Origin",
+        "value": "*"
+      } ]
+    }, {
+      "source": "**/*.@(jpg|jpeg|gif|png)",
+      "headers": [ {
+        "key": "Cache-Control",
+        "value": "max-age=84000"
+      } ]
+    }, {
+      "source": "404.html",
+      "headers": [ {
+        "key": "Cache-Control",
+        "value": "max-age=300"
+      } ]
+    }]
   },
 
   "emulators": {

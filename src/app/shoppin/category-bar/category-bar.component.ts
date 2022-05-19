@@ -48,7 +48,7 @@ export class CategoryBarComponent implements OnInit {
   ngOnInit() {
     this.dbService.getValue(STORE_SETTINGS_STORE, "CAT_TREE").then(res=>{
       this.categories = res;
-      this.updateCategoryTree();
+      // this.updateCategoryTree();
       if (!this.categories) {
         this.updateCategoryTree(); 
       } else {
