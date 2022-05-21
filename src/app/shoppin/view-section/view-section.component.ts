@@ -21,7 +21,7 @@ export class ViewSectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.productService.getByFilter({ productIds: this.section.productIds.join(",") }).subscribe(result => {
+    this.productService.getByProductIdList(this.section.productIds.join(",")).subscribe(result => {
       this.products = result;
     });
   }

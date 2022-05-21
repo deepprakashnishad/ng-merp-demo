@@ -7,28 +7,76 @@
   z-index: 500000;
   top: 0;
 }
-.loader {
-  height: 4px;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  background-color: #FFF;
+
+.spinner-overlay {
+  position: fixed;
+  z-index: 500000;
+  top: 40%;
+  left: 50%;
 }
-.loader:before {
-  display: block;
+
+.wrapper {
   position: absolute;
-  content: "";
-  left: -200px;
-  width: 200px;
-  height: 4px;
-  background-color: red;
-  animation: loading 2s linear infinite;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  height: calc(100vh - 20px);
+  width: 100%;
+  background: #731539;
+  z-index: 99999;
 }
-@keyframes loading {
-  from {left: -200px; width: 30%;}
-  50% {width: 30%;}
-  70% {width: 70%;}
-  80% {left: 50%;}
-  95% {left: 120%;}
-  to {left: 100%;}
+
+.loader {
+  width: 10em;
+  height: 10em;
+  font-size: 25px;
+  box-sizing: border-box;
+  border-top: 0.3em solid hotpink;
+  border-radius: 50%;
+  position: relative;
+  animation: rotating 2s ease-in-out infinite;
+  --direction: 1;
+}
+
+.loader::before,
+.loader::after {
+  content: '';
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+  box-sizing: border-box;
+  top: -0.2em;
+}
+
+.loader::before {
+  border-top: 0.3em solid dodgerblue;
+  transform: rotate(120deg);
+}
+
+.loader::after {
+  border-top: 0.3em solid gold;
+  transform: rotate(240deg);
+}
+
+.loader span {
+  position: absolute;
+  color: white;
+  width: inherit;
+  height: inherit;
+  text-align: center;
+  line-height: 10em;
+  font-family: sans-serif;
+  animation: rotating 2s linear infinite;
+  --direction: -1;
+}
+
+@keyframes rotating {
+  50% {
+      transform: rotate(calc(180deg * var(--direction)));
+  }
+
+  100% {
+      transform: rotate(calc(360deg * var(--direction)));
+  }
 }

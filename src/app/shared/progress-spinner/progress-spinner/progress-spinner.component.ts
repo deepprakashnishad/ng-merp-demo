@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoaderService } from '../loader.service';
 import { LoaderState } from '../loader';
@@ -11,6 +11,8 @@ import { LoaderState } from '../loader';
 })
 export class ProgressSpinnerComponent 
   implements OnInit, OnDestroy {
+
+    @Input() loaderType: string = "bar";
 
 	show = false;
   private subscription: Subscription;

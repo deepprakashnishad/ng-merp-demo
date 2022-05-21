@@ -22,6 +22,7 @@ import { AddressCardComponent } from './address/address-card/address-card.compon
 import { AddEditAddressComponent } from './address/add-edit-address/add-edit-address.component';
 import { AddressComponent } from './address/address.component';
 import { PersonModule } from '../person/person.module';
+import { LazyImgDirective } from '../directives/lazy-img.directive';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { PersonModule } from '../person/person.module';
     CapitalizeFirstLetterDirective, 
     CapitalizeDirective, 
     DropzoneDirective,
+    LazyImgDirective,
     MyFilterPipe, 
     SafeHtmlPipe, 
     SafeUrlPipe,
@@ -41,7 +43,7 @@ import { PersonModule } from '../person/person.module';
     AddressCardComponent,
     AddEditAddressComponent,
     AddressCardComponent,
-    AddressComponent
+    AddressComponent,
   ],
   imports: [
     CommonModule,

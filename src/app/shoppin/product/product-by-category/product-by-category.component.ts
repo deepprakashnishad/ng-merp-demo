@@ -27,6 +27,10 @@ export class ProductByCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(): void {
+    
     this.route.queryParams.subscribe(params=>{
       if(params['ancestors']){
         this.ancestors = params['ancestors'];
@@ -36,6 +40,7 @@ export class ProductByCategoryComponent implements OnInit {
         this.getProductListByCategoryId();
       }
     });
+
   }
 
   getProductListByCategoryId(){

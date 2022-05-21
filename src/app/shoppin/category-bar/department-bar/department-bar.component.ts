@@ -48,7 +48,6 @@ export class DepartmentBarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.route.queryParams.subscribe(params=>{
       this.selectedCategoryId = params['id'];
     });
@@ -59,7 +58,7 @@ export class DepartmentBarComponent implements OnInit {
 
     this.dbService.getValue(STORE_SETTINGS_STORE, "CAT_TREE").then(res=>{
       this.categories = res;
-      this.updateCategoryTree();
+      // this.updateCategoryTree();
       if (!this.categories) {
         this.updateCategoryTree(); 
       } else {
@@ -76,7 +75,7 @@ export class DepartmentBarComponent implements OnInit {
   updateCategoryTree(){
     this.categoryService.fetchCategoryTree(true).subscribe(result => {
       this.categoryMenuItems = result;
-      sessionStorage.setItem("catTree", JSON.stringify(result));
+      localStorage.setItem("catTree", JSON.stringify(result));
       this.dbService.setValue(STORE_SETTINGS_STORE, {"CAT_TREE": result});
       this.dbService.setValue(TS_STORE, {"CAT_TREE": Date.now()})
     });

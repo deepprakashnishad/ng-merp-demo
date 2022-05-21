@@ -53,6 +53,12 @@ export class ProductService {
         catchError(this.handleError('Get Token', null))); 
   }
 
+  getByProductIdList(ids: string):Observable<Array<Product>>{
+    return this.http.get<Product>(`${this.productUrl}/getProductByIds?productIds=${ids}`)
+      .pipe(
+        catchError(this.handleError('Get Token', null))); 
+  }
+
   getByFilter(filterCriteria): Observable<Array<Product>>{
     var criteriaStr = "";
     for(var criteria in filterCriteria){

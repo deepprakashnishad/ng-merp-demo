@@ -10,6 +10,7 @@ export const environment = {
   deliveryCharges: 100,
   // baseurl: "https://giriraj-store.herokuapp.com",
   baseurl: "http://localhost:1337",
+  // baseurl: "http://localhost:4200/api",
   // baseurl: "https://merp-demo.herokuapp.com/",
   firebase: {
     apiKey: "AIzaSyCwOc-4ZQRxCj9QhUP73TKGzDhDJM2llN0",

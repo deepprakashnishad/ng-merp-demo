@@ -4,8 +4,9 @@ export const environment = {
   minOrderFreeDelivery: 500,
   deliveryCharges: 100,
   // baseurl: "https://giriraj-store.herokuapp.com",
-  baseurl: "https://fir-erp-944d6.web.app/api",
-  // baseurl: "http://localhost:5000",
+  // baseurl: "https://fir-erp-944d6.web.app/api",
+  baseurl: "https://ng-erp-3dcfb.web.app/api",
+  // baseurl: "http://0.0.0.0:5000/api",
   firebase: {
     apiKey: "AIzaSyCwOc-4ZQRxCj9QhUP73TKGzDhDJM2llN0",
     authDomain: "ng-erp-3dcfb.firebaseapp.com",
