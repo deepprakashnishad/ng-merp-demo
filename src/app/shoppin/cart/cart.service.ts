@@ -164,7 +164,7 @@ export class CartService implements OnDestroy {
     if(this.authService.isLoggedIn.getValue()){
       var postData = {
         qty: qty, 
-        "selectedPrice": selectedPrice.id
+        "selectedPrice": selectedPrice?.id
       };
       if(product.product !== undefined && product.product !== null){
         postData['product'] = product.product;
@@ -260,6 +260,11 @@ export class CartService implements OnDestroy {
   }
 
   validateNewQuantity(product, qty, selectedPrice: Price) {
+    if(!selectedPrice){
+      this.updateCart(product, 0, selectedPrice);
+      this.notifier.notify("error", `Item removed from cart`);
+      return;
+    }
     if (qty > selectedPrice.maxAlldQty) {
       this.notifier.notify("error", `Maximum allowed quantity is ${selectedPrice.maxAlldQty}`);
       return false;

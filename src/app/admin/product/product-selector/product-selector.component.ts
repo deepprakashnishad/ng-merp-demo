@@ -15,7 +15,9 @@ import { ProductService } from '../product.service';
 export class ProductSelectorComponent implements OnInit {
 
   products: Array<Product>;
+  displayedProducts: Array<Product>;
   selectedProductIds: Array<String> = [];
+  filterText: string="";
 
   constructor(
     public dialogRef: MatDialogRef<ProductSelectorComponent>,
@@ -29,6 +31,7 @@ export class ProductSelectorComponent implements OnInit {
   ngOnInit() {
     this.productService.getProducts().subscribe(products=>{
       this.products = products;
+      this.displayedProducts = products;
     });
   }
 
@@ -42,24 +45,16 @@ export class ProductSelectorComponent implements OnInit {
   }
 
   categoryUpdated(categoryNode) {
-    this.productService.getProductsByCategory(categoryNode.category).subscribe(result => {
-      delete result['success'];
-      delete result['msg'];
-      this.products = [];
-      var keys = Object.keys(result);
-      for (let key of keys) {
-        this.products = this.products.concat(result[key]);
-      }
-      //this.products = result;
-      //if (this.products && Object.keys(this.products).length > 0) {
-      //  this.isProductExists = true;
-      //} else {
-      //  this.isProductExists = false;
-      //}
+    this.displayedProducts = this.products.filter(ele=>{
+      return ele.taxonomies?.some(m=>m.indexOf(categoryNode.id)>-1)
     });
   }
 
   isProductSelected(productId){
     return this.selectedProductIds.indexOf(productId) > -1;
+  }
+
+  query(event){
+    console.log(event);
   }
 }

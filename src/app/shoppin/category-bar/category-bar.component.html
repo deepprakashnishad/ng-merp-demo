@@ -6,7 +6,7 @@
         <button class="department" mat-button [matMenuTriggerFor]="menu.childMenu">
           {{item.title}}
         </button>
-        <app-menu-item #menu [items]="item.childrens"></app-menu-item>
+        <app-menu-item #menu [items]="item.childrens" [navigateOnSelection]="navigateOnSelection" (categorySelected)="itemSelected(item)"></app-menu-item>
       </span>
       <!-- Leaf node buttons here -->
       <span *ngIf="!item.childrens || item.childrens.length === 0">
