@@ -1,6 +1,19 @@
+.logo{
+  background-color: linear-gradient(to right, #2217c5, #0eeba4);
+}
+
+.logo-text{
+  font-size: 2.5rem;
+  font-family: fantasy;
+  background: -webkit-linear-gradient(#57c9ff, #f121ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+
 a.pageLink, .nav-icon {
   padding: 0 14px;
-  color:#731539;  
+  color:white;  
 }
 
 button.mobPageLink {
@@ -50,7 +63,7 @@ a{
   top: 20%;
 
   button{
-      color: white;
+    color: white;
     text-align: left;
     padding: 0;
   }
@@ -91,6 +104,11 @@ a{
   }
 }
 
+.search-container{
+  max-width: 400px;
+  align-items: center;
+}
+
 mat-toolbar{
   min-height: 25px;
   height: 25px;
@@ -99,17 +117,12 @@ mat-toolbar{
 
 .wide-navbar{
   height: 18vh;
-  background-color: white;  
+  background-color: #731539;  
 }
 
 .narrow-navbar{
   height: 8vh;
   background-color: white;
-}
-
-.middle-container{
-  max-width: 60vw;
-  width: 100%;
 }
 
 .navbar {

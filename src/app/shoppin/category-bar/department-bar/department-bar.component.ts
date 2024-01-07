@@ -35,8 +35,8 @@ SwiperCore.use([Navigation]);
 })
 export class DepartmentBarComponent implements OnInit {
 
-  categories: Array<Category>;
-  categoryMenuItems: Array<CategoryTreeNode>;
+  categories: Array<Category>=[];
+  categoryMenuItems: Array<CategoryTreeNode>=[];
   selectedCategoryId: string;
   isCategoryBarOpen: boolean = false;
 
@@ -51,33 +51,12 @@ export class DepartmentBarComponent implements OnInit {
     this.route.queryParams.subscribe(params=>{
       this.selectedCategoryId = params['id'];
     });
-
-    this.categoryService.getDepartments().subscribe(result=>{
-      this.categories = result;
-    });
-
-    this.dbService.getValue(STORE_SETTINGS_STORE, "CAT_TREE").then(res=>{
-      this.categories = res;
-      // this.updateCategoryTree();
-      if (!this.categories) {
-        this.updateCategoryTree(); 
-      } else {
-        this.categoryMenuItems = res;
-      }
-    });
-    this.dbService.getValue(TS_STORE, "CAT_TREE").then(res=>{
-      if(res+catRefreshTimeInMillis<Date.now()){
-        this.updateCategoryTree();
-      }
-    });
+    this.updateCategoryTree();
   }
 
   updateCategoryTree(){
     this.categoryService.fetchCategoryTree(true).subscribe(result => {
       this.categoryMenuItems = result;
-      localStorage.setItem("catTree", JSON.stringify(result));
-      this.dbService.setValue(STORE_SETTINGS_STORE, {"CAT_TREE": result});
-      this.dbService.setValue(TS_STORE, {"CAT_TREE": Date.now()})
     });
   }
 

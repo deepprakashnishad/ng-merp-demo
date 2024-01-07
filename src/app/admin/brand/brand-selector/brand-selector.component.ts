@@ -4,6 +4,9 @@ import { map, startWith, switchMap, filter } from 'rxjs/operators';
 import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
 import { BrandService } from './../brand.service';
 import { Brand } from './../brand';
+import { MatDialog } from '@angular/material/dialog';
+import { NotifierService } from 'angular-notifier';
+import { AddEditBrandComponent } from './../add-edit-brand/add-edit-brand.component';
 
 @Component({
   selector: 'app-brand-selector',
@@ -20,7 +23,9 @@ export class BrandSelectorComponent implements OnInit {
 	brandFilteredList: Observable<any[]>;
 
 	constructor(
-	  	private brandService: BrandService
+	  	private brandService: BrandService,
+	  	private notifier: NotifierService,
+	  	private dialog: MatDialog
 	) { }
 
   	ngOnInit() {
@@ -56,7 +61,18 @@ export class BrandSelectorComponent implements OnInit {
 		}
 	}
 
-  	_filter(value:string, list: Array<any>): Array<any>{
+	openAddEditBrandDialog(){
+		const dialogRef = this.dialog.open(AddEditBrandComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result){
+        this.brands.push(result.brand);
+        this.notifier.notify("success", result.msg);
+      }
+    });
+	}
+
+  _filter(value:string, list: Array<any>): Array<any>{
 	    if(value && typeof value==="string"){
 	      const filterValue = value.toLowerCase();
 	        return list.filter(option => (option.sname.toLowerCase()

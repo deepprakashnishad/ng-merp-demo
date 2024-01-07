@@ -28,10 +28,9 @@ export class CategoriesComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    // this.nodes = JSON.parse(sessionStorage.getItem("catTree"));
-    this.dbService.getValue(STORE_SETTINGS_STORE, "CAT_TREE").then(res=>{
+    this.updateCategoryTree();
+    /*this.dbService.getValue(STORE_SETTINGS_STORE, "CAT_TREE").then(res=>{
       this.nodes = res;
-      // this.updateCategoryTree();
       if (!this.nodes) {
         this.updateCategoryTree(); 
       } else {
@@ -45,7 +44,7 @@ export class CategoriesComponent implements OnInit{
       if(res+catRefreshTimeInMillis<Date.now()){
         this.updateCategoryTree();
       }
-    })
+    })*/
     /* if (!this.nodes) {
       this.categoryService.fetchCategoryTree(true).subscribe(result => {
         this.nodes = result;
@@ -70,9 +69,9 @@ export class CategoriesComponent implements OnInit{
       this.nodes.forEach(ele => {
         this.displayedNodes.push(ele);
       })
-      sessionStorage.setItem("catTree", JSON.stringify(this.nodes));
+      /*sessionStorage.setItem("catTree", JSON.stringify(this.nodes));
       this.dbService.setValue(STORE_SETTINGS_STORE, {"CAT_TREE": this.nodes});
-      this.dbService.setValue(TS_STORE, {"CAT_TREE": Date.now()})
+      this.dbService.setValue(TS_STORE, {"CAT_TREE": Date.now()})*/
     });
   }
 

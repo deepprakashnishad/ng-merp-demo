@@ -22,17 +22,18 @@ export class AuthGuardService implements CanActivate, CanLoad{
 
   	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
   		let url: string = state.url
-		let loginErrorMessage = 'Insufficient permission. Please login as authorized user.'
-		if(route.data.loginErrorMessage){
-			loginErrorMessage = route.data.loginErrorMessage;
-		}
+			let loginErrorMessage = 'Insufficient permission. Please login as authorized user.'
+			if(route.data.loginErrorMessage){
+				loginErrorMessage = route.data.loginErrorMessage;
+			}
 
-		if(route.data.isLoggedIn && route.data.permissions.length===0 && this.authenticationService.isLoggedIn.getValue()){
-			return true;
-		}
+			if(route.data.isLoggedIn && route.data.permissions.length===0 && this.authenticationService.isLoggedIn.getValue()){
+				return true;
+			}
   		
   		let reqdAccessList = route.data.permissions
 	  	if(this.authenticationService.authorizeUser(reqdAccessList)){ 
+	  		console.log("Authorization completed")
 	  		return true 
 	  	}
 

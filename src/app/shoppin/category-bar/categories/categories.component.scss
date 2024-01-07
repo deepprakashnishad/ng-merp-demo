@@ -19,6 +19,7 @@
     }
     @media only screen and (min-width: 600px) {
         min-width: 33%;
+        margin: 16px;
         .img-container img{
             width: 200px;
             height: 200px;
@@ -26,6 +27,7 @@
     }
     @media only screen and (min-width: 768px) {
         min-width: 25%;
+        margin: 16px;
         .img-container img{
             width: 200px;
             height: 200px;
@@ -34,7 +36,6 @@
     @media only screen and (min-width: 992px) {
         min-width: 20%;
     }
-
 }
 
 .img-container{

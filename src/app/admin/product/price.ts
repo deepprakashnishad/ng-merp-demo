@@ -10,7 +10,8 @@ export class Price{
 	unitPrice: number;
 	discounts: Array<SaleDetail>;
   isPriceSame: boolean;
-
+  costPrice: number;
+  
   constructor(){
     this.isPriceSame = false;
   }

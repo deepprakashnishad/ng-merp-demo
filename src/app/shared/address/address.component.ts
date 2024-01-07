@@ -14,8 +14,10 @@ export class AddressComponent implements OnInit {
 
   addresses: Array<Address> = [];
   @Input("selectedAddress") selectedAddress: Address;
+  @Input("selectedAddressId") selectedAddressId: string;
   @Input("displayAddButton") displayAddButton: boolean = true;
   @Input("fulfillmentType") fulfillmentType: string = "delivery";
+  @Input("checkPincodeAvailability") checkPincodeAvailability: boolean = true;
   @Output("addressSelected") addressSelected: EventEmitter<any> = new EventEmitter();
   forType: string = "Person";
 
@@ -37,6 +39,14 @@ export class AddressComponent implements OnInit {
   fetchAddress(){
     this.addressService.get(this.forType).subscribe(result=>{
       this.addresses = Address.fromJSON(result);
+
+      var mAddresses = this.addresses.filter(ele=>{
+          if(ele.id===this.selectedAddressId){
+            return ele;
+          }
+        }
+      );
+      this.selectedAddress = mAddresses[0];
     });
   }
 

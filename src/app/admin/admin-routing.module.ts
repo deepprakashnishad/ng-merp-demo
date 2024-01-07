@@ -49,13 +49,13 @@ const routes: Routes = [
 				canDeactivate:[CanDeactivateGuardService],
 				data: { title: 'Sale Point', permissions: ['CREATE_ORDER','UPDATE_ORDER', 'DELETE_ORDER']}
 			},
-			{
+			/*{
 				path: 'my-store', 
 				component: AddEditStoreComponent,
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
 				data: { title: 'My Store', permissions: []}
-			},
+			},*/
 			{
 				path: 'brand', 
 				component: BrandComponent,

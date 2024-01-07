@@ -4,11 +4,18 @@ export class Store{
 	id: string;
 	title: string;
 	address: string;
-	logo: string;
-	headerText: string;
 	location: {long:number, lat: number};
+	cp: String;
+	cpe: String;
+	cpc: String;
+	logo: any;
 	owner: Person;
+	taxId: string;
 	status: string;
+
+	constructor(){
+		this.status = "DRAFT";
+	}
 
 	static fromJSON(data){
 		var store = new Store();
@@ -23,24 +30,21 @@ export class Store{
 		if(data.status){
 			store.status = data['status'];
 		}
-		if(data.logo){
-			store.logo = data['logo'];
+		if(data.cp){
+			store.cp = data['cp'];	
 		}
-
-		if(data.headerText){
-			store.headerText = data['headerText'];
+		if(data.cpe){
+			store.cpe = data['cpe'];	
 		}
-
+		if(data.cpc){
+			store.cpc = data['cpc'];	
+		}
+		if(data.taxId){
+			store.taxId = data['taxId'];	
+		}
+		if(data.address){
+			store.address = data.address;
+		}
 		return store;
 	}
 }
-
-
-/*attributes: {
-	storeId:{type: "string"},
-	title: {type: "string", required:true},
-	address:{model: "Address"},
-	location:{type: "json"},
-	person: {model: "person"},
-	status: {type: "string", defaultsTo: "Active"}
-}*/

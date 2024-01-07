@@ -17,18 +17,28 @@ export class AddEditAddressComponent implements OnInit {
 
   addressForm: FormGroup;
 
+  checkPincodeAvailability: boolean = false;
+
   constructor(
     private addressService: AddressService,
     private deliveryService: DeliveryService,
     private fb: FormBuilder,
     private notifier: NotifierService,
     public dialofRef: MatDialogRef<AddEditAddressComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Address
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {
-    if(this.data && this.data!==null){
-      this.address = this.data;
+    if(this.data.address && this.data.address!==null){
+      this.address = this.data.address;
+    }
+
+    if(this.data.forType){
+      this.address.forType = this.data.forType;
+    }
+
+    if(this.data.checkPincodeAvailability){
+      this.checkPincodeAvailability = this.data.checkPincodeAvailability;
     }
 
     this.addressForm = this.fb.group({
@@ -60,27 +70,33 @@ export class AddEditAddressComponent implements OnInit {
       return;
     }
 
-    this.deliveryService.checkPincodeAvailability(this.address.pincode).subscribe(result => {
-      if (result.length > 0) {
-        if (this.address !== null && this.address?.id) {
-          this.addressService.update(this.address).subscribe(result => {
-            if (result['success']) {
-              this.dialofRef.close({ success: true, address: Address.fromJSON([result['address']])[0] });
-            }
-          })
+    if(this.checkPincodeAvailability){
+      this.deliveryService.checkPincodeAvailability(this.address.pincode).subscribe(result => {
+        if (result.length > 0) {
+          this.saveAddress();   
         } else {
-          this.addressService.add(this.address).subscribe(result => {
-            if (result['success']) {
-              this.dialofRef.close({ success: true, address: Address.fromJSON([result['address']])[0] });
-            }
-          });
+          this.notifier.notify("error", "Pincode not available for service. We regret for the inconvenience caused");
         }
-      } else {
-        this.notifier.notify("error", "Pincode not available for service. We regret for the inconvenience caused");
-      }
-    });
+      });  
+    }else{
+      this.saveAddress();
+    }
+  }
 
-    
+  saveAddress(){
+    if (this.address !== null && this.address?.id) {
+      this.addressService.update(this.address).subscribe(result => {
+        if (result['success']) {
+          this.dialofRef.close({ success: true, address: Address.fromJSON([result['address']])[0] });
+        }
+      })
+    } else {
+      this.addressService.add(this.address).subscribe(result => {
+        if (result['success']) {
+          this.dialofRef.close({ success: true, address: Address.fromJSON([result['address']])[0] });
+        }
+      });
+    }
   }
 
   close(){
@@ -92,7 +108,7 @@ export class AddEditAddressComponent implements OnInit {
       this.notifier.notify("error", "Invalid pincode");
       return;
     }
-   
+       
     //this.addressService.getPincodeDetail(this.address.pincode).subscribe(result=>{
     //  if(result[0]['Status']==='Success'){
     //    var postOffices = result[0]['PostOffice'];

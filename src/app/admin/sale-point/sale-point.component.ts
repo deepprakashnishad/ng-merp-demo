@@ -64,7 +64,7 @@ export class SalePointComponent implements OnInit {
     private notifier: NotifierService,
     private dialog: MatDialog
   ) { 
-    const order = {
+  /*  const order = {
       "netPrice": 584,
       "netSaving": 6,
       "deliveryCharge": 0,
@@ -143,7 +143,7 @@ export class SalePointComponent implements OnInit {
       person: this.customer,
       "store": store
     }
-  });
+  });*/
   }
 
   ngOnInit() {

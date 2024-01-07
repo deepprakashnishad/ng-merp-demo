@@ -15,6 +15,7 @@ export class AddressCardComponent implements OnInit {
   @Input('isSelected') isSelected: boolean = false;
   @Input("isEditable") isEditable: boolean = true;
   @Input("email") email: string;
+  @Input("checkPincodeAvailability") checkPincodeAvailability: boolean = true;
   @Output('addressModified') addressModified = new EventEmitter<any>();
 
   constructor(
@@ -29,7 +30,7 @@ export class AddressCardComponent implements OnInit {
     const dialogRef = this.dialog.open(
       AddEditAddressComponent,
       {
-        data: this.address,
+        data: {address: this.address, checkPincodeAvailability: this.checkPincodeAvailability},
         height: "80%",
         width: "80%"
       }

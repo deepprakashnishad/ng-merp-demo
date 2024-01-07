@@ -25,7 +25,7 @@ export class ProductComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-  	this.productService.getProducts().subscribe(products => {
+  	/*this.productService.getProducts().subscribe(products => {
       this.productList = products
       this.dataSource = new MatTableDataSource<Product>(this.productList)
       this.dataSource.paginator = this.paginator;
@@ -41,7 +41,7 @@ export class ProductComponent implements OnInit {
         }
       };
       this.dataSource.sort = this.sort;
-    })
+    })*/
   }
 
   applyFilter(filterValue: string) {

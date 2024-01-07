@@ -1,0 +1,10 @@
+<div>
+	<mat-form-field class="small">
+		<input matInput type="number" [(ngModel)]="costPrice" placeholder="Cost price per unit">
+	</mat-form-field>
+	<mat-form-field class="small">
+		<input matInput type="number" [(ngModel)]="qty"  placeholder="Qty">
+	</mat-form-field>
+	<button mat-raised-button color="primary" (click)="closeDialog()">Add</button>
+	<button mat-raised-button (click)="closeDialog()">Close</button>
+</div>

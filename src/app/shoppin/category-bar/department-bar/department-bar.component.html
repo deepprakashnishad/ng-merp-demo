@@ -30,7 +30,7 @@
   </div>
 </nav> -->
 
-<nav fxHide.lt-lg>
+<nav fxHide.lt-lg *ngIf="categoryMenuItems.length>0">
   <div class="container megha-menu" fxLayoutAlign="center">
       <ul class="menu-main">
           <li *ngFor="let node of categoryMenuItems; let i=index;"> 
@@ -48,11 +48,11 @@
 <div 
      fxLayout="column"
      fxLayoutGap="10px"
-     fxHide.gt-md>
-  <div class="mob-menu" *ngFor="let category of categories">
-    <button mat-button (click)="navigateByDepartment(category)">
-      <span><img [src]="category.imgs?.downloadUrl" height="25" width="25" /></span>
-      {{ category?.title }}
-    </button>
+     fxHide.gt-md *ngIf="categoryMenuItems && categoryMenuItems.length>0">
+  <div class="mob-menu" *ngFor="let catItem of categoryMenuItems">
+    <div (click)="navigateByDepartment(catItem.category)">
+      <span><img [src]="catItem.category.imgs?.downloadUrl" height="25" width="25" /></span>
+      {{ catItem.category?.title }}
+    </div>
   </div>
 </div>

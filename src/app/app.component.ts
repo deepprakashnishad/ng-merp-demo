@@ -40,14 +40,14 @@ export class AppComponent implements OnInit {
 
     this.router.events.subscribe(
       (event: any) => {
-        if (event instanceof NavigationEnd) {          
+        /*if (event instanceof NavigationEnd) {          
          if (this.router.url.includes('admin')) {
             this.isShowNavigation = false;
          }
          else {
           this.isShowNavigation = true;
          }
-        }
+        }*/
       }
     );
 

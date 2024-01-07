@@ -7,7 +7,7 @@ import { ProductService } from '../product.service';
 import { NotifierService } from 'angular-notifier';
 import { MatTableDataSource } from '@angular/material/table';
 import { I } from '@angular/cdk/keycodes';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-price',
@@ -35,7 +35,7 @@ export class PriceComponent implements OnInit {
 	store: Store;
 	costPrice: number=0.0;
 	sellPrice: number;
-	inStockQty: number;
+	inStockQty: number=0;
   maxAlwdQty: number = 99;
 	currency: string="INR";
 	saleDetail: SaleDetail = new SaleDetail();
@@ -44,6 +44,7 @@ export class PriceComponent implements OnInit {
 	minDate = new Date();
   saleDetailSelectedIndex: number = -1;
   isPriceSame: boolean = false;
+  inventories: Array<any> = [];
 
   dataSource: MatTableDataSource<SaleDetail> = new MatTableDataSource();
 
@@ -56,6 +57,7 @@ export class PriceComponent implements OnInit {
   constructor(
     private priceService: PriceService,
     private notifier: NotifierService,
+    private dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
   ) { 
     if(data!==null){
@@ -109,6 +111,22 @@ export class PriceComponent implements OnInit {
     });
   }
 
+  openInventoryDialog(){
+    const dialogRef = this.dialog.open(InventoryDialogComponent);
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        this.inventories.push(result.data);
+        if(result.operation==="Add"){
+          this.costPrice = Math.floor((this.costPrice*this.inStockQty + result.data.cp*result.data.q)*100/(this.inStockQty+result.data.q))/100;
+          this.inStockQty += result.data.q;
+        }else{
+          this.inStockQty -= result.data.q;
+          this.inStockQty = this.inStockQty>0?this.inStockQty:0;
+        }
+      }
+    })
+  }
+
   isPriceSameUpdated(event){
     if(event && (this.originalProductPrice===undefined||this.originalProductPrice===null)){
       this.priceService.getPriceById("PRD", this.productId, this.store.id)
@@ -135,9 +153,11 @@ export class PriceComponent implements OnInit {
   }
 
   populatePrice(){
+    console.log(this.price);
     this.inStockQty = this.price?.qty;
     this.maxAlwdQty = this.price?.maxAlldQty;
     this.sku = this.price?.sku;
+    this.costPrice = this.price.costPrice;
 
     if(this.priceType==="PRD" || this.price?.unitPrice){
       this.sellPrice = this.price?.unitPrice;
@@ -205,11 +225,13 @@ export class PriceComponent implements OnInit {
       priceType: this.priceType,
       itemId: this.itemId,
       store: this.store.id,
+      inventories: this.inventories,
       data: {
         sku: this.sku,
         product: this.productId,
         location: this.store.location,
         qty: this.inStockQty,
+        costPrice: this.costPrice,
         maxAlldQty: this.maxAlwdQty,
       }
     };
@@ -262,5 +284,27 @@ export class PriceComponent implements OnInit {
   		this.saleDetail.discount = +(this.saleDetail.discountPercentage * value * this.sellPrice/100).toFixed(0);
   		this.saleDetail.salePrice = +(this.sellPrice * value - this.saleDetail.discount).toFixed(0);
   	} */
+  }
+}
+
+@Component({
+  selector: 'app-inventory-dialog',
+  templateUrl: './inventory-dialog.component.html',
+  styleUrls: []
+})
+export class InventoryDialogComponent{
+  qty: number;
+  costPrice: number;
+  operation: string = "Add";
+  constructor(
+    public dialogRef: MatDialogRef<InventoryDialogComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) data: any
+  ){
+
+  }
+
+  closeDialog(){
+    console.log(this.costPrice);
+    this.dialogRef.close({data: {'cp': this.costPrice, 'q': this.qty}, operation: "Add"});
   }
 }

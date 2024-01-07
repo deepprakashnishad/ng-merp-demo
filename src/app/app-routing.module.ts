@@ -68,7 +68,13 @@ const routes: Routes = [
     component: CategoriesComponent,
     data: { title: "Categories" }
   },
-
+  {
+    path: 'local-store', 
+		component: AddEditStoreComponent,
+		canActivate: [AuthGuardService], 
+		canDeactivate:[CanDeactivateGuardService],
+		data: { title: 'My Store', isLoggedIn: true, permissions: []}
+  },
 	{
 		path: 'admin', 
 		component: SidenavComponent,
@@ -81,7 +87,7 @@ const routes: Routes = [
 				component: DashboardComponent,
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
-				data: { title: 'Brands', permissions: ['SHOP_EDITOR','CREATE_BRAND', 'UPDATE_BRAND', 'DELETE_BRAND']},
+				data: { title: 'Dashboard', permissions: ['SHOP_EDITOR']},
 			},
 			{
 				path: 'sale-point', 
@@ -96,13 +102,6 @@ const routes: Routes = [
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
 				data: { title: 'Brands', permissions: ['SHOP_EDITOR','CREATE_BRAND', 'UPDATE_BRAND', 'DELETE_BRAND']}
-			},
-			{
-				path: 'my-store', 
-				component: AddEditStoreComponent,
-				canActivate: [AuthGuardService], 
-				canDeactivate:[CanDeactivateGuardService],
-				data: { title: 'My Store', permissions: []}
 			},
 			{
 				path: 'user-report',
@@ -153,14 +152,14 @@ const routes: Routes = [
         component: StoreSettingsComponent,
         canActivate: [AuthGuardService],
         canDeactivate: [CanDeactivateGuardService],
-        data: { title: 'Store Settings', permissions: ['SHOP_EDITOR'] }
+        data: { title: 'Store Settings', permissions: ['ADMIN'] }
       },
 			{
 				path: 'product',
 				component: ProductComponent,
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
-				data: { title: 'product', permissions: ['SHOP_EDITOR', 'CREATE_PRODUCT', 'UPDATE_PRODUCT', 'DELETE_PRODUCT']},				
+				data: { title: 'product', permissions: ['SHOP_EDITOR', 'CREATE_PRODUCT', 'UPDATE_PRODUCT']},				
 				children:[
 					{
 						path: '',
@@ -192,7 +191,7 @@ const routes: Routes = [
 				component: PermissionComponent,
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
-				data: { title: 'Permission', permissions: []}
+				data: { title: 'Permission', permissions: ['CREATE_PERMISSION', 'UPDATE_PERMISSION', 'DELETE_PERMISSION']}
 			},	
 		
 			{
@@ -200,7 +199,7 @@ const routes: Routes = [
 				component: RoleComponent,
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
-				data: { title: 'Role', permissions: []}
+				data: { title: 'Role', permissions: ['CREATE_ROLE', 'UPDATE_ROLE', 'DELETE_ROLE']}
 			},
 			{
 				path: 'activity-log', 
@@ -214,7 +213,7 @@ const routes: Routes = [
 				component: PickupPointComponent,
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
-				data: { title: 'Permission', permissions: []}
+				data: { title: 'Permission', permissions: ['SHOP_EDITOR']}
 			},
 			{
 				path: 'delivery',
@@ -235,7 +234,7 @@ const routes: Routes = [
 				component: SectionEditorComponent,
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
-				data: { title: 'Permission', permissions: []}
+				data: { title: 'Permission', permissions: ['MODERATOR']}
 			},	
 			{path: 'person', loadChildren: './../person/person.module#PersonModule', canLoad: [AuthGuardService],
 				data:{title: 'Person', resources: ['CREATE_PERSON', 'UPDATE_PERSON', 'DELETE_PERSON']}},

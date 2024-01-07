@@ -42,29 +42,33 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
   @HostBinding('class.is-open')
   isOpen = true;
 
+  userPermissions = sessionStorage.getItem("permissions");
+
+  filteredRouteList = [];
+
   private _mobileQueryListener: () => void;
   isLoggedIn: boolean;
   title = 'Shop Admin';
   routeList = [
-    { path: '/admin', title: 'Dashboard', permissions: [] },
+    { path: '/admin', title: 'Dashboard', permissions: ['SHOP_EDITOR'] },
     { path: '/admin/sale-point', title: 'Sale Point', permissions: ['CREATE_ORDER', 'UPDATE_ORDER', 'DELETE_ORDER'] },
-    {path: '/admin/my-store', title: 'My Store', permissions:[]},
-    { path: '/admin/store-settings', title: 'Store Settings', permissions: [] },
-    {path: '/admin/product', title: 'Product', permissions:[]},
-    {path: '/admin/category', title: 'Category'},
-    {path: '/admin/brand', title: 'Brand'},
-    {path: '/admin/facet', title: 'Attributes'},
-    { path: '/admin/banner', title: 'Banner' },
-    { path: '/admin/create-edit-section', title: 'Section Editor' },
-    {path: '/admin/permission', title: 'Permissions'},
-    { path: '/admin/role', title: 'Role' },
-    {path: '/admin/user-report', title: "User Report"},
-    {path: '/admin/person', title: 'Users'},
-    {path: '/admin/static-pages', title: 'Static Page'},
-    {path: '/admin/delivery', title: 'Delivery'},
-    {path: '/admin/order', title: 'Orders'},
-    {path: '/admin/pickup-point', title: 'Pickup Points'},
-    {path: '/admin/activity-log', title: 'Activity Logs'},
+    {path: '/admin/my-store', title: 'My Store', permissions:['CREATE_STORE', 'UPDATE_STORE', 'DELETE_STORE']},
+    { path: '/admin/store-settings', title: 'Store Settings', permissions: ['MAIN_STORE_CONTROLLER'] },
+    {path: '/admin/product', title: 'Product', permissions:['CREATE_PRODUCT', 'UPDATE_PRODUCT', 'DELETE_PRODUCT']},
+    {path: '/admin/category', title: 'Category', permissions:['CREATE_CATEGORY', 'UPDATE_CATEGORY', 'DELETE_CATEGORY']},
+    {path: '/admin/brand', title: 'Brand', permissions:['CREATE_BRAND', 'UPDATE_BRAND', 'DELETE_BRAND']},
+    {path: '/admin/facet', title: 'Attributes', permissions:['CREATE_FACET', 'UPDATE_FACET', 'DELETE_FACET']},
+    { path: '/admin/banner', title: 'Banner' , permissions:['MAIN_STORE_CONTROLLER']},
+    { path: '/admin/create-edit-section', title: 'Section Editor', permissions:['MAIN_STORE_CONTROLLER'] },
+    {path: '/admin/permission', title: 'Permissions', permissions:['CREATE_PERMISSION', 'UPDATE_PERMISSION', 'DELETE_PERMISSION']},
+    { path: '/admin/role', title: 'Role', permissions:['CREATE_ROLE', 'UPDATE_ROLE', 'DELETE_ROLE'] },
+    {path: '/admin/user-report', title: "User Report", permissions:['SHOP_EDITOR']},
+    {path: '/admin/person', title: 'Users', permissions:['CREATE_PERSON', 'UPDATE_PERSON', 'DELETE_PERSON']},
+    {path: '/admin/static-pages', title: 'Static Page', permissions:['MAIN_STORE_CONTROLLER']},
+    {path: '/admin/delivery', title: 'Delivery', permissions:['SHOP_EDITOR']},
+    {path: '/admin/order', title: 'Orders', permissions:['CREATE_ORDER', 'UPDATE_ORDER', 'DELETE_ORDER']},
+    {path: '/admin/pickup-point', title: 'Pickup Points', permissions:['SHOP_EDITOR']},
+    {path: '/admin/activity-log', title: 'Activity Logs', permissions:['SHOP_EDITOR']},
   ];
 
 	ngAfterViewInit() {}
@@ -91,6 +95,14 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.authenticationService.isLoggedIn.subscribe(value => {
       this.isLoggedIn = value;
+    });
+    this.filteredRouteList = this.routeList.filter(ele=>{
+      for(var permission of ele.permissions){
+        if(this.userPermissions.indexOf(permission)>-1){
+          return ele;
+        }
+      }
+      return false;
     });
   }
 

@@ -27,7 +27,7 @@ import { TaxonomySelectorComponent } from './category/taxonomy-selector/taxonomy
 import { FacetValueComponent } from './facet/facet-value/facet-value.component';
 import { FacetControlComponent } from './facet/facet-control/facet-control.component';
 import { VariantComponent } from './product/variant/variant.component';
-import { PriceComponent } from './product/price/price.component';
+import { PriceComponent, InventoryDialogComponent } from './product/price/price.component';
 import { StoreComponent } from './store/store.component';
 import { AddEditStoreComponent } from './store/add-edit-store/add-edit-store.component';
 import { ViewStoreComponent } from './store/view-store/view-store.component';
@@ -88,6 +88,7 @@ import { SaleRecieptDialogComponent } from './sale-point/sale-reciept-dialog/sal
     FacetControlComponent,
     VariantComponent,
     PriceComponent,
+    InventoryDialogComponent,
     StoreComponent,
     AddEditStoreComponent,
     ViewStoreComponent,

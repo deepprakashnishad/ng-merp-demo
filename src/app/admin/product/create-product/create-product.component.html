@@ -1,10 +1,11 @@
 <div fxLayout fxLayoutAlign="end start" style="background-color: white;">
-	<button class="back-button" mat-icon-button color="primary" (click)="navigateBack()"><mat-icon>close</mat-icon></button>	
+	<button fxHide.gt-sm class="back-button" mat-icon-button color="primary" (click)="navigateBack()"><mat-icon>close</mat-icon></button>
+	<button fxHide.lt-md class="back-button" mat-raised-button color="primary" (click)="navigateBack()">Close <mat-icon>close</mat-icon></button>	
 </div>
 
 <mat-vertical-stepper linear>
 	<mat-step [stepControl]="productForm" label="Product title &amp; brand">
-		<form [formGroup]="productForm" fxLayout="row" fxLayoutGap="16px">
+		<form class="product-form" [formGroup]="productForm" fxLayout="row" fxLayoutGap="16px">
 			<mat-form-field>
 				<input type="text" matInput formControlName="cntlName" required="true" [(ngModel)]="product.name" placeholder="Name" />
 			</mat-form-field>
@@ -13,6 +14,7 @@
 			</mat-form-field>
 			<app-brand-selector [hidden]="!storeSettings?.isBrandEnabled" matInput (brandSelected)="brandSelected($event)" [brand]="product.brand"></app-brand-selector>
 			<mat-form-field *ngIf="storeSettings?.isTaxEnabled">
+				<mat-label>Tax(SGST+CGST In percent)</mat-label>
 				<input type="text" matInput formControlName="taxCntl" [(ngModel)]="product.tax" placeholder="Tax(SGST+CGST In percent)" />
 			</mat-form-field>
 			<mat-form-field appearance="outline">

@@ -1,15 +1,6 @@
 <div fxLayout fxLayoutGap="16px">
 	<app-store-selector (storeSelected)="storeSelectionModified($event)"></app-store-selector>
 	<app-search-product fxFlex (itemSelected)="searchItemSelected($event)"></app-search-product>
-	<!-- <input type="file" style="display: none" 
-	#fileInput accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
-	[multiple]="false" (change)="onChangeFileInput($event.target)" />
-	<div>
-		<button mat-raised-button color="primary" class="file-select-button" (click)="onClickFileInputButton()">
-			<mat-icon>attach_file</mat-icon>
-			Select File
-		</button>
-	</div> -->
 	<div><a mat-raised-button color="accent" routerLink="add">Add New Product</a></div>
 </div>
 <h3 *ngIf="productList.length===0">No product found</h3>

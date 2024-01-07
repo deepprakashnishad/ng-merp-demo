@@ -7,8 +7,8 @@
     </mat-vertical-stepper>-->
     <div *ngIf="orderStatus!=='Cancelled'" class="stepper" fxLayout="column" fxLayoutGap="32px">
       <div fxLayout fxLayoutGap="16px" fxLayoutAlign="start center" *ngFor="let step of steps; index as i">
-        <mat-icon *ngIf="step.isCompleted && i<completedStepsCnt-1">check</mat-icon>
-        <mat-icon *ngIf="step.isCompleted && i===completedStepsCnt-1">label_important</mat-icon>
+        <mat-icon *ngIf="(step.status==='Delivered' && i===completedStepsCnt-1) || (step.isCompleted && i<completedStepsCnt-1)">check</mat-icon>
+        <mat-icon *ngIf="step.status!=='Delivered' && step.isCompleted && i===completedStepsCnt-1">label_important</mat-icon>
         <mat-icon *ngIf="!step.isCompleted"></mat-icon>
         <h3 [class.completed]="step.isCompleted">{{step.status}}</h3>
       </div>

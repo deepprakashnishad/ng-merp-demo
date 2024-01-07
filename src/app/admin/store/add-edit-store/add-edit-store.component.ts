@@ -18,35 +18,29 @@ import { AngularFireStorage } from '@angular/fire/storage';
 })
 export class AddEditStoreComponent implements OnInit {
 
-  cntlStoreName: FormControl = new FormControl();
-  cntlHeaderText: FormControl = new FormControl();
   store: Store = new Store();
   uploadPath: string = "/logo.png";
 
-	errors: Array<string> = [];
 	storeForm: FormGroup;
   title: string;
  
   constructor(
   	private storeService: StoreService,
-  	private fb: FormBuilder,
     private notifier: NotifierService,
     private authenticationService: AuthenticationService,
     private afs: AngularFireStorage
   ) { }
 
   ngOnInit() {
-  	this.storeForm = this.fb.group({
-  		store: ['', Validators.required],
-  		values: ['']
-  	});
-
     this.storeService.getMyStores().subscribe(result => {
       if (result?.length>0) {
         this.store = Store.fromJSON(result[0]);
-        console.log(this.store);
       }      
     });
+  }
+
+  addressSelected(event){
+    this.store.address = event.id;
   }
 
   save() {

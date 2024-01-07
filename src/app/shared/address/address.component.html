@@ -5,7 +5,8 @@
       (click)="selectAddress(address, i)"
       (addressModified)="addressModified($event, i)"
       [isSelected]="selectedAddress?.id===address.id"
-      [address]=address></app-address-card>
+      [address]=address
+      [checkPincodeAvailability]=checkPincodeAvailability></app-address-card>
   </div>
   <div  *ngIf="displayAddButton && addresses.length>0" class="floating-action-button-container" fxLayout="column" fxLayoutAlign="end end">
     <button fxHide.gt-sm mat-fab color="accent" (click)="openAddressDialog()"><mat-icon>add</mat-icon></button>

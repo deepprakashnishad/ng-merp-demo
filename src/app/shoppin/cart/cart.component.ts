@@ -42,13 +42,19 @@ export class CartComponent implements OnInit {
         this.cart = result['value'];
       }
     });
-    if(this.loadCartFromServer){
+    this.cart = this.cartService.getCartFromStorage();
+    if(this.cart===null){
       this.cartService.getCart().subscribe(result=>{
         this.cart = CartItem.fromJSON(result);
+        localStorage.setItem("cart", JSON.stringify(this.cart));
       });
+    }
+    console.log(this.cart);
+    /*if(this.loadCartFromServer){
+      
     }else{
       this.cart = this.cartService.getCartFromStorage();
-    }
+    }*/
   }
 
   updateQuantity(element: CartItem, qty) {

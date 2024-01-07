@@ -6,7 +6,7 @@
 			</mat-toolbar-row>
 		</mat-toolbar> -->
 		<mat-list>
-			<mat-list-item *ngFor="let route of routeList">
+			<mat-list-item *ngFor="let route of filteredRouteList">
 				<button mat-button (click)="navigate(route.path)">{{route.title}}</button>
 			</mat-list-item>
 		</mat-list>

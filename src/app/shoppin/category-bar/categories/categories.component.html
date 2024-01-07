@@ -1,8 +1,8 @@
 <div class="container" fxLayout="column" fxLayoutGap="16px">
   <div *ngIf="nodeNavigation.length>0" fxLayout fxLayoutAlign="start start">
-    <button (click)="backNavigation()" mat-raised-button><mat-icon>back_arrow</mat-icon>Back</button>
+    <button (click)="backNavigation()" mat-raised-button color="primary"><mat-icon>arrow_back</mat-icon>Back</button>
   </div>
-  <div class="card-container" fxLayout="row wrap" fxLayoutGap="32px grid" fxLayoutAlign="center center">
+  <div class="card-container" fxLayout="row wrap" fxLayoutGap="32px grid" fxLayoutAlign="start start">
     <mat-card fxLayout="column" fxLayoutAlign="center center" *ngFor="let node of displayedNodes" (click)="navigateToSubCat(node)">
       <div class="img-container">
         <img *ngIf="node.category?.imgs?.downloadUrl" class="cat-image" [src]="node.category?.imgs?.downloadUrl | safe">
