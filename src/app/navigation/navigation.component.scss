@@ -105,8 +105,8 @@ a{
 }
 
 .search-container{
-  max-width: 400px;
-  align-items: center;
+  padding-left: 25%;
+  padding-right: 25%;
 }
 
 mat-toolbar{
@@ -147,7 +147,6 @@ mat-toolbar{
   }
 
   .right-section {
-    position: absolute;
     right: 40px;
     font-size: 12px;
 

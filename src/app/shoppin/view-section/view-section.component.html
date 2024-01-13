@@ -1,13 +1,17 @@
 <mat-card>
   <mat-card-content>
     <div fxLayout.fxLayout.gt-sm fxLayout.lt-md="column">
-      <div 
-        class="arrow-container" 
-        fxHide.gt-sm
-        fxLayout>
-        {{section.title}}
+      <div class="full-width" fxLayout fxLayoutAlign="space-between center">
+        <div 
+          class="arrow-container" 
+          fxLayout>
+          {{section.title}}
+        </div>
+        <div fxFlexAlign.gt-sm="center" fxFlexAlign.lt-md="end">
+          <button mat-raised-button color="primary" (click)="navigateToProductGrid()">View All <mat-icon>east</mat-icon></button>
+        </div>
       </div>
-      <div 
+      <!-- <div 
         fxFlex="20" 
         fxHide.lt-md 
         [ngStyle]="sectionImage && {'background-image': 'url('+sectionImage+')', 'background-size': 'contain', 'background-repeat':'no-repeat'} || 
@@ -15,7 +19,7 @@
         fxLayout 
         fxLayoutAlign="center center">
         <span [innerHTML]="section.text"></span>
-      </div>
+      </div> -->
       <swiper 
         [slidesPerView]="3"
         [navigation]="true"
@@ -50,9 +54,6 @@
           </div>
         </ng-template>
       </swiper>
-      <div fxFlexAlign.gt-sm="center" fxFlexAlign.lt-md="end">
-        <button mat-raised-button (click)="navigateToProductGrid()">View All <mat-icon>east</mat-icon></button>
-      </div>
     </div>
   </mat-card-content>
 </mat-card>

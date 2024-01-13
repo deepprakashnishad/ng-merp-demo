@@ -1,9 +1,9 @@
 <app-progress-spinner></app-progress-spinner>
 <mat-toolbar class="navbar" #navToolbar>
 	<mat-toolbar-row class="top-section">
-		<div class="full-width" fxLayout fxLayoutAlign="center">
+		<div class="full-width" fxLayout fxLayoutAlign="space-between center">
 			<h5>{{storeSettings?.headerText}}</h5>
-			<div fxHide fxShow.gt-md class="right-section">
+			<div fxHide fxShow.gt-md class="right-section" fxFlexAlign="end">
 				<a class="pageLink" [routerLink]="'/local-store'">
 					Start Selling Here
 				</a>
@@ -26,7 +26,7 @@
 	<mat-toolbar-row *ngIf="!shrinkToolbar" class="wide-navbar" fxLayout fxLayoutAlign="start center" fxLayoutGap fxHide.lt-md fxLayoutGap="16px">
 		<div class="logo">
 			<a class="brand" routerLink="/">
-				<h3 class="logo-text">RG STORE</h3>
+				<h3 class="logo-text">GOVIND MALL</h3>
 					<!-- <img height="80" width="80" [src]="storeSettings?.logo?.downloadUrl | safe" /> -->
 			</a>
 		</div>
@@ -65,11 +65,16 @@
 		</div>
 	</mat-toolbar-row>
 	<mat-toolbar-row class="narrow-navbar" fxLayout fxLayoutAlign="space-between center" fxHide.gt-sm>
-		<a class="brand" routerLink="/">
+		<div class="logo">
+			<a class="brand" routerLink="/">
+				<h3 class="logo-text">RG STORE</h3>
+			</a>
+		</div>
+		<!-- <a class="brand" routerLink="/">
 			<span>
 				<img height="30" width="30" [src]="storeSettings?.logo?.downloadUrl | safe" />
 			</span>
-		</a>
+		</a> -->
 		<div class="mob-welcome-msg">Welcome {{isLoggedIn?name:''}}</div>
 	</mat-toolbar-row>
 	<mat-toolbar-row class="narrow-navbar" fxLayout fxLayoutAlign="space-between center" fxHide.gt-sm>
@@ -83,12 +88,10 @@
 			<mat-icon *ngIf="isSidebarOpen">close</mat-icon>
 		</button>-->
 	</mat-toolbar-row>
-	<mat-toolbar-row class="full-width">
-		<div class="search-container">
-			<app-search-bar class="full-width"></app-search-bar>
-		</div>
-	</mat-toolbar-row>
 </mat-toolbar>
+<div fxHide.lt-md class="search-container full-width" fxLayout fxLayoutAlign="center center">
+	<app-search-bar class="full-width"></app-search-bar>
+</div>
 <!--<div [hidden]="isSidebarOpen" [@openClose]="isSidebarOpen?'open':'closed'" class="sidebar" fxLayout="column" fxLayoutGap="16px" fxHide.gt-sm>-->
 <!--<app-pincode-checker *ngIf="storeSettings?.enablePincodeChecker"></app-pincode-checker>-->
 <!--<a mat-button class="mobPageLink" [routerLink]="'/'">

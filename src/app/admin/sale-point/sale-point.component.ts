@@ -263,6 +263,7 @@ export class SalePointComponent implements OnInit {
     }
     this.items[index].qty = newQty;
     this.dataSource.data = this.items;
+    console.log(this.dataSource.data);
   }
 
   toggleIsPartialPayment(event){

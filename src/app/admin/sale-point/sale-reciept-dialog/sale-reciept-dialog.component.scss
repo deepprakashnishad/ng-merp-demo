@@ -1,3 +1,26 @@
 .center{
     text-align: center;
 }
+
+.item-list-table{
+    max-width: 300px;
+}
+
+.container{
+    font-size: 12px;
+}
+
+tr.price-summary{
+  font-size: 14px;
+  font-weight: bold;  
+}
+
+@media print {
+    @page {
+        margin: 0 !important;
+    }
+
+    body {
+        padding: 75px; /* This will act as your margin. Originally, the margin will hide the header and footer text. */
+    }
+}

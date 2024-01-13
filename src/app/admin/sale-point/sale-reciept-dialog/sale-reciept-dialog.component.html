@@ -1,28 +1,82 @@
-<div class="container">
-  <div fxLayout fxLayoutAlign="center center">{{store.title}}</div>
-  <div *ngIf="store?.address && store?.address!=null">{{store.address}}</div>
-  <table>
-    <tr>
-      <th>#</th>
-      <th>Item</th>
-      <th>Unit Price</th>
-      <th>Discount</th>
-      <th>Qty</th>
-      <th>Sub-Total</th>
-    </tr>
-    <tr *ngFor="let item of order?.items; let i=index">
-      <td class="center">{{i+1}}</td>
-      <td class="center">{{item.name}}</td>
-      <td class="center">{{item.sellPrice}}</td>
-      <td class="center"><span *ngIf="item.discount && item.discount.length>0">{{item.discount[0]?.discountPercentage}}%</span></td>
-      <td class="center">{{item.qty}}</td>
-      <td class="center">{{item.discount && item.discount.length>0?item.discount[0].salePrice*item.qty:item.sellPrice*item.qty}}</td>
-    </tr>
-    <tr>
-      <td>Total Saving</td>
-      <td>{{getTotalSavings()}}</td>
-      <td>Total</td>
-      <td>{{getTotalCost()}}</td>
-    </tr>
-  </table>
+<div class="container" (keypress)="keypressed($event)">
+  <div fxLayout fxLayoutAlign="space-between center">
+    <button mat-raised-button (click)="print('print-content')" color="primary" autofocus>Print <mat-icon>print</mat-icon></button>
+    <button mat-icon-button (click)="dialogRef.close()" color="error" autofocus><mat-icon>close</mat-icon></button>
+  </div>
+  <div id="print-content">
+    <div class="reciept-header">
+      <div fxLayout fxLayoutAlign="center">
+        <div fxLayout="column">
+          <h3 fxLayout fxLayoutAlign="center center" *ngIf="store && store?.title && store?.title!=null">{{store.title}}</h3>
+          <div *ngIf="store?.addr && store?.addr!=null">{{store.addr}}</div>  
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <h4>Bill To: {{customer.name}}, {{customer.mobile}}</h4>
+        <!-- <p>Name: {{customer.name}}<br>Mobile: {{customer.mobile}} <br></p> -->
+        <h4 *ngIf="address">Deliver To:</h4>
+        <div  *ngIf="address" [innerHTML]="address"></div>
+      </div>
+      <div>
+        <h5>Order: {{order.id}}
+        <br>Total Items: {{order.items.length}}
+        <br>Order Datetime: {{convertToDate(order.createdAt)}}</h5>
+      </div>
+      <table class="item-list-table">
+        <tr style="font-size: 12px;font-weight: bold;border: 1px solid black;">
+          <th style="text-align: center;border: 1px solid black;">#</th>
+          <th style="text-align: center;border: 1px solid black;">Item</th>
+          <th style="text-align: center;border: 1px solid black;">MRP</th>
+          <th style="text-align: center;border: 1px solid black;">Dis</th>
+          <th style="text-align: center;border: 1px solid black;">Qty</th>
+          <th style="text-align: center;border: 1px solid black;">Amt</th>
+        </tr>
+        <tr *ngFor="let item of order?.items; let i=index" style="font-size: 12px;">
+          <td class="center">{{i+1}}</td>
+          <td class="center">{{item.name}}</td>
+          <td class="center">{{item.sellPrice}}</td>
+          <td class="center"><span *ngIf="item.discount && item.discount.length>0">{{item.discount && item.discount.length>0?item.discount[0].discount*item.qty:""}}</span></td>
+          <td class="center">{{item.qty}}</td>
+          <td class="center">{{item.discount && item.discount.length>0?item.discount[0].salePrice*item.qty:item.sellPrice*item.qty}}</td>
+        </tr>
+        <tr style="border: 1px solid black;">
+          <td colspan="2" style="text-align: center;border: 1px solid black;"><b>Summary</b></td>
+          <td style="text-align: center;border: 1px solid black;">{{getTotalByMRP()}}</td>
+          <td style="text-align: center;border: 1px solid black;">{{getTotalSavings()}}</td>
+          <td style="text-align: center;border: 1px solid black;">{{getTotalByMRP()}}</td>
+          <td style="text-align: center;border: 1px solid black;">{{getTotalCost()}}</td>
+        </tr>
+        <tr class="price-summary" style="font-size: 12px;font-weight: bold;">
+          <td></td>
+          <td></td>
+          <td colspan="4">Grand Total - {{getTotalByMRP()}}</td>
+        </tr>
+        <tr class="price-summary" style="font-size: 12px;font-weight: bold;">
+          <td></td>
+          <td></td>
+          <td colspan="4">Your Savings - {{getTotalSavings()}}</td>
+        </tr>
+        <tr class="price-summary" style="font-size: 12px;font-weight: bold;">
+          <td></td>
+          <td></td>
+          <td colspan="4">Final Amt - {{getTotalCost()}}</td>
+        </tr>
+        <tr *ngFor="let payment of order['paymentDetails']; let i=index" style="font-size: 12px;font-weight: bold;">
+          <td style="text-align: center;border: 1px solid black;" rowspan="order['paymentDetails'].length" colspan="2" *ngIf="i===0">Payment Detail</td>
+          <td style="text-align: center;border: 1px solid black;">{{payment['method']}}</td>
+          <td style="text-align: center;border: 1px solid black;">{{payment['amount']}}</td>
+        </tr>
+      </table>
+      <qrcode [elementType]="'img'" [qrdata]=paymentString [width]="store.qcw" [errorCorrectionLevel]="'M'"></qrcode>
+    </div>
+    <div class="reciept-footer" style="font-size: 10px;font-weight: italic;">
+      <h5>Terms &amp; Conditions:</h5>
+      <p>Goods once sold will not be taken back & no cash refund.<br>
+      Goods may be exchanged within a week time only on the presentation of cash memo.(timing 01:00 pm to 04:00 pm)<br>
+      No Guarantee for colors and pillings</p>
+      <h3>!!!Thanks &amp; Please visit again!!!</h3>
+    </div>
+  </div>
 </div>

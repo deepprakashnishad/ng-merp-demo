@@ -30,6 +30,7 @@
     "angular-notifier": "^9.0.1",
     "angular-recaptcha3": "^2.0.0",
     "angular7-csv": "^0.2.12",
+    "angularx-qrcode": "^11.0.0",
     "chart.js": "^2.5.0",
     "core-js": "^2.5.4",
     "firebase": "^8.3.0",

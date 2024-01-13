@@ -152,7 +152,7 @@ const routes: Routes = [
         component: StoreSettingsComponent,
         canActivate: [AuthGuardService],
         canDeactivate: [CanDeactivateGuardService],
-        data: { title: 'Store Settings', permissions: ['ADMIN'] }
+        data: { title: 'Store Settings', permissions: ['MAIN_STORE_CONTROLLER'] }
       },
 			{
 				path: 'product',
@@ -234,7 +234,7 @@ const routes: Routes = [
 				component: SectionEditorComponent,
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
-				data: { title: 'Permission', permissions: ['MODERATOR']}
+				data: { title: 'Permission', permissions: ['MAIN_STORE_CONTROLLER']}
 			},	
 			{path: 'person', loadChildren: './../person/person.module#PersonModule', canLoad: [AuthGuardService],
 				data:{title: 'Person', resources: ['CREATE_PERSON', 'UPDATE_PERSON', 'DELETE_PERSON']}},

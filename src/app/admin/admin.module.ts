@@ -60,6 +60,7 @@ import { SearchProductComponent } from './product/search-product/search-product.
 import { SalePointComponent } from './sale-point/sale-point.component';
 import { StoreProductSelectorComponent } from './sale-point/store-product-selector/store-product-selector.component';
 import { SaleRecieptDialogComponent } from './sale-point/sale-reciept-dialog/sale-reciept-dialog.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,8 @@ import { SaleRecieptDialogComponent } from './sale-point/sale-reciept-dialog/sal
     AdminRoutingModule,
     ColorPickerModule,
     NgxJsonViewerModule,
-    ShoppinModule
+    ShoppinModule,
+    QRCodeModule
   ],
   exports: [
     AddEditBrandComponent, 

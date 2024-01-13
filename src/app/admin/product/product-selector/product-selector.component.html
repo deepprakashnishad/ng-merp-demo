@@ -9,7 +9,7 @@
     <mat-dialog-content>
         <app-category-bar [navigateOnSelection]="false" (categorySelected)="categoryUpdated($event)"></app-category-bar>    
         <div fxLayout="row wrap" fxLayoutGap="25px">
-            <div fxFlex="calc(25%-25px)" *ngFor="let product of displayedProducts | myFilter: filterText">
+            <div fxFlex="calc(25%-25px)" *ngFor="let product of displayedProducts | myfilter: filterText">
                 <app-selection-product-card
                     [isSelected]="isProductSelected(product.id)"
                     [product]="product"

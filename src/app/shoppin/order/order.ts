@@ -2,6 +2,7 @@ import { SaleDetail } from "src/app/admin/product/sale-detail";
 import { Payment } from "src/app/payment/payment";
 import { Address } from "src/app/shared/address/address";
 import { Brand } from "../../admin/brand/brand";
+import { Person } from 'src/app/person/person';
 
 export class Order{
     id: string;
@@ -16,6 +17,7 @@ export class Order{
     status: string;
     modeOfPayment: string;
     paymentDetails: Array<Payment>;
+    person: Person;
 
     static fromJSON(data, fetchDetail = true){
         var order = new Order();
@@ -32,6 +34,9 @@ export class Order{
           order.items = OrderItem.fromJSONArray(data['items']);
           order.fulfillment = Fulfillment.fromJSON(data.fulfillment);
           order.paymentDetails = Payment.fromJSONArray(data['paymentDetails']);
+          if(data['personId']){
+            order.person = Person.fromJSON(data['personId']);
+          }          
         }
         return order;
     }

@@ -14,27 +14,27 @@ export class OrderService {
   pincodeTranslationUrl: string;
 
   constructor(
-  	private http: HttpClient,
+    private http: HttpClient,
   ) {
      this.orderUrl = environment.baseurl+'/order';
   }
 
   get(): Observable<Array<Order>> {
-  	return this.http.get<Order>(`${this.orderUrl}`)
-  		.pipe(
-  			catchError(this.handleError('Get order list', null)));
+    return this.http.get<Order>(`${this.orderUrl}`)
+      .pipe(
+        catchError(this.handleError('Get order list', null)));
   }
 
   list(statuses, pageSize=50, offset=0): Observable<Array<Order>> {
-  	return this.http.get<Order>(`${this.orderUrl}/list?statuses=${statuses}&pageSize=${pageSize}&offset=${offset}`)
-  		.pipe(
-  			catchError(this.handleError('Get order list', null)));
+    return this.http.get<Order>(`${this.orderUrl}/list?statuses=${statuses}&pageSize=${pageSize}&offset=${offset}`)
+      .pipe(
+        catchError(this.handleError('Get order list', null)));
   }
 
   getOrderDetail(id): Observable<Order> {
-  	return this.http.get<Order>(`${this.orderUrl}/detail?orderId=${id}`)
-  		.pipe(
-  			catchError(this.handleError('Get order detail', null)));
+    return this.http.get<Order>(`${this.orderUrl}/detail?orderId=${id}`)
+      .pipe(
+        catchError(this.handleError('Get order detail', null)));
   }
 
   add(order): Observable<Order> {
@@ -69,6 +69,15 @@ export class OrderService {
        catchError(this.handleError('Delete Order', null)));
   }
 
+  getTotalByMRP(items: Array<any>){
+    if(items==undefined || items===null || items.length===0){
+      return 0;
+    }
+    return items.reduce((total, item)=>{
+      return total + item.sellPrice*item.qty;
+    }, 0);
+  }  
+
   getTotalCost(items: Array<any>){
     if(items==undefined || items===null || items.length===0){
       return 0;
@@ -91,18 +100,43 @@ export class OrderService {
       if(item.discount?.length>0){
         total = total + item.discount[0].discount*item.qty;
       }
-      return total;
+      return Math.round((total + Number.EPSILON)*100)/100;
     }, 0);
+  }
+
+  placeOrderViaImage(orderImageDetail, deliveryAddress){
+    return this.http.post<any>(`${this.orderUrl}/createOrderViaImage`, {
+      orderImage: orderImageDetail,
+      "deliveryAddress": deliveryAddress
+    })
+    .pipe(
+       catchError(this.handleError('Add Order On Sale Point', null)));
+  }
+
+  getImageOrders(limit:number = 10, offset:number =0){
+    return this.http.get<Order>(`${this.orderUrl}/getImageOrders?limit=${limit}&offset=${offset}`)
+      .pipe(
+        catchError(this.handleError('Get image orders', null)));    
+  }
+
+  updateOrderImage(data, field): Observable<any>{
+    return this.http.post<any>(this.orderUrl+"/updateOrderImages", 
+      {
+        "field": field, 
+        "data": data
+      })
+      .pipe(
+        catchError(this.handleError('Approve New Joinee', null)));  
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       // Let the app keep running by returning an empty result.
-    	if (error instanceof ErrorEvent) {
-    		return throwError('Unable to submit request. Please check your internet connection.');
-    	} else {
-    		return throwError(error);
-    	}
+      if (error instanceof ErrorEvent) {
+        return throwError('Unable to submit request. Please check your internet connection.');
+      } else {
+        return throwError(error);
+      }
     };
   }
 

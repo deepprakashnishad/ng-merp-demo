@@ -5,10 +5,13 @@ export class Store{
 	title: string;
 	address: string;
 	location: {long:number, lat: number};
-	cp: String;
-	cpe: String;
-	cpc: String;
+	cp: String; //Contact Person
+	cpe: String; //Contact Person Email
+	cpc: String; //Contact Person Mobile
 	logo: any;
+	upi: string;
+	mam: string;
+	mdn: string;
 	owner: Person;
 	taxId: string;
 	status: string;

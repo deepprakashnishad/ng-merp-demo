@@ -2,6 +2,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, ViewChild, ElementRef, HostBinding ,
   ChangeDetectorRef, OnDestroy, OnInit, AfterViewInit, NgZone } from '@angular/core';
 import {Router, RoutesRecognized, ActivationEnd} from '@angular/router';
+import { StoreService } from 'src/app/admin/store/store.service';
 import { Title } from '@angular/platform-browser';
 import {
   transition,
@@ -78,6 +79,7 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
     private router: Router,
     private zone: NgZone,
     private titleService: Title,
+    private storeService: StoreService,
     media: MediaMatcher,
     private authenticationService: AuthenticationService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -104,6 +106,10 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
       }
       return false;
     });
+
+    this.storeService.getMyStores().subscribe(stores=>{
+      sessionStorage.setItem("store", JSON.stringify(stores[0]));
+    })
   }
 
   ngOnDestroy(): void {

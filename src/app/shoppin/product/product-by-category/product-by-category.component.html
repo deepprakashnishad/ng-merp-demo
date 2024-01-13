@@ -1,12 +1,12 @@
 <div class="container" fxLayout="column" fxLayoutGap="16px">
   <app-progress-spinner [loaderType]="'overlay-spinner'"></app-progress-spinner>
   <div class="container" fxLayout fxLayoutAlign="center center" *ngIf="products.length===0"><h3>No product found.</h3></div>
-  <!-- <div class="category-product-container" *ngFor="let item of productsByCategory | keyvalue">
+  <div class="category-product-container" *ngFor="let item of productsByCategory | keyvalue">
     <div class="category-title">
       {{item.key}}
     </div>
     <app-prod-grid-view [products]="item.value"></app-prod-grid-view>
-  </div> -->
+  </div>
   <app-prod-grid-view [products]="products"></app-prod-grid-view>
 </div>
 <app-cart-floating-button [isAbsolute]=true></app-cart-floating-button>
