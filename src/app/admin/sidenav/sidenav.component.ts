@@ -109,6 +109,7 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.storeService.getMyStores().subscribe(stores=>{
       sessionStorage.setItem("store", JSON.stringify(stores[0]));
+      sessionStorage.setItem("storeSettings", JSON.stringify(stores[0]));
     })
   }
 

@@ -44,7 +44,7 @@ export class OrderComponent implements OnInit {
   }
 
   print(orderId){
-    var mOrder = {
+    /*var mOrder = {
       "items": [
         {
           "createdAt": 1704646906745,
@@ -173,22 +173,16 @@ export class OrderComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result=>{
       console.log(result);
-    });
+    });*/
 
-    /*this.orderService.getOrderDetail(orderId).subscribe(order=>{
+    this.orderService.getOrderDetail(orderId).subscribe(order=>{
       var order = Order.fromJSON(order);
-      console.log(order);
 
       const dialogRef = this.dialog.open(SaleRecieptDialogComponent, {
         data: {
           order: order,
-          person: order.personId,
+          person: order.person,
         }
-      });
-
-      dialogRef.afterClosed().subscribe(result=>{
-        console.log(result);
-        this.reset();
       });
     }, error=>{
       if(error.error?.msg){
@@ -196,7 +190,7 @@ export class OrderComponent implements OnInit {
       }else{
         this.notifier.notify("error", "Error occured");
       }
-    });*/
+    });
   }
 
   refresh() {
@@ -206,6 +200,17 @@ export class OrderComponent implements OnInit {
   statusUpdated(order){
     this.orderService.updateStatus({id: order.id, status: order.status}).subscribe(result=>{
       if(result['success']){
+        this.notifier.notify("success", "Status updated successfully");
+      }else{
+        this.notifier.notify("failed", "Status could not be updated");
+      }
+    });
+  }
+
+  updateStatusToPacked(orderId, index){
+    this.orderService.updateStatus({id: orderId, status: "PACKED"}).subscribe(result=>{
+      if(result['success']){
+        this.orders[index].status = "PACKED";
         this.notifier.notify("success", "Status updated successfully");
       }else{
         this.notifier.notify("failed", "Status could not be updated");

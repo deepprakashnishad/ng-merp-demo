@@ -6,7 +6,8 @@
 <h3 *ngIf="productList.length===0">No product found</h3>
 <div class="mat-elevation-z8" [hidden]="productList.length<=0">
 	<mat-form-field>
-		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+		<input matInput [ngModel]="query" placeholder="Filter">
+		<button matSuffix mat-icon-button (click)="search"><mat-icon>search</mat-icon></button>
 	</mat-form-field>
 	<table class="full-width" mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
 		<ng-container matColumnDef="name">
@@ -21,16 +22,16 @@
 
 		<ng-container matColumnDef="price">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header> M.R.P. </th>
-			<td mat-cell *matCellDef="let element"> {{element.prices[0].unitPrice}} </td>
+			<td mat-cell *matCellDef="let element"> <span *ngIf="element.prices">{{element.prices[0].unitPrice}} </span></td>
 		</ng-container>
 		<ng-container matColumnDef="discountPercent">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header> Disc% </th>
-			<td mat-cell *matCellDef="let element"> {{getUnitQtyDiscount(element.prices[0].discounts)}}<span *ngIf="getUnitQtyDiscount(element.prices[0].discounts)">%</span> </td>
+			<td mat-cell *matCellDef="let element"> <span *ngIf="element.prices">{{getUnitQtyDiscount(element.prices[0].discounts)}}</span><span *ngIf="element.prices && getUnitQtyDiscount(element.prices[0].discounts)">%</span> </td>
 		</ng-container>
 
 		<ng-container matColumnDef="qty">
 		<th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
-		<td mat-cell *matCellDef="let element"> {{element.prices[0].qty}} </td>
+		<td mat-cell *matCellDef="let element"> <span *ngIf="element.prices">{{element.prices[0].qty}} </span></td>
 		</ng-container>
 
 		<ng-container matColumnDef="taxonomies">
@@ -44,7 +45,7 @@
 
 		<ng-container matColumnDef="attr">
 		<th mat-header-cell *matHeaderCellDef mat-sort-header> Max Qty </th>
-		<td mat-cell *matCellDef="let element"> {{element.prices[0].maxAlldQty}} </td>
+		<td mat-cell *matCellDef="let element"> <span *ngIf="element.prices">{{element.prices[0].maxAlldQty}} </span></td>
 		</ng-container>
 
 		<ng-container matColumnDef="status">
@@ -80,5 +81,5 @@
 		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 		<tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"></tr>
 	</table>
-	<!-- <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator> -->
+	<mat-paginator #paginator [length]="totalProdCnt" (page)="pageUpdated($event)" [pageSize]="pageSize" showFirstLastButtons></mat-paginator>
 </div>

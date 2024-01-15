@@ -29,17 +29,33 @@ export class ProductListComponent {
   csvContent: string;
 
   productList: Array<Product> = [];
-  storeSettings = JSON.parse(sessionStorage.getItem("storeSettings"));
+  storeSettings: any;  //= JSON.parse(sessionStorage.getItem("storeSettings")!=="undefined"?sessionStorage.getItem("storeSettings"):"{}");
 
   selectedStore: Store = new Store();
 
   catmap = JSON.parse(localStorage.getItem("cat-map"));
+
+  totalProdCnt: number = 0;
+
+  pageSize: number=5;
+
+  selectedPage:  number = 1;
+
+  productsByPage: any = {};
+
+  query: string = "";
+
+  prevQueryStr: string = "";
 
   constructor(
   	private productService: ProductService,
     private notifier: NotifierService,
     private storageService: StorageService
   ) {
+    var storeSettings = sessionStorage.getItem("storeSettings");
+    this.storeSettings = (storeSettings==="undefined" || !storeSettings)?"{}": storeSettings;
+    console.log(this.storeSettings);
+
     if (!this.storeSettings["isBrandEnabled"]) {
       this.displayedColumns.splice(1, 1);
     }
@@ -51,10 +67,12 @@ export class ProductListComponent {
     if(!this.productList || this.productList.length===0){
       this.fetchStoreProducts();
     }
+    this.dataSource = new MatTableDataSource<any>(this.productList);
+    this.dataSource.paginator = this.paginator;
   }
 
   getUnitQtyDiscount(discounts){
-    if(discounts===undefined ||discounts===null){
+    if(discounts===undefined || discounts===null || discounts.length===0){
       return;
     }
     for(var discount of discounts){
@@ -69,9 +87,13 @@ export class ProductListComponent {
     if(this.selectedStore?.id==undefined || this.selectedStore?.id==null){
       return;
     }
-    this.productService.getProductsByStoreId(this.selectedStore.id).subscribe(products => {
-      this.productList = products;
-      this.dataSource = new MatTableDataSource<Product>(this.productList)
+    this.productService.getProductsByStoreId(this.selectedStore.id, this.query, this.pageSize, this.selectedPage).subscribe(result => {
+      this.totalProdCnt = result[0].metadata[0]['totalCount'];
+      this.productsByPage[this.selectedPage-1] = result[0].data;
+      if(this.query!==this.prevQueryStr){
+        this.reset();
+      }
+      this.prepareFinalProductList(result[0].data);
       this.dataSource.filterPredicate = ((item, filter):boolean=>{
         return item.name.toLowerCase().includes(filter) || 
           item.brand?.sname.includes(filter) ||
@@ -178,5 +200,36 @@ export class ProductListComponent {
 
   searchItemSelected(selectedItem){
     console.log(selectedItem);
+  }
+
+  pageUpdated(event){
+    if(this.pageSize != event.pageSize){
+      this.pageSize = event.pageSize;
+    }
+    this.selectedPage = event.pageIndex + 1;
+    if(Object.keys(this.productsByPage).indexOf((this.selectedPage-1).toString())<0){
+      this.fetchStoreProducts();
+    }
+  }
+
+  reset(){
+    this.productList=[];
+    this.productsByPage={};
+  }
+
+  prepareFinalProductList(data){
+    if(!this.productList || this.productList.length===0){
+      this.productList = new Array(this.totalProdCnt).fill({});
+    }
+    var cnt=0;
+    data.forEach(ele=>{
+      this.productList[(this.selectedPage-1)*this.pageSize + cnt] = ele;
+      cnt++;
+    });
+    console.log(this.productList);
+    this.dataSource.data = this.productList;
+    this.dataSource.paginator.length = this.totalProdCnt;
+    this.paginator.length = this.totalProdCnt;
+    console.log(this.totalProdCnt);
   }
 }

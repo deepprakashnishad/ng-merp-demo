@@ -156,10 +156,14 @@ export class CreateProductComponent implements OnInit {
   	createProduct(){
       if(this.product.id === undefined){
         this.productService.addProduct(this.product)
-        .subscribe((product)=>{
-          this.product = product;
-          this.uploadPath = `products/${this.product.id}`;
-          this.notifierService.notify("success", `${this.product.name} created successfully`);
+        .subscribe((result)=>{
+          if(result.success){
+            this.product = result.product;
+            this.uploadPath = `products/${this.product.id}`;
+            this.notifierService.notify("success", `${this.product.name} created successfully`);
+          }else{
+            this.notifierService.notify("error", `${this.product.name} could not be saved`);
+          }
         });
       }else{
         this.updateProduct();
@@ -220,9 +224,13 @@ export class CreateProductComponent implements OnInit {
     updateProduct(){
       if(this.product.hasOwnProperty("id") && this.product.id !== undefined){
         this.productService.updateProduct(this.product)
-        .subscribe((product)=>{
-          this.product = product;
-          this.notifierService.notify("success", `${this.product.name} updated successfully`);
+        .subscribe((result)=>{
+          if(result.success){
+            this.product = result.product;
+            this.notifierService.notify("success", `${this.product.name} updated successfully`);
+          }else{
+            this.notifierService.notify("error", `Failed to update product`);
+          }
         });
       }else{
         console.log(this.product);

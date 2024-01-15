@@ -51,10 +51,10 @@
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef> Payment Status </th>
         <td mat-cell *matCellDef="let element">
-          <!-- {{element.status}} -->
-          <mat-select [(ngModel)]="element.status" (ngModelChange)="statusUpdated(element)">
+          {{element.status}}
+          <!-- <mat-select [(ngModel)]="element.status" (ngModelChange)="statusUpdated(element)">
             <mat-option *ngFor="let status of statusList" [value]="status">{{status}}</mat-option>
-          </mat-select>
+          </mat-select> -->
         </td>
       </ng-container>
 
@@ -67,6 +67,7 @@
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element">
           <div class="full-width" fxlayout fxLayoutAlign="end end">
+            <button mat-icon-button [color]="primary" (click)="updateStatusToPacked(element.id, i)" ><mat-icon>package_2</mat-icon></button>
             <button mat-icon-button [color]="primary" (click)="print(element.id)"><mat-icon>print</mat-icon></button>
             <a href="/order-detail/{{element.id}}" [target]="_blank">View</a>
           </div>
@@ -74,7 +75,7 @@
       </ng-container>
     </tr>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns; let i=index;"></tr>
 
     <mat-paginator [length]="orders.length" [pageSize]="pageSize"></mat-paginator>
   </table>

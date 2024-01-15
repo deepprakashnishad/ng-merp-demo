@@ -29,8 +29,8 @@ export class ProductService {
   			catchError(this.handleError('Get Token', null)));
   }
 
-  getProductsByStoreId(storeId): Observable<Array<Product>> {
-  	return this.http.get<Array<Product>>(`${this.productUrl}/getByStoreId/${storeId}`)
+  getProductsByStoreId(storeId, queryStr, pageSize, page): Observable<Array<any>> {
+  	return this.http.get<Array<any>>(`${this.productUrl}/getByStoreId/${storeId}?q=${queryStr}&page=${page}&pageSize=${pageSize}`)
   		.pipe(
   			catchError(this.handleError('Get Token', null)));
   }
@@ -79,14 +79,14 @@ export class ProductService {
         catchError(this.handleError('Get Token', null))); 
   }
 
-  addProduct(product): Observable<Product> {
-    return this.http.post<Product>(this.productUrl, product)
+  addProduct(product): Observable<any> {
+    return this.http.post<any>(this.productUrl, product)
     .pipe(
        catchError(this.handleError('Add Product', null)));
   }
 
-  updateProduct(product): Observable<Product> {
-    return this.http.put<Product>(this.productUrl, product)
+  updateProduct(product): Observable<any> {
+    return this.http.put<any>(this.productUrl, product)
       .pipe(
         catchError(this.handleError('Update Product', null))
       )

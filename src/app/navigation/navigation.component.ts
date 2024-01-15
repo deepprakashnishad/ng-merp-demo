@@ -42,7 +42,7 @@ export class NavigationComponent implements OnInit, AfterViewInit {
 	@ViewChild(DepartmentBarComponent) categoryBar: DepartmentBarComponent;
 	@ViewChild("navToolbar") navToolbar;
 	minOrder = environment.minOrderFreeDelivery;
-	storeSettings: any = JSON.parse(sessionStorage.getItem("storeSettings"));
+	storeSettings: any;
 
 	isLeftBarOpen: boolean = false;
 
@@ -58,6 +58,9 @@ export class NavigationComponent implements OnInit, AfterViewInit {
 		private renderer: Renderer2,
 		private ngZone: NgZone,
     ) {
+    	var storeSettings = sessionStorage.getItem("storeSettings");
+    	this.storeSettings = (storeSettings==="undefined" || !storeSettings)?"{}": storeSettings;
+    	console.log(this.storeSettings);
     }
 
   ngAfterViewInit() {
