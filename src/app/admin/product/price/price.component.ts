@@ -153,7 +153,6 @@ export class PriceComponent implements OnInit {
   }
 
   populatePrice(){
-    console.log(this.price);
     this.inStockQty = this.price?.qty;
     this.maxAlwdQty = this.price?.maxAlldQty;
     this.sku = this.price?.sku;

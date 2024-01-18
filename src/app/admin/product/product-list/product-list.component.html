@@ -5,9 +5,22 @@
 </div>
 <h3 *ngIf="productList.length===0">No product found</h3>
 <div class="mat-elevation-z8" [hidden]="productList.length<=0">
+	<div fxLayout fxLayoutGap="16px">
+		<button mat-raised-button color="primary" (click)="exportCurrentRecordsToCSV()">Export</button>
+		<button mat-raised-button color="primary" (click)="exportAllProductsToCSV()">Export All Store Products</button>
+		<input
+		  #fileUploadSimple
+		  [accept]="'.csv'"
+		  type="file"
+		  class="file-input"
+		  (change)="importDataFromCSV($event)"
+		  hidden="true"
+		/>
+		<button mat-raised-button color="primary" (click)="fileUploadSimple.click()">Bulk Product Upload</button>
+	</div>
 	<mat-form-field>
-		<input matInput [ngModel]="query" placeholder="Filter">
-		<button matSuffix mat-icon-button (click)="search"><mat-icon>search</mat-icon></button>
+		<input matInput [(ngModel)]="query" placeholder="Filter" (keyup.enter)="search()">
+		<button matSuffix mat-icon-button (click)="search()"><mat-icon>search</mat-icon></button>
 	</mat-form-field>
 	<table class="full-width" mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
 		<ng-container matColumnDef="name">
@@ -59,9 +72,11 @@
 				<a mat-icon-button target="_blank" [routerLink]="['/product',element.id]" color="primary" matTooltip="View">
 					<mat-icon aria-label="View">remove_red_eye</mat-icon>
 				</a>
-				<a mat-icon-button [routerLink]="['/admin/product/edit',element.id]" color="accent" matTooltip="Edit">
+				<button mat-icon-button (click)="editProduct(element)"><mat-icon>edit</mat-icon></button>
+				<!-- <a mat-icon-button [routerLink]="['/admin/product/edit',element.id]" color="accent" matTooltip="Edit">
 					<mat-icon aria-label="View">edit</mat-icon>
-				</a>
+				</a> -->
+				<button mat-icon-button (click)="editInventory(element)"><mat-icon>inventory</mat-icon></button>
 				<button mat-icon-button (click)="delete(element, i)" color="error"><mat-icon>delete</mat-icon></button>
 			</div>
 		</td>

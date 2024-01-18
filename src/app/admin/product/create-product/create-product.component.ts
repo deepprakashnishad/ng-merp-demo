@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, Inject, Optional } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { NotifierService } from 'angular-notifier';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Location } from '@angular/common';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-product',
@@ -43,9 +44,29 @@ export class CreateProductComponent implements OnInit {
       private facetService: FacetService,
       private notifierService: NotifierService,
       private location: Location,
-      private afs: AngularFireStorage
+      private afs: AngularFireStorage,
+      @Optional() @Inject(MAT_DIALOG_DATA) data: any
 	) { 
-  		
+    if(data.productId){
+      this.productService.getProductById(data.productId).subscribe(product =>{
+        this.product = product;
+        this.uploadPath = `products/${this.product.id}`;
+        
+        if(this.product.assets===undefined || this.product.assets===null){
+          this.product.assets = {imgs:[]};
+        }
+        if(this.product?.desc?.shortDesc !== undefined && this.product?.desc?.shortDesc[0].val !== undefined){
+          this.shortDescription = this.product?.desc?.shortDesc[0].val;
+        }
+        if(this.product?.desc?.longDesc[0].val !== undefined){
+          this.longDescription = this.product?.desc?.longDesc[0].val;
+        }
+        /* this.variableFacets=[];
+        if(this.product.variants.cnt > 0 && this.product.variants!==undefined && this.product.variants.attrs!==undefined){
+          this.setVariableFacets();
+        } */
+      });
+    }		
 	}
 
   	ngOnInit() {

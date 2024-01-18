@@ -17,8 +17,8 @@ export class ProductService {
      this.productUrl = environment.baseurl + '/product';
   }
 
-  bulkUploadProducts(products: Array<any>): Observable<any>{
-    return this.http.post<Array<Product>>(`${this.productUrl}/bulkUpload`, products)
+  bulkUploadProducts(products: Array<any>, storeid: string): Observable<any>{
+    return this.http.post<Array<Product>>(`${this.productUrl}/bulkUpload`, {"products": products, "storeId": storeid})
   		.pipe(
   			catchError(this.handleError('Get Token', null)));
   }

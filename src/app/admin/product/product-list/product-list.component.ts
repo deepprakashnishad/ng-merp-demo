@@ -3,12 +3,15 @@ import {SelectionModel} from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-
+import { PriceComponent } from '../price/price.component';
+import { CreateProductComponent } from '../create-product/create-product.component';
 import { ProductService } from './../product.service';
 import { Product } from './../product';
 import { NotifierService } from 'angular-notifier';
 import { StorageService } from '../../../storage.service';
 import { Store } from '../../store/store';
+import { MatDialog } from '@angular/material/dialog';
+import { MyCsvService } from 'src/app/my-csv.service';
 
 @Component({
   selector: 'app-product-list',
@@ -28,7 +31,7 @@ export class ProductListComponent {
   @ViewChild('fileInput') fileInput;
   csvContent: string;
 
-  productList: Array<Product> = [];
+  productList: Array<any> = [];
   storeSettings: any;  //= JSON.parse(sessionStorage.getItem("storeSettings")!=="undefined"?sessionStorage.getItem("storeSettings"):"{}");
 
   selectedStore: Store = new Store();
@@ -50,11 +53,12 @@ export class ProductListComponent {
   constructor(
   	private productService: ProductService,
     private notifier: NotifierService,
-    private storageService: StorageService
+    private dialog: MatDialog,
+    private storageService: StorageService,
+    private csvService: MyCsvService
   ) {
     var storeSettings = sessionStorage.getItem("storeSettings");
     this.storeSettings = (storeSettings==="undefined" || !storeSettings)?"{}": storeSettings;
-    console.log(this.storeSettings);
 
     if (!this.storeSettings["isBrandEnabled"]) {
       this.displayedColumns.splice(1, 1);
@@ -90,9 +94,6 @@ export class ProductListComponent {
     this.productService.getProductsByStoreId(this.selectedStore.id, this.query, this.pageSize, this.selectedPage).subscribe(result => {
       this.totalProdCnt = result[0].metadata[0]['totalCount'];
       this.productsByPage[this.selectedPage-1] = result[0].data;
-      if(this.query!==this.prevQueryStr){
-        this.reset();
-      }
       this.prepareFinalProductList(result[0].data);
       this.dataSource.filterPredicate = ((item, filter):boolean=>{
         return item.name.toLowerCase().includes(filter) || 
@@ -107,6 +108,75 @@ export class ProductListComponent {
       };
       this.dataSource.sort = this.sort;
     });
+  }
+
+  async getTextFromFile(event: any) {
+    const file: File = event.target.files[0];
+    let fileContent = await file.text();
+    
+    return fileContent;
+  }
+
+  async importDataFromCSV(event: any) {
+    let fileContent = await this.getTextFromFile(event);
+    var importedData = this.csvService.importDataFromCSV(fileContent);
+    console.log(importedData);
+    var filteredProducts = importedData.map(ele=>{
+      if(
+        (ele.IsModified && ele.IsModified.length>0 && (ele.IsModified[0]==='y' || ele.IsModified[0]==='Y')) &&
+        (ele.Name && ele.Name!=='' && ele.Name!==null && ele.Name!=="null") &&
+        (ele.InStockQty && ele.InStockQty!=='' && ele.InStockQty!==null && ele.InStockQty!=="null") &&
+        (ele.MRP && ele['MRP']!=='' && ele['MRP']!==null && ele['MRP']!=="null") &&
+        (ele.CostPrice && ele['CostPrice']!=='' && ele['CostPrice']!==null && ele['CostPrice']!=="null") &&
+        (ele.SalePrice && ele['SalePrice']!=='' && ele['SalePrice']!==null && ele['SalePrice']!=="null")
+      ){
+        try{
+          console.log(ele);
+          var temp = ele;
+          temp['lname'] = ele.Name.toLowerCase();
+          temp['CostPrice'] = ele.CostPrice!==""?Number(ele.CostPrice):undefined;  
+          temp['InStockQty'] = ele.InStockQty!==""?Number(ele.InStockQty):undefined;
+          temp['SalePrice'] = ele.SalePrice!==""?Number(ele.SalePrice):undefined;
+          temp['MRP'] = ele.MRP!==""?Number(ele.MRP):undefined;
+          delete temp["S.No"];
+          delete temp["IsModified"];
+          return temp;
+        }catch(e){
+          console.log(e);
+          return false;
+        }
+      }else
+        return false;
+    });
+    console.log(filteredProducts);
+
+    filteredProducts = filteredProducts.filter(ele=>ele!==false);
+
+    this.productService.bulkUploadProducts(filteredProducts, this.selectedStore.id).subscribe((result)=>{
+      this.notifier.notify("success", "Data updates successfully");
+    });
+  }
+
+  exportCurrentRecordsToCSV(){
+    var data = this.productList.filter(ele=> Object.keys(ele).length>0);
+    this.csvService.downloadFile(data, {"iid": "_id", "ProdId": "id", "Name": "name", "InStockQty": "prices.qty", "MRP": "prices.unitPrice", 
+        "CostPrice": "prices.costPrice", "SalePrice": "prices.discountedPrice", "sku": "prices.sku", "IsModified": ""}, "test");
+  }
+
+  exportAllProductsToCSV(){
+    this.productService.getProductsByStoreId(this.selectedStore.id, "", 5000, 1).subscribe(result => {
+      this.totalProdCnt = result[0].metadata[0]['totalCount'];
+      var data = result[0].data;
+      data = data.filter(ele=> Object.keys(ele).length>0);
+      this.csvService.downloadFile(data, {"iid": "_id", "ProdId": "id", "Name": "name", "InStockQty": "", "MRP": "prices.unitPrice", 
+        "CostPrice": "prices.costPrice", "SalePrice": "prices.discountedPrice", "sku": "sku", "IsModified": ""}, "all_store_products");      
+    });
+  }
+
+  search(){
+    this.reset();
+    this.selectedPage = 1;
+    this.fetchStoreProducts();
   }
 
   getTaxonomy(taxonomies: Array<string>){
@@ -164,11 +234,11 @@ export class ProductListComponent {
     }
   }
 
-  onClickFileInputButton(): void {
+  /*onClickFileInputButton(): void {
     this.fileInput.nativeElement.click();
-  }
+  }*/
 
-  onChangeFileInput(input: HTMLInputElement): void {
+  /*onChangeFileInput(input: HTMLInputElement): void {
     const files: File[] = this.fileInput.nativeElement.files;
     var exisitingProductList = [];
     var newProductList = [];
@@ -191,15 +261,35 @@ export class ProductListComponent {
             console.log(allTextLines[i]);
           }
         }
-        /* this.productService.bulkUploadProducts(products).subscribe((result)=>{
+        this.productService.bulkUploadProducts(products).subscribe((result)=>{
           this.notifier.notify("success", "Data updates successfully");
-        }); */
+        });
       }
     }  
-  }
+  }*/
 
   searchItemSelected(selectedItem){
     console.log(selectedItem);
+  }
+
+  editProduct(product){
+    const dialogRef = this.dialog.open(CreateProductComponent, {
+      data: {
+        productId: product.id
+      },
+      width: "500px",
+      height: "500px"
+    });
+  }
+
+  editInventory(item){
+    const dialogRef = this.dialog.open(PriceComponent, {
+      data: {
+        productId: item.id,
+        itemId: item.id,
+        priceType: "PRD"
+      }
+    });
   }
 
   pageUpdated(event){
@@ -226,10 +316,8 @@ export class ProductListComponent {
       this.productList[(this.selectedPage-1)*this.pageSize + cnt] = ele;
       cnt++;
     });
-    console.log(this.productList);
     this.dataSource.data = this.productList;
-    this.dataSource.paginator.length = this.totalProdCnt;
-    this.paginator.length = this.totalProdCnt;
-    console.log(this.totalProdCnt);
+    // this.dataSource.paginator.length = this.totalProdCnt;
+    // this.paginator.length = this.totalProdCnt;
   }
 }
