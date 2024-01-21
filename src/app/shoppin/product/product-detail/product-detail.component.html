@@ -72,22 +72,22 @@
             <td>{{attr?.value}}</td>
             <td class="variant-col">
               <div *ngIf="products[0]?.variants?.attrs[attr?.key]==='dropdown'">
-                <mat-select [(ngModel)]="attrSelectedValueMap[attr?.key]" (selectionChange)="attrSelectionUpdated()">
+                <mat-select [(ngModel)]="attrSelectedValueMap[attr?.key]" (selectionChange)="attrSelectionUpdated($event)">
                   <mat-option *ngFor="let attrValue of variantAttrMap[attr?.key]" [value]="attrValue">
                     {{attrValue}}
                   </mat-option>
                 </mat-select>
               </div>
               <div *ngIf="products[0]?.variants?.attrs[attr?.key]==='toggle_button'">
-                <mat-button-toggle-group [(ngModel)]="attrSelectedValueMap[attr?.key]" (change)="attrSelectionUpdated()">
+                <mat-button-toggle-group [(ngModel)]="attrSelectedValueMap[attr?.key]" (change)="attrSelectionUpdated($event)">
                   <mat-button-toggle  *ngFor="let attrValue of variantAttrMap[attr?.key]" [value]="attrValue">
                     {{attrValue}}
                   </mat-button-toggle>
                 </mat-button-toggle-group>                
               </div>
               <div *ngIf="products[0]?.variants?.attrs[attr?.key]==='radiobutton'">
-                <mat-radio-group [(ngModel)]="attrSelectedValueMap[attr?.key]">
-                  <mat-radio-button *ngFor="let attrValue of variantAttrMap[attr?.key]" value="attrValue">{{attrValue}}</mat-radio-button>
+                <mat-radio-group [(ngModel)]="attrSelectedValueMap[attr?.key]" (change)="attrSelectionUpdated($event)">
+                  <mat-radio-button *ngFor="let attrValue of variantAttrMap[attr?.key]" [value]="attrValue">{{attrValue}}</mat-radio-button>
                 </mat-radio-group>
               </div>
             </td>

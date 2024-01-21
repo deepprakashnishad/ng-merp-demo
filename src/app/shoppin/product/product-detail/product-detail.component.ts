@@ -128,7 +128,8 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  attrSelectionUpdated(){
+  attrSelectionUpdated(event){
+    console.log(event);
     var varAttrs = Object.keys(this.products[0]?.variants?.attrs);
     var check = false;
     for(var product of this.products){

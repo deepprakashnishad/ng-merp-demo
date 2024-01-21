@@ -97,7 +97,7 @@
 		<td mat-cell *matCellDef="let element">
 			<mat-checkbox (click)="$event.stopPropagation()"
 						(change)="selectionToggle($event, element)"
-						[checked]="element.status=='Active'">
+						[checked]="element.status==='A'">
 			</mat-checkbox>
 		</td>
 		</ng-container>
