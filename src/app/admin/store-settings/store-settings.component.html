@@ -5,7 +5,7 @@
            matInput
            [formControl]="cntlStoreName"
            [(ngModel)]="storeSettings.storeName"
-           placeholder="Store Name" />
+           placeholder="Main Store Name" />
   </mat-form-field>
 
   <mat-form-field>
@@ -13,7 +13,7 @@
            matInput
            [formControl]="cntlHeaderText"
            [(ngModel)]="storeSettings.headerText"
-           placeholder="Header Text" />
+           placeholder="Main Header Text" />
   </mat-form-field>
 
   <app-uploader [isMultiple]="false" [uploadPath]="uploadPath" [maxAllowedFileSize]="512" (imageUploaded)="uploadCompleted($event)"></app-uploader>

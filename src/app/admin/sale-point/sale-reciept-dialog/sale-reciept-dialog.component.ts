@@ -38,7 +38,7 @@ export class SaleRecieptDialogComponent implements AfterViewInit {
     if(data?.deliveryAddress){
       this.address = this.getAddressAsText(data.deliveryAddress);
     }
-    if(this.store.upi){
+    if(this.store && this.store.upi){
       this.paymentString = encodeURI(this.paymentString
       .replace("<merchant_upi_id>", this.store.upi)
       .replace("<payee_name>", this.store.mdn)

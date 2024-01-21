@@ -18,6 +18,12 @@ export class PriceService {
      this.priceUrl = environment.baseurl + '/inventory';
   }
 
+  bulkUploadProducts(products: Array<any>, storeid: string): Observable<any>{
+    return this.http.post<Array<any>>(`${this.priceUrl}/bulkUpload`, {"products": products, "storeId": storeid})
+      .pipe(
+        catchError(this.handleError('Get Token', null)));
+  }
+
   getPrices(
     type: string,
     productId: string, 

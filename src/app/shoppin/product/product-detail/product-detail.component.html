@@ -33,11 +33,11 @@
       <div class="sub-title" *ngIf="selectedProduct?.attrs && selectedProduct?.attrs['Weight']">Net Weight: {{selectedProduct?.attrs['Weight']}}</div>
       <br />
       <div class="price" *ngIf="selectedPrice.discounts==null || selectedPrice.discounts?.length===0">
-        {{selectedPrice.unitPrice | currency:'INR':'symbol-narrow':'1.0-0'}}
+        {{selectedPrice.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}
       </div>
       <div *ngIf="selectedPrice.discounts?.length>0" fxLayout fxLayoutGap="10px">
-        <div class="original-price">{{selectedPrice.unitPrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
-        <div class="price">{{selectedDiscount?.salePrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+        <div class="original-price">{{selectedPrice.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
+        <div class="price">{{selectedDiscount?.salePrice | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
         <div class="secondary-title"
              *ngIf="selectedPrice.discounts!=null && selectedPrice.discounts!=null">
           {{selectedDiscount?.discountPercentage+"% off"}}

@@ -47,7 +47,8 @@ export class CreateProductComponent implements OnInit {
       private afs: AngularFireStorage,
       @Optional() @Inject(MAT_DIALOG_DATA) data: any
 	) { 
-    if(data.productId){
+    console.log(this.storeSettings);
+    if(data && data.productId){
       this.productService.getProductById(data.productId).subscribe(product =>{
         this.product = product;
         this.uploadPath = `products/${this.product.id}`;
@@ -234,6 +235,7 @@ export class CreateProductComponent implements OnInit {
     }
 
     saveFacetControlType($event){
+      console.log($event);
       if(!this.product.variants){
         this.product.variants = {cnt:0, attrs: []};
       }

@@ -53,6 +53,7 @@ export class AddEditStoreComponent implements OnInit {
     } else {
       this.storeService.create(this.store).subscribe(result => {
         if (result['success']) {
+          this.store.id = result['id'];
           this.notifier.notify("success", "Store settings updated successfully");
 
         }

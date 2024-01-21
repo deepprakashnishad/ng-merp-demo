@@ -67,10 +67,10 @@ export class FacetChipInputComponent implements OnInit {
 	    for (let propName in changes) {
 	    	let changedProp = changes[propName];
 	    	if(propName.toLowerCase() === "facet" && changedProp.currentValue !== undefined){
-				if(!this.isSelection){
-					this.selectedValues = changedProp.currentValue['values'];
-				}
-				this.subscribeInput();
+					if(!this.isSelection){
+						this.selectedValues = changedProp.currentValue['values'];
+					}
+					this.subscribeInput();
 	    	}
 	    }
 	}

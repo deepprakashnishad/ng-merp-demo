@@ -112,7 +112,6 @@ export class LoginComponent implements OnInit{
       if(username.indexOf("@")<0){
         username = "+91"+username;
       }
-      console.log(username);
       this.authService.login(
         { username: username, password: password }
       ).subscribe((authResponse) => {
@@ -121,7 +120,7 @@ export class LoginComponent implements OnInit{
           this.notifier.notify("success", "Login successful");
           this.storeData(this.authResponse);
           this.clearForm();
-          let redirectUrl = this.authService.redirectUrl ? this.authService.redirectUrl : ''
+          let redirectUrl = this.authService.redirectUrl && this.authService.redirectUrl.indexOf('login')<0 ? this.authService.redirectUrl : ''
           this.router.navigate([redirectUrl]);
         }
       }, (error) => {

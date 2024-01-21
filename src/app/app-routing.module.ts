@@ -73,7 +73,7 @@ const routes: Routes = [
 		component: AddEditStoreComponent,
 		canActivate: [AuthGuardService], 
 		canDeactivate:[CanDeactivateGuardService],
-		data: { title: 'My Store', isLoggedIn: true, permissions: []}
+		data: { title: 'My Store', isLoggedIn: true, permissions: [], loginErrorMessage: "Please login to register as seller"}
   },
 	{
 		path: 'admin', 

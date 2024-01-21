@@ -24,6 +24,8 @@ export class TaxonomySelectorComponent implements OnInit {
 
   @Input() selectedTaxonomies: Array<String>;
 
+  @Input() initiallyExpanded: boolean = false;
+
 	categoryTreeNode: CategoryTreeNode;
 
 	categoryTree: Array<CategoryTreeNode>;
@@ -63,7 +65,9 @@ export class TaxonomySelectorComponent implements OnInit {
   	this.categoryService.fetchCategoryTree()
     .subscribe((categoryTreeNodes)=>{
       this.database.setInitialCategory(categoryTreeNodes);
-      this.treeControl.expandAll();
+      if(this.initiallyExpanded){
+        this.treeControl.expandAll();
+      }
     });
   }
 

@@ -11,23 +11,23 @@
       <div fxLayout fxLayoutAlign="space-between center">
         <div *ngIf="!selectedDiscount || selectedDiscount===null" fxLayout fxLayoutAlign="center center" fxLayoutGap="10px">
           <div class="original">
-            <span class="price">&nbsp;{{product.prices[0]?.unitPrice | currency:'INR':'symbol-narrow':'1.0-0'}}&nbsp;</span>
+            <span class="price">&nbsp;{{product.prices[0]?.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}&nbsp;</span>
           </div>
         </div>
         <div *ngIf="selectedDiscount && selectedDiscount!==null" fxLayout fxLayoutAlign="center center" fxLayoutGap="10px">
           <div class="original-striked">
-            <span class="price">&nbsp;{{product.prices[0]?.unitPrice | currency:'INR':'symbol-narrow':'1.0-0'}}&nbsp;</span>
+            <span class="price">&nbsp;{{product.prices[0]?.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}&nbsp;</span>
           </div>
-          <div class="price">{{selectedDiscount?.salePrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+          <div class="price">{{selectedDiscount?.salePrice | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
           <div class="full-width center discount" 
-            *ngIf="selectedDiscount!=null">
-              {{selectedDiscount?.discountPercentage+"% discount"}}
+            *ngIf="selectedDiscount!=null && selectedPrice.discounts.length===1">
+              {{selectedDiscount?.discountPercentage+"% off"}}
           </div>
         </div>
-        <mat-select *ngIf="selectedDiscount && selectedDiscount!==null" [(ngModel)]="selectedDiscount" (ngModelChange)="selectedDiscountUpdated($event)">
-          <mat-option *ngFor="let temp of selectedPrice.discounts" [value]="temp">{{temp.discountPercentage}}% discount</mat-option>
+        <mat-select *ngIf="selectedDiscount && selectedDiscount!==null && selectedPrice.discounts.length>1" [(ngModel)]="selectedDiscount" (ngModelChange)="selectedDiscountUpdated($event)">
+          <mat-option *ngFor="let temp of selectedPrice.discounts" [value]="temp">{{temp.discountPercentage}}% off</mat-option>
         </mat-select>
-        <div class="price" *ngIf="selectedDiscount===null">{{product.prices[0]?.unitPrice | currency:'INR':'symbol-narrow':'1.0-0'}}</div>
+        <div class="price" *ngIf="selectedDiscount===null">{{product.prices[0]?.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
       </div>   
       <app-add-to-cart-button [product]="product" [selectedPrice]="selectedPrice"></app-add-to-cart-button>
     </div>

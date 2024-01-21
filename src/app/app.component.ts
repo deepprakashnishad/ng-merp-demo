@@ -63,12 +63,17 @@ export class AppComponent implements OnInit {
       });
     }
 
-    if (sessionStorage.getItem("storeSettings") === null) {
+    this.storeSettingService.getStoreSettings().subscribe(result => {
+      var mStoreSettings = StoreSettings.fromJSON(result);
+      this.storageService.store("storeSettings", mStoreSettings);
+    });
+
+    /*if (sessionStorage.getItem("storeSettings") === null) {
       this.storeSettingService.getStoreSettings().subscribe(result => {
         var mStoreSettings = StoreSettings.fromJSON(result);
         this.storageService.store("storeSettings", mStoreSettings);
       });
-    }
+    }*/
   }
 
   installPwa(): void {

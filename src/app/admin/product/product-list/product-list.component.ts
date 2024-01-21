@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { PriceComponent } from '../price/price.component';
 import { CreateProductComponent } from '../create-product/create-product.component';
 import { ProductService } from './../product.service';
+import { PriceService } from './../price.service';
 import { Product } from './../product';
 import { NotifierService } from 'angular-notifier';
 import { StorageService } from '../../../storage.service';
@@ -20,7 +21,7 @@ import { MyCsvService } from 'src/app/my-csv.service';
 })
 export class ProductListComponent {
 
-  displayedColumns: string[] = ['name', 'price', 'discountPercent','qty', 'attr', 'status', 'actions', 'select'];
+  displayedColumns: string[] = ['sno', 'name', 'price', 'discountPercent','qty', 'attr', 'status', 'actions', 'select'];
   dataSource: MatTableDataSource<Product>;
 
   selection = new SelectionModel<Product>(true, []);
@@ -40,7 +41,7 @@ export class ProductListComponent {
 
   totalProdCnt: number = 0;
 
-  pageSize: number=5;
+  pageSize: number=10;
 
   selectedPage:  number = 1;
 
@@ -52,6 +53,7 @@ export class ProductListComponent {
 
   constructor(
   	private productService: ProductService,
+    private priceService: PriceService,
     private notifier: NotifierService,
     private dialog: MatDialog,
     private storageService: StorageService,
@@ -59,10 +61,9 @@ export class ProductListComponent {
   ) {
     var storeSettings = sessionStorage.getItem("storeSettings");
     this.storeSettings = (storeSettings==="undefined" || !storeSettings)?"{}": storeSettings;
-
-    if (!this.storeSettings["isBrandEnabled"]) {
+    /*if (!this.storeSettings["isBrandEnabled"]) {
       this.displayedColumns.splice(1, 1);
-    }
+    }*/
   }
 
   ngAfterViewInit(): void {
@@ -92,7 +93,7 @@ export class ProductListComponent {
       return;
     }
     this.productService.getProductsByStoreId(this.selectedStore.id, this.query, this.pageSize, this.selectedPage).subscribe(result => {
-      this.totalProdCnt = result[0].metadata[0]['totalCount'];
+      this.totalProdCnt = result[0].metadata && result[0].metadata.length>0?result[0].metadata[0]['totalCount']:0;
       this.productsByPage[this.selectedPage-1] = result[0].data;
       this.prepareFinalProductList(result[0].data);
       this.dataSource.filterPredicate = ((item, filter):boolean=>{
@@ -120,22 +121,18 @@ export class ProductListComponent {
   async importDataFromCSV(event: any) {
     let fileContent = await this.getTextFromFile(event);
     var importedData = this.csvService.importDataFromCSV(fileContent);
-    console.log(importedData);
     var filteredProducts = importedData.map(ele=>{
       if(
         (ele.IsModified && ele.IsModified.length>0 && (ele.IsModified[0]==='y' || ele.IsModified[0]==='Y')) &&
         (ele.Name && ele.Name!=='' && ele.Name!==null && ele.Name!=="null") &&
-        (ele.InStockQty && ele.InStockQty!=='' && ele.InStockQty!==null && ele.InStockQty!=="null") &&
         (ele.MRP && ele['MRP']!=='' && ele['MRP']!==null && ele['MRP']!=="null") &&
         (ele.CostPrice && ele['CostPrice']!=='' && ele['CostPrice']!==null && ele['CostPrice']!=="null") &&
         (ele.SalePrice && ele['SalePrice']!=='' && ele['SalePrice']!==null && ele['SalePrice']!=="null")
       ){
         try{
-          console.log(ele);
           var temp = ele;
-          temp['lname'] = ele.Name.toLowerCase();
           temp['CostPrice'] = ele.CostPrice!==""?Number(ele.CostPrice):undefined;  
-          temp['InStockQty'] = ele.InStockQty!==""?Number(ele.InStockQty):undefined;
+          temp['InStockQty'] = ele.InStockQty && ele.InStockQty!=="undefined" && ele.InStockQty!=="null" && ele.InStockQty!=="" && typeof ele.InStockQty==="number"?Number(ele.InStockQty):99;
           temp['SalePrice'] = ele.SalePrice!==""?Number(ele.SalePrice):undefined;
           temp['MRP'] = ele.MRP!==""?Number(ele.MRP):undefined;
           delete temp["S.No"];
@@ -149,11 +146,14 @@ export class ProductListComponent {
         return false;
     });
     console.log(filteredProducts);
-
     filteredProducts = filteredProducts.filter(ele=>ele!==false);
-
-    this.productService.bulkUploadProducts(filteredProducts, this.selectedStore.id).subscribe((result)=>{
-      this.notifier.notify("success", "Data updates successfully");
+    console.log(filteredProducts);
+    this.priceService.bulkUploadProducts(filteredProducts, this.selectedStore.id).subscribe((result)=>{
+      if(result.success){
+        this.notifier.notify("success", result.msg);
+      }else{
+        this.notifier.notify("error", result.msg);
+      }
     });
   }
 
@@ -209,7 +209,7 @@ export class ProductListComponent {
       (!event.checked && product.status.toLowerCase()==="inactive")){
         return;
     }
-    product.status = event.checked?"Active":"Inactive";
+    product.status = event.checked?"A":"I";
     this.productService.updateProduct(product).subscribe(result=>{
       if(result['success']){
         this.notifier.notify("success", `${product.name} status changed to ${product.status}`);

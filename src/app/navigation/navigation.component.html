@@ -16,9 +16,15 @@
 					</a>
 				</span>
 				<span>
-					<a class="pageLink" [routerLink]="'/order-list'">
+					<button mat-button class="white-text" [matMenuTriggerFor]="menu">Welcome {{isLoggedIn?name:'User'}} <mat-icon>arrow_drop_down</mat-icon></button>
+					<mat-menu #menu="matMenu">
+					  <a mat-menu-item [routerLink]="'/order-list'">My Orders</a>
+					  <button mat-menu-item>Dashboard</button>
+					  <button mat-menu-item (click)="toggleLoginStatus(isLoggedIn)">Logout</button>
+					</mat-menu>
+					<!-- <a class="pageLink" [routerLink]="'/order-list'">
 						Welcome {{isLoggedIn?name:'User'}}
-					</a>
+					</a> -->
 				</span>
 			</div>
 		</div>

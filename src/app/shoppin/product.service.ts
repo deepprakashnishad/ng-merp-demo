@@ -9,52 +9,52 @@ import { retry, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ProductService {
-	productUrl: string;
+	shoppinUrl: string;
 
   constructor(
   	private http: HttpClient,
   ) {
-     this.productUrl = environment.baseurl + '/Shoppin';
+     this.shoppinUrl = environment.baseurl + '/Shoppin';
   }
 
   getProducts(): Observable<Array<Product>> {
-  	return this.http.get<Array<Product>>(this.productUrl)
+  	return this.http.get<Array<Product>>(this.shoppinUrl)
   		.pipe(
   			catchError(this.handleError('Get Token', null)));
   }
 
   getStoreFullProductList(storeid): Observable<Array<any>> {
-  	return this.http.get<Array<any>>(`${this.productUrl}/getStoreFullProductList/${storeid}`)
+  	return this.http.get<Array<any>>(`${this.shoppinUrl}/getStoreFullProductList/${storeid}`)
   		.pipe(
   			catchError(this.handleError('Get Token', null)));
   }
 
   getProductsByCategory(selectedCategoryId: string): Observable<any> {
-  	return this.http.get<any>(`${this.productUrl}/getProductByCategoryId?categoryId=${selectedCategoryId}`)
+  	return this.http.get<any>(`${this.shoppinUrl}/getProductByCategoryId?categoryId=${selectedCategoryId}`)
   		.pipe(
   			catchError(this.handleError('Get Token', null)));
   }
 
   getProductsByTaxonomy(taxonomy: string): Observable<any> {
-  	return this.http.get<any>(`${this.productUrl}/getProductByTaxonomy?taxonomy=${taxonomy}`)
+  	return this.http.get<any>(`${this.shoppinUrl}/getProductByTaxonomy?taxonomy=${taxonomy}`)
   		.pipe(
   			catchError(this.handleError('Get Token', null)));
   }
 
   getProductById(productId): Observable<Array<Product>>{
-    return this.http.get<Array<Product>>(`${this.productUrl}/${productId}`)
+    return this.http.get<Array<Product>>(`${this.shoppinUrl}/${productId}`)
       .pipe(
         catchError(this.handleError('Get Token', null))); 
   }
 
   getByIds(ids): Observable<Array<Product>>{
-    return this.http.get<Product>(`${this.productUrl}/getByIds?productIds=${ids}`)
+    return this.http.get<Product>(`${this.shoppinUrl}/getByIds?productIds=${ids}`)
       .pipe(
         catchError(this.handleError('Get Token', null))); 
   }
 
   getByProductIdList(ids: string):Observable<Array<Product>>{
-    return this.http.get<Product>(`${this.productUrl}/getProductByIds?productIds=${ids}`)
+    return this.http.get<Product>(`${this.shoppinUrl}/getProductByIds?productIds=${ids}`)
       .pipe(
         catchError(this.handleError('Get Token', null))); 
   }
@@ -68,7 +68,7 @@ export class ProductService {
         criteriaStr = `${criteria}=${filterCriteria[criteria]}`;
       }
     }
-    return this.http.get<Product>(`${this.productUrl}/getByFilter?${criteriaStr}`)
+    return this.http.get<Product>(`${this.shoppinUrl}/getByFilter?${criteriaStr}`)
       .pipe(
         catchError(this.handleError('Get Token', null))); 
   }

@@ -53,12 +53,12 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
   routeList = [
     { path: '/admin', title: 'Dashboard', permissions: ['SHOP_EDITOR'] },
     { path: '/admin/sale-point', title: 'Sale Point', permissions: ['CREATE_ORDER', 'UPDATE_ORDER', 'DELETE_ORDER'] },
-    {path: '/admin/my-store', title: 'My Store', permissions:['CREATE_STORE', 'UPDATE_STORE', 'DELETE_STORE']},
+    // {path: '/admin/my-store', title: 'My Store', permissions:['CREATE_STORE', 'UPDATE_STORE', 'DELETE_STORE']},
     { path: '/admin/store-settings', title: 'Store Settings', permissions: ['MAIN_STORE_CONTROLLER'] },
     {path: '/admin/product', title: 'Product', permissions:['CREATE_PRODUCT', 'UPDATE_PRODUCT', 'DELETE_PRODUCT']},
     {path: '/admin/category', title: 'Category', permissions:['CREATE_CATEGORY', 'UPDATE_CATEGORY', 'DELETE_CATEGORY']},
     {path: '/admin/brand', title: 'Brand', permissions:['CREATE_BRAND', 'UPDATE_BRAND', 'DELETE_BRAND']},
-    {path: '/admin/facet', title: 'Attributes', permissions:['CREATE_FACET', 'UPDATE_FACET', 'DELETE_FACET']},
+    {path: '/admin/facet', title: 'Attributes', permissions:['UPDATE_PRODUCT']},
     { path: '/admin/banner', title: 'Banner' , permissions:['MAIN_STORE_CONTROLLER']},
     { path: '/admin/create-edit-section', title: 'Section Editor', permissions:['MAIN_STORE_CONTROLLER'] },
     {path: '/admin/permission', title: 'Permissions', permissions:['CREATE_PERMISSION', 'UPDATE_PERMISSION', 'DELETE_PERMISSION']},
@@ -109,7 +109,6 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.storeService.getMyStores().subscribe(stores=>{
       sessionStorage.setItem("store", JSON.stringify(stores[0]));
-      sessionStorage.setItem("storeSettings", JSON.stringify(stores[0]));
     })
   }
 

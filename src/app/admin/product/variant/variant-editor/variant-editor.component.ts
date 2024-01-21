@@ -94,6 +94,7 @@ export class VariantEditorComponent implements OnInit {
 			this.variantService.addVariant(this.variant)
 			.subscribe(result=>{
         if(result['success'] && result?.id){
+          this.variant.id = result.id;
           this.uploadPath = `variants/${result.id}`;
           this.notifier.notify("success", "Variant updated successfully");
         }else{

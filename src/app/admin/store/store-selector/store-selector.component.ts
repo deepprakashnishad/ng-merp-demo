@@ -25,7 +25,7 @@ export class StoreSelectorComponent implements OnInit {
 	) { }
 
   	ngOnInit() {
-  		this.storeService.getStores()
+  		this.storeService.getMyStores()
 	  	.subscribe((stores)=>{
 	  		this.stores = stores;
 	  		this.storeControl.setValue(this.stores[0]);

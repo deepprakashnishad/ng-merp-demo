@@ -24,7 +24,6 @@ export class ViewSectionComponent implements OnInit {
     this.productService.getByProductIdList(this.section.productIds.join(",")).subscribe(result => {
       this.products = result;
     });
-    console.log(this.section);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

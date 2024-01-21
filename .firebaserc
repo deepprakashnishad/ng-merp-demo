@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "ng-erp-3dcfb",
-    "ng-erp": "ng-erp-3dcfb"
+    "default": "giriraj-store",
+    "girirajstore": "giriraj-store"
   }
 }

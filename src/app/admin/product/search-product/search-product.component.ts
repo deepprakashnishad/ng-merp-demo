@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { elementAt } from 'rxjs-compat/operator/elementAt';
 import { startWith, map, debounceTime } from 'rxjs/operators';
 import { PriceComponent } from '../price/price.component';
+import { CreateProductComponent } from '../create-product/create-product.component';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class SearchProductComponent implements OnInit {
 
   @Input() isInventoryEditable: boolean = true;
   @Input() isProductEditable: boolean = true;
+  @ViewChild(MatAutocompleteTrigger) autoCompletePanel: MatAutocompleteTrigger;
 
 	cntl: FormControl = new FormControl();
 	item: any;
@@ -54,7 +56,6 @@ export class SearchProductComponent implements OnInit {
       }else{
         this.filteredItems = this.filteredItems.concat(items);
         this.filteredItems = this.filteredItems.filter((elem, index, self) => {
-          console.log(elem);
           return index === self.indexOf(elem) && elem?.name?.toLowerCase().includes(this.searchStr);
         });
       }
@@ -66,6 +67,7 @@ export class SearchProductComponent implements OnInit {
   }
 
   selected($event){
+    this.autoCompletePanel.closePanel();
     this.item = $event.option.value;
     this.itemSelected.emit(this.item);
     if(this.isInventoryEditable){
@@ -74,6 +76,7 @@ export class SearchProductComponent implements OnInit {
   }
 
   editInventory(item){
+    this.autoCompletePanel.closePanel();
     const dialogRef = this.dialog.open(PriceComponent, {
       data: {
         productId: item.id,
@@ -84,8 +87,15 @@ export class SearchProductComponent implements OnInit {
   }
   
   editProduct(item){
-    console.log(`/admin/product/edit/${item.id}`);
-    this.router.navigate([`/admin/product/edit/${item.id}`]);
+    this.autoCompletePanel.closePanel();
+    /*this.router.navigate([`/admin/product/edit/${item.id}`]);*/
+    const dialogRef = this.dialog.open(CreateProductComponent, {
+      data: {
+        productId: item.id
+      },
+      width: "700px",
+      height: "500px"
+    });
   }
 }
 

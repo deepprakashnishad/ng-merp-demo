@@ -4,6 +4,7 @@ import { CartItem } from './cart';
 import { environment } from '../../../environments/environment';
 import { CartService } from './cart.service';
 import { Product } from 'src/app/admin/product/product';
+import { AuthenticationService} from 'src/app/authentication/authentication.service';
 import { L } from '@angular/cdk/keycodes';
 
 @Component({
@@ -30,11 +31,14 @@ export class CartComponent implements OnInit {
   
   deliveryCharges = environment.deliveryCharges;
   minOrderFreeDelivery = environment.minOrderFreeDelivery;
+  isLoggedIn: boolean = false;
 
   constructor(
     private cartService: CartService,
-    private notifier: NotifierService
-  ) { }
+    private notifier: NotifierService,
+    private authenticationService: AuthenticationService
+  ) { 
+  }
 
   ngOnInit() {
     this.cartService.changes.subscribe(result=>{
@@ -44,17 +48,16 @@ export class CartComponent implements OnInit {
     });
     this.cart = this.cartService.getCartFromStorage();
     if(this.cart===null){
-      this.cartService.getCart().subscribe(result=>{
-        this.cart = CartItem.fromJSON(result);
-        localStorage.setItem("cart", JSON.stringify(this.cart));
+      this.authenticationService.isLoggedIn.subscribe(res=>{
+        this.isLoggedIn = res;
+        if(this.isLoggedIn){
+          this.cartService.getCart().subscribe(result=>{
+            this.cart = CartItem.fromJSON(result);
+            localStorage.setItem("cart", JSON.stringify(this.cart));
+          });
+        }
       });
     }
-    console.log(this.cart);
-    /*if(this.loadCartFromServer){
-      
-    }else{
-      this.cart = this.cartService.getCartFromStorage();
-    }*/
   }
 
   updateQuantity(element: CartItem, qty) {

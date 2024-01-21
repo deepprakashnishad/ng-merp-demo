@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "site": "ng-erp-3dcfb",
     "public": "dist",
     "redirects": [
       {
@@ -16,7 +15,7 @@
       },
       {
         "source": "/api/:path*",
-        "destination": "https://giriraj-store.herokuapp.com/:path"
+        "destination": "https://giriraj-backend.onrender.com/:path"
       }
     ],
     "ignore": [

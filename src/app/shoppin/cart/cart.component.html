@@ -51,17 +51,17 @@
         </td>
         <td mat-footer-cell *matFooterCellDef>
           Total <span [fxShow.xs]="true">:</span>
-          <span *ngIf="displayTotalWithDelivery">{{getTotalCost()>=minOrderFreeDelivery?getTotalCost():getTotalCost()+deliveryCharges | currency:'INR':'symbol-narrow' : '1.0-0'}}</span>
-          <span *ngIf="!displayTotalWithDelivery">{{getTotalCost() | currency:'INR':'symbol-narrow' : '1.0-0'}}</span>
+          <span *ngIf="displayTotalWithDelivery">{{getTotalCost()>=minOrderFreeDelivery?getTotalCost():getTotalCost()+deliveryCharges | currency:'INR':'symbol-narrow' : '1.2-2'}}</span>
+          <span *ngIf="!displayTotalWithDelivery">{{getTotalCost() | currency:'INR':'symbol-narrow' : '1.2-2'}}</span>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="subTotal">
         <th mat-header-cell *matHeaderCellDef> Sub-Total </th>
         <td mat-cell *matCellDef="let element">
-          <div *ngIf="element.selectedPrice?.discounts==null || element.selectedPrice?.discounts?.length===0">{{element.qty*element.product?.unitPrice | currency:'INR':'symbol-narrow' : '1.0-0'}}</div>
+          <div *ngIf="element.selectedPrice?.discounts==null || element.selectedPrice?.discounts?.length===0">{{element.qty*element.product?.unitPrice | currency:'INR':'symbol-narrow' : '1.2-2'}}</div>
           <div *ngIf="element.selectedPrice?.discounts?.length>0">
-            {{getDiscountedPrice(element) * element.qty | currency:'INR':'symbol-narrow' : '1.0-0'}}
+            {{getDiscountedPrice(element) * element.qty | currency:'INR':'symbol-narrow' : '1.2-2'}}
           </div>
         </td>
         <td mat-footer-cell *matFooterCellDef>

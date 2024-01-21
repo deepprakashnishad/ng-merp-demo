@@ -117,7 +117,7 @@ export class PriceComponent implements OnInit {
       if(result){
         this.inventories.push(result.data);
         if(result.operation==="Add"){
-          this.costPrice = Math.floor((this.costPrice*this.inStockQty + result.data.cp*result.data.q)*100/(this.inStockQty+result.data.q))/100;
+          this.costPrice = Math.floor(((this.costPrice*this.inStockQty + result.data.cp*result.data.q)/(this.inStockQty+result.data.q))*100)/100;
           this.inStockQty += result.data.q;
         }else{
           this.inStockQty -= result.data.q;
@@ -268,17 +268,22 @@ export class PriceComponent implements OnInit {
 
   salePriceCalculator(value, field){
   	var qty = this.saleDetail.minQty;
+
   	if(field==="SALE_PRICE"){
-  		this.saleDetail.discount = +(this.sellPrice-value).toFixed(0);
+  		this.saleDetail.discount = +(this.sellPrice-value).toFixed(2);
   		this.saleDetail.discountPercentage = 
   			+((this.saleDetail.discount/(this.sellPrice))*100).toFixed(1);
-  	}else if(field==="DISCOUNT"){
-  		this.saleDetail.salePrice = +(this.sellPrice-value).toFixed(0);
+  	}
+
+    else if(field==="DISCOUNT"){
+  		this.saleDetail.salePrice = +(this.sellPrice-value).toFixed(2);
   		this.saleDetail.discountPercentage = 
   			+((value/(this.sellPrice))*100).toFixed(1);
-  	}else if(field==="DISCOUNT_PERCENT"){
-  		this.saleDetail.discount = +((value*this.sellPrice)/100).toFixed(1);
-  		this.saleDetail.salePrice = +(this.sellPrice-this.saleDetail.discount).toFixed(1);
+  	}
+
+    else if(field==="DISCOUNT_PERCENT"){
+  		this.saleDetail.discount = +((value*this.sellPrice)/100).toFixed(2);
+  		this.saleDetail.salePrice = +(this.sellPrice-this.saleDetail.discount).toFixed(2);
   	}/* else if(field==="QUANTITY"){
   		this.saleDetail.discount = +(this.saleDetail.discountPercentage * value * this.sellPrice/100).toFixed(0);
   		this.saleDetail.salePrice = +(this.sellPrice * value - this.saleDetail.discount).toFixed(0);

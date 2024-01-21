@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Order } from 'src/app/shoppin/order/order';
 import { Person } from 'src/app/person/person';
 import { OrderService } from 'src/app/shoppin/order/order.service';
+import { AuthenticationService } from 'src/app/authentication/authentication.service';
 import { SaleRecieptDialogComponent } from 'src/app/admin/sale-point/sale-reciept-dialog/sale-reciept-dialog.component';
 
 @Component({
@@ -14,19 +15,25 @@ import { SaleRecieptDialogComponent } from 'src/app/admin/sale-point/sale-reciep
 })
 export class OrderComponent implements OnInit {
 
-  statuses: Array<string> = ["In Progress"];
-  statusList: Array<string> = ["New", "In Progress", "In Transit", "Delivered", "Cancelled"];
+  statuses: Array<string> = ["IN PROGRESS", "PACKED"];
+  statusList: Array<string> = ["NEW", "IN PROGRESS", "PACKED", "IN TRANSIT", "DELIVERED", "CANCELLED"];
   orders: Array<Order> = [];
   displayedColumns: string[] = ['position', 'createdOn', 'netAmount',  'modeOfPayment', 'amountPaid', 'status', 'address', 'action'];
   statusCntl = new FormControl();
   pageSize:number = 50;
   isEndReached: boolean = false;
+  store: any = JSON.parse(sessionStorage.getItem("store"));
 
   constructor(
     private orderService: OrderService,
     private dialog: MatDialog,
-    private notifier: NotifierService
-  ) { }
+    private notifier: NotifierService,
+    private authenticationService: AuthenticationService
+  ) { 
+    if(this.authenticationService.authorizeUser(["DELIVERY"])){
+      this.statuses = ["PACKED", "IN TRANSIT"];
+    }
+  }
 
   ngOnInit() {
     this.fetchOrders(0);
@@ -41,6 +48,10 @@ export class OrderComponent implements OnInit {
       var newOrders = Order.fromJSONArray(orders);
       this.orders = this.orders.concat(newOrders);
     });
+  }
+
+  checkPermission(permission){
+    return this.authenticationService.authorizeUser([permission]);
   }
 
   print(orderId){
@@ -182,6 +193,7 @@ export class OrderComponent implements OnInit {
         data: {
           order: order,
           person: order.person,
+          store: this.store
         }
       });
     }, error=>{
@@ -197,9 +209,10 @@ export class OrderComponent implements OnInit {
     this.fetchOrders(0);
   }
 
-  statusUpdated(order){
-    this.orderService.updateStatus({id: order.id, status: order.status}).subscribe(result=>{
+  statusUpdated(orderId, index, status){
+    this.orderService.updateStatus({id: orderId, status: status}).subscribe(result=>{
       if(result['success']){
+        this.orders[index].status = status;
         this.notifier.notify("success", "Status updated successfully");
       }else{
         this.notifier.notify("failed", "Status could not be updated");

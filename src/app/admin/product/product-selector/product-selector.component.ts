@@ -35,6 +35,13 @@ export class ProductSelectorComponent implements OnInit {
     });
   }
 
+  search(){
+    this.productService.getByFilter({text: this.filterText}).subscribe(products=>{
+      this.products = products;
+      this.displayedProducts = products;
+    })
+  }
+
   productSelectionChanged(isSelected, productId){
     let index = this.selectedProductIds.indexOf(productId);
     if(isSelected && index==-1){

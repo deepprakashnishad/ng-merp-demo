@@ -21,7 +21,7 @@ export class AuthGuardService implements CanActivate, CanLoad{
 	) { }
 
   	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
-  		let url: string = state.url
+  		let url: string = state.url;
 			let loginErrorMessage = 'Insufficient permission. Please login as authorized user.'
 			if(route.data.loginErrorMessage){
 				loginErrorMessage = route.data.loginErrorMessage;

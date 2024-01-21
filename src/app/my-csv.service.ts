@@ -54,13 +54,17 @@ export class MyCsvService {
               var temp = data[i]['prices'][0];
               if(mKeyParts[1]==="discountedPrice"){
                 var discounts = temp['discounts'];
-                for(let disc of discounts){
-                  if(disc.minQty===1){
-                    line += `,"${disc['salePrice']?disc['salePrice']:""}"`;
-                  }else{
-                    line += `,`;          
+                if(discounts && discounts.length>0){
+                  for(let disc of discounts){
+                    if(disc.minQty===1){
+                      line += `,"${disc['salePrice']?disc['salePrice']:""}"`;
+                    }else{
+                      line += `,`;
+                    }
                   }
-                }  
+                }else{
+                  line += `,`;
+                }
               }else{
                 line += `,"${temp[mKeyParts[1]]?temp[mKeyParts[1]]:""}"`;  
               }                
@@ -85,7 +89,7 @@ export class MyCsvService {
 
     let dataArray: any[] = [];
     dataRows.forEach((row) => {
-      let values = row.split(',');
+      let values = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
 
       let obj: any = new Object();
 

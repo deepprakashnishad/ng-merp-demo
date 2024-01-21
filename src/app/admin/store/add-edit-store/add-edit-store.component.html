@@ -8,7 +8,7 @@
 	</mat-form-field>
   	<div fxLayout fxLayoutGap="16px" fxLayoutAlign="start center">
   		<h2>Status - {{store.status}}</h2>
-  		<a mat-raised-button color="primary" [routerLink]="'/admin'">
+  		<a mat-raised-button color="primary" [routerLink]="'/admin'" *ngIf="store.status==='APPROVED'">
 			Goto Seller Dashboard
 		</a>
   	</div>
@@ -39,6 +39,6 @@
 	<mat-label>Store Address/Pick Up Point</mat-label>
 	<app-address [fulfillmentType]="'self_pick'" [checkPincodeAvailability]=false (addressSelected)="addressSelected($event)" [selectedAddressId]="store.address"></app-address>
 	<button mat-raised-button color="primary" (click)="save()">Save</button>
-	<button mat-raised-button color="accent" (click)="store.status='APPROVAL_PENDING'; save()">Request Approval</button>
+	<button mat-raised-button color="accent" *ngIf="store.id" (click)="store.status='APPROVAL_PENDING'; save()">Request Approval</button>
   </div>
   

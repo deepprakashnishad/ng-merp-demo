@@ -47,7 +47,6 @@ export class ForgotPasswordComponent implements OnInit{
   }
 
   onSubmit(): void {
-    console.log(this.useremail);
     if (this.validateEmail(this.useremail)) {
       this.authService.requestPasswordResetCode(this.useremail).subscribe(result => {
         if (result.success) {
@@ -63,8 +62,17 @@ export class ForgotPasswordComponent implements OnInit{
   }
 
   validateEmail(email) {
+    email = email.trim();
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var result = re.test(String(email).toLowerCase());
+    if(!result){
+      if(email[0]!=="+"){
+        email = "+91"+email;
+        this.useremail = email;
+      }
+      const mob_tester = /^\+\d{2,3}\d{10}$/;
+      result = mob_tester.test(email);
+    }
     return result;
   }
 
