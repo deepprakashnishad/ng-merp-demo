@@ -52,14 +52,14 @@ export class AppComponent implements OnInit {
     );
 
     var refreshTimeInMillis = 15*24*60*60*1000;
-    var catmap = JSON.parse(localStorage.getItem("cat-map"));
-    if(catmap===null || (catmap?.timestamp+refreshTimeInMillis < new Date().getTime())){
+    var categories = JSON.parse(localStorage.getItem("categories"));
+    if(categories===null || (categories?.timestamp+refreshTimeInMillis < new Date().getTime())){
       this.categoryService.getCategories().subscribe((categories: Array<Category>)=>{
-        var tempMap = {};
+        var catList = {};
         for(var category of categories){
-          tempMap[category.id] = category.title;
+          catList[category.id] = category.title;
         }
-        localStorage.setItem("cat-map", JSON.stringify({"timestamp": new Date().getTime(), "catMap": tempMap}));
+        localStorage.setItem("categories", JSON.stringify({"timestamp": new Date().getTime(), "categories": catList}));
       });
     }
 

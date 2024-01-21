@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/admin/category/category';
@@ -40,6 +40,8 @@ export class DepartmentBarComponent implements OnInit {
   selectedCategoryId: string;
   isCategoryBarOpen: boolean = false;
 
+  @Output("departmentSelected") departmentSelected: EventEmitter<any> = new EventEmitter();
+
   constructor(
     private categoryService: CategoryService,
     private route: ActivatedRoute,
@@ -56,6 +58,7 @@ export class DepartmentBarComponent implements OnInit {
 
   updateCategoryTree(){
     this.categoryService.fetchCategoryTree(true).subscribe(result => {
+      localStorage.setItem("cat-map", JSON.stringify(result));
       this.categoryMenuItems = result;
     });
   }
@@ -69,6 +72,7 @@ export class DepartmentBarComponent implements OnInit {
   }
 
   navigateByDepartment(category){
+    this.departmentSelected.emit(category);
     this.router.navigate(['/product-by-category'], {queryParams: category});
   }
 

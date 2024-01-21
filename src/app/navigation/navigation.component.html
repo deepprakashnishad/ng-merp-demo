@@ -16,7 +16,9 @@
 					</a>
 				</span>
 				<span>
-					<button mat-button class="white-text" [matMenuTriggerFor]="menu">Welcome {{isLoggedIn?name:'User'}} <mat-icon>arrow_drop_down</mat-icon></button>
+					<button mat-button class="white-text" *ngIf="!isLoggedIn" (click)="toggleLoginStatus(isLoggedIn)">Login/Register</button>
+
+					<button mat-button class="white-text" *ngIf="isLoggedIn" [matMenuTriggerFor]="menu">Welcome {{isLoggedIn?name:'User'}} <mat-icon>arrow_drop_down</mat-icon></button>
 					<mat-menu #menu="matMenu">
 					  <a mat-menu-item [routerLink]="'/order-list'">My Orders</a>
 					  <button mat-menu-item>Dashboard</button>
@@ -32,7 +34,7 @@
 	<mat-toolbar-row *ngIf="!shrinkToolbar" class="wide-navbar" fxLayout fxLayoutAlign="start center" fxLayoutGap fxHide.lt-md fxLayoutGap="16px">
 		<div class="logo">
 			<a class="brand" routerLink="/">
-				<h3 class="logo-text">GOVIND MALL</h3>
+				<h3 class="logo-text">GIRIRAJ STORE</h3>
 					<!-- <img height="80" width="80" [src]="storeSettings?.logo?.downloadUrl | safe" /> -->
 			</a>
 		</div>
@@ -73,7 +75,7 @@
 	<mat-toolbar-row class="narrow-navbar" fxLayout fxLayoutAlign="space-between center" fxHide.gt-sm>
 		<div class="logo">
 			<a class="brand" routerLink="/">
-				<h3 class="logo-text">RG STORE</h3>
+				<h3 class="logo-text">GIRIRAJ STORE</h3>
 			</a>
 		</div>
 		<!-- <a class="brand" routerLink="/">
@@ -81,7 +83,13 @@
 				<img height="30" width="30" [src]="storeSettings?.logo?.downloadUrl | safe" />
 			</span>
 		</a> -->
-		<div class="mob-welcome-msg">Welcome {{isLoggedIn?name:''}}</div>
+		<div class="mob-welcome-msg">
+			Welcome
+			<button mat-icon-button (click)="toggleLoginStatus(isLoggedIn)">
+				<span class="material-symbols-outlined" *ngIf="!isLoggedIn">passkey</span>
+				<span class="material-symbols-outlined" *ngIf="isLoggedIn">logout</span>
+			</button>
+		</div>
 	</mat-toolbar-row>
 	<mat-toolbar-row class="narrow-navbar" fxLayout fxLayoutAlign="space-between center" fxHide.gt-sm>
 		<button mat-icon-button (click)="toggleLeftDrawer()">
@@ -121,20 +129,22 @@
 </div>-->
 
 <div [hidden]="isLeftBarOpen" [@openClose]="isLeftBarOpen?'open':'closed'" class="left-drawer" fxLayout="column" fxLayoutGap="16px" fxHide.gt-sm>
+	<div *ngIf="isLoggedIn" class="white-text">Welcome {{name}}</div>
 	<button mat-button class="mobPageLink" (click)="navigateTo('/')">
-		Home
+		<span class="material-symbols-outlined">home</span> Home
 	</button>
-	<button mat-button class="mobPageLink" (click)="navigateTo('/categories')">
+	<app-department-bar (departmentSelected)="toggleSidebar()"></app-department-bar>
+	<!-- <button mat-button class="mobPageLink" (click)="navigateTo('/categories')">
 		Categories
-	</button>
+	</button> -->
 	<button mat-button class="mobPageLink" (click)="navigateTo('/static-page/about-us')">
-		My Profile
+		<span class="material-symbols-outlined">person</span> My Profile
 	</button>
 	<button mat-button *ngIf="false" class="mobPageLink" (click)="navigateTo('/static-page/about-us')" >
-		My Addresses
+		<span class="material-symbols-outlined">local_shipping</span> My Addresses
 	</button>
 	<button mat-button *ngIf="isLoggedIn" class="mobPageLink" (click)="navigateTo('/order-list')">
-		My Orders
+		<span class="material-symbols-outlined">orders</span> My Orders
 	</button>
 	<button class="mobPageLink" mat-button (click)="toggleLoginStatus(isLoggedIn)">
 		{{isLoggedIn?'Logout':'Login'}} <mat-icon aria-label="isLoggedIn?:'Logout':'Login/Sign Up'">{{isLoggedIn?'logout':'lock'}}</mat-icon>

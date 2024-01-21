@@ -27,6 +27,7 @@ export class ProductByCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.categories);
   }
 
   ngAfterViewInit(): void {

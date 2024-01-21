@@ -19,6 +19,7 @@ export class TrackerViewComponent implements OnInit {
   steps: Array<any> = [
     { status: "New", isCompleted: false },
     { status: "In Progress", isCompleted: false },
+    { status: "Packed", isCompleted: false },
     { status: "In Transit", isCompleted: false },
     { status: "Delivered", isCompleted: false }
   ];

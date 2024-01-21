@@ -6,8 +6,9 @@
 </mat-toolbar>-->
 
 <div class="container">
-  <div class="full-width" *ngIf="orders.length===0">
-    <h2>No orders found</h2>
+  <div class="full-width" fxLayoutAlign="center">
+    <h2 *ngIf="orders.length===0">No orders found</h2>
+    <h2 *ngIf="orders.length>0">My Orders</h2>
   </div>
   <mat-card class="clickable" (click)="navigateToOrderDetail(order)" *ngFor="let order of orders; let i=index" fxLayout="column" fxLayoutGap="16px">
     <div fxLayout fxLayout.lt-md="column" fxLayoutAlign="space-between center" fxLayoutAlign.lt-md="start start">
