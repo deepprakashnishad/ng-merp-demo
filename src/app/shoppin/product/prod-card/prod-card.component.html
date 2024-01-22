@@ -1,13 +1,20 @@
-<mat-card class="full-width" fxLayout="column" fxLayoutAlign="start center">
-  <mat-card-content>
+<mat-card class="full-width">
+  <mat-card-content fxLayout.lt-md="row" fxLayout.gt-sm="column" fxLayoutAlign="start center">
     <div class="img-container responsive-img" fxLayout="column" fxFlexAlign="center space-between">
       <img fxFlexAlign="center" class="mouse-hand" [src]="product?.assets?.imgs[0]?.downloadUrl" 
-      height="180px" width="180px" (click)="showDetail()" loading="lazy"/>
-      <div>{{product.brand?.sname}}</div>
-      <div class="full-width title  mouse-hand"  (click)="showDetail()">{{product.name}}</div>
-      <div class="weight">{{product.attrs["Weight"]}}</div>
+      height="90px" width="90px" (click)="showDetail()" loading="lazy"/>
+      <div fxHide.lt-md>
+        <div>{{product.brand?.sname}}</div>
+        <div class="full-width title  mouse-hand"  (click)="showDetail()">{{product.name}}</div>
+        <div class="weight">{{product.attrs["Weight"]}}</div>
+      </div>
     </div>
     <div class="price-container">
+      <div fxHide.gt-sm>
+        <div>{{product.brand?.sname}}</div>
+        <div class="full-width title  mouse-hand"  (click)="showDetail()">{{product.name}}</div>
+        <div class="weight">{{product.attrs["Weight"]}}</div>
+      </div>
       <div fxLayout fxLayoutAlign="space-between center">
         <div *ngIf="!selectedDiscount || selectedDiscount===null" fxLayout fxLayoutAlign="center center" fxLayoutGap="10px">
           <div class="original">

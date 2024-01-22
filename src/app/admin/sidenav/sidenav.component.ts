@@ -109,7 +109,9 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.storeService.getMyStores().subscribe(stores=>{
       sessionStorage.setItem("store", JSON.stringify(stores[0]));
-    })
+    });
+
+    this.isOpen = this.mobileQuery.matches?false: true;
   }
 
   ngOnDestroy(): void {
@@ -117,7 +119,6 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   public toggle() {
-    console.log("Hello.I am in toggle");
   	this.isOpen = !this.isOpen;
   }
 

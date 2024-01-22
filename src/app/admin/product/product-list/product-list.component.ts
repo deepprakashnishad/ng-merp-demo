@@ -209,7 +209,13 @@ export class ProductListComponent {
       (!event.checked && product.status.toLowerCase()==="inactive")){
         return;
     }
-    product.status = event.checked?"A":"I";
+    product.status = event.checked?"Active":"Inactive";
+
+    // var priceId = product.prices[0].id;
+    // var status = product.prices[0].status;
+    /*this.priceService.updateStatus(priceId, status).subscribe(result=>{
+      this.notifier.notify("success", `${product.name} inventory status changed to ${product.status}`);
+    });*/
     this.productService.updateProduct(product).subscribe(result=>{
       if(result['success']){
         this.notifier.notify("success", `${product.name} status changed to ${product.status}`);

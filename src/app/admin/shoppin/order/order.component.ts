@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy  } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
 import { FormControl } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +14,7 @@ import { SaleRecieptDialogComponent } from 'src/app/admin/sale-point/sale-reciep
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss']
 })
-export class OrderComponent implements OnInit {
+export class OrderComponent implements OnInit, OnDestroy {
 
   statuses: Array<string> = ["IN PROGRESS", "PACKED"];
   statusList: Array<string> = ["NEW", "IN PROGRESS", "PACKED", "IN TRANSIT", "DELIVERED", "CANCELLED"];
@@ -24,15 +25,24 @@ export class OrderComponent implements OnInit {
   isEndReached: boolean = false;
   store: any = JSON.parse(sessionStorage.getItem("store"));
 
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
   constructor(
+    changeDetectorRef: ChangeDetectorRef,
     private orderService: OrderService,
     private dialog: MatDialog,
     private notifier: NotifierService,
+    private media: MediaMatcher,
     private authenticationService: AuthenticationService
   ) { 
     if(this.authenticationService.authorizeUser(["DELIVERY"])){
       this.statuses = ["PACKED", "IN TRANSIT"];
     }
+
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit() {
@@ -229,5 +239,9 @@ export class OrderComponent implements OnInit {
         this.notifier.notify("failed", "Status could not be updated");
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 }

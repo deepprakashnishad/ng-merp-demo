@@ -84,7 +84,7 @@ const routes: Routes = [
 		children: [
 			{
 				path: '', 
-				component: DashboardComponent,
+				component: OrderComponent,
 				canActivate: [AuthGuardService], 
 				canDeactivate:[CanDeactivateGuardService],
 				data: { title: 'Dashboard', permissions: ['SHOP_EDITOR']},
