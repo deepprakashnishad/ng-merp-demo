@@ -141,8 +141,21 @@ export class AuthenticationService {
   }
 
   logout(): void{
-    localStorage.clear();
-    sessionStorage.clear();
+    var localStorageKeys = Object.keys(localStorage);
+    localStorageKeys.forEach(ele=>{
+      if(ele!=="catMap"){
+        localStorage.removeItem(ele);
+      }
+    });
+
+    var sessionStorageKeys = Object.keys(sessionStorage);
+    sessionStorageKeys.forEach(ele=>{
+      if(ele!=="catMap"){
+        sessionStorage.removeItem(ele);
+      }
+    });
+    // localStorage.clear();
+    // sessionStorage.clear();
     this.router.navigate(['/login']);
     this.isLoggedIn.next(false);
   }

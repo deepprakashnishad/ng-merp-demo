@@ -1,4 +1,6 @@
-<div class="deep-padding">
+<div class="deep-padding" infiniteScroll
+      (scrolled)="onScrollDown($event)"
+      (scrolledUp)="onScrollUp($event)">
   <div fxLayout="row wrap"
        fxLayout.lt-sm="column"
        fxLayoutGap="32px"

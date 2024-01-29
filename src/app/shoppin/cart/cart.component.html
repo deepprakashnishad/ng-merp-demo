@@ -28,9 +28,10 @@
       <ng-container matColumnDef="unitPrice">
         <th mat-header-cell *matHeaderCellDef> Unit Price </th>
         <td mat-cell *matCellDef="let element">
-          <div *ngIf="element.selectedPrice?.discounts==null || element.selectedPrice?.discounts?.length==0">{{element.selectedPrice?.unitPrice}}</div>
+          <div *ngIf="!element.selectedPrice?.discounts || element.selectedPrice?.discounts===null || element.selectedPrice?.discounts?.length==0">{{element.selectedPrice?.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
           <div *ngIf="element.selectedPrice?.discounts?.length>0">
-            {{getDiscountedPrice(element)}}
+            <div class="partial-text">{{element.selectedPrice?.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
+            <div>{{getDiscountedPrice(element) | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
           </div>
         </td>
         <td mat-footer-cell *matFooterCellDef>
@@ -59,7 +60,7 @@
       <ng-container matColumnDef="subTotal">
         <th mat-header-cell *matHeaderCellDef> Sub-Total </th>
         <td mat-cell *matCellDef="let element">
-          <div *ngIf="element.selectedPrice?.discounts==null || element.selectedPrice?.discounts?.length===0">{{element.qty*element.product?.unitPrice | currency:'INR':'symbol-narrow' : '1.2-2'}}</div>
+          <div *ngIf="!element.selectedPrice?.discounts || element.selectedPrice?.discounts==null || element.selectedPrice?.discounts?.length===0">{{element.qty*element.selectedPrice?.unitPrice | currency:'INR':'symbol-narrow' : '1.2-2'}}</div>
           <div *ngIf="element.selectedPrice?.discounts?.length>0">
             {{getDiscountedPrice(element) * element.qty | currency:'INR':'symbol-narrow' : '1.2-2'}}
           </div>

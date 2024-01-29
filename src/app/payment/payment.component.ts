@@ -2,7 +2,6 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
-import { CheckoutService } from 'paytm-blink-checkout-angular';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from '../authentication/authentication.service';

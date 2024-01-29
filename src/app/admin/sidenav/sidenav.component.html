@@ -1,5 +1,5 @@
 <mat-drawer-container class="example-container" hasBackdrop="false" autosize>
-	<mat-drawer #drawer [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="isOpen" position="end">
+	<mat-drawer #drawer [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="isOpen" [position]="mobileQuery.matches ? 'end': 'start'">
 		<mat-list>
 			<mat-list-item *ngFor="let route of filteredRouteList; let i=index;">
 				<div fxLayout fxLayoutAlign="space-between center">

@@ -3,7 +3,7 @@
 		<app-view-category #viewCategory [categories]="categories" [isEditPermitted]="isEditPermitted"></app-view-category>
 		<div fxFlex fxLayout="column" fxLayoutGap="4">
 			<!--<button class="pull-right" mat-raised-button color="primary" (click)="openAddEditCategoryDialog()" *ngIf="isAddPermitted">Add New Category</button>-->
-			<app-category-tree [categories]="categories"></app-category-tree>
+			<app-category-tree [categories]="categories" [isExpanded]="false"></app-category-tree>
 		</div>
 	</div>
 </div>

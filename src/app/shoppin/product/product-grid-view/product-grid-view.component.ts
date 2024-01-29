@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from "@angular/core";
+import { Component, Input, ViewEncapsulation, HostListener } from "@angular/core";
 import { Product } from "../../../admin/product/product";
 
 @Component({
@@ -16,5 +16,17 @@ export class ProductGridViewComponent {
 
   ngOnInit() {
 
+  }
+
+  onScrollDown(event){
+    console.log(event);
+  }
+  onScrollUp(event){
+    console.log(event);
+  }
+
+  @HostListener('window:scroll', ['$event']) 
+  scrollHandler(event) {
+    console.debug("Scroll Event");
   }
 }

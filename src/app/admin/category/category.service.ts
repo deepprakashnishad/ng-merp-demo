@@ -74,8 +74,8 @@ export class CategoryService {
       )
   }  
 
-  deleteCategoryNode(nodeId): Observable<CategoryTreeNode> {
-    return this.http.delete<CategoryTreeNode>(this.categoryTreeUrl+'/'+nodeId)
+  deleteCategoryNode(nodeId): Observable<any> {
+    return this.http.delete<any>(this.categoryTreeUrl+'/'+nodeId)
     .pipe(
        catchError(this.handleError('Delete Category', null)));
   }

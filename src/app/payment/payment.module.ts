@@ -5,15 +5,13 @@ import { MaterialModule } from '../material.module';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RazorpayButtonComponent } from './razorpay-payment-button/razorpay-payment-button.component';
-import { CheckoutModule } from 'paytm-blink-checkout-angular';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     FormsModule,
-    FlexLayoutModule,
-    CheckoutModule
+    FlexLayoutModule
   ],
   declarations: [
     PaymentComponent,

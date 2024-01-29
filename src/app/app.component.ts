@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router'
 import { StoreSettings } from './admin/store-settings/store-setting';
 import { StoreSettingsService } from './admin/store-settings/store-settings.service';
@@ -83,5 +83,9 @@ export class AppComponent implements OnInit {
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+  }
+
+  onMouseWheel(evt) {
+    console.log('Wheel event: ', evt);
   }
 }

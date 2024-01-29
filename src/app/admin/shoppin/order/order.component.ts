@@ -16,6 +16,7 @@ import { SaleRecieptDialogComponent } from 'src/app/admin/sale-point/sale-reciep
 })
 export class OrderComponent implements OnInit, OnDestroy {
 
+  whatsAppUrl: string = "whatsapp://send?text={mTxt}";
   statuses: Array<string> = ["IN PROGRESS", "PACKED"];
   statusList: Array<string> = ["NEW", "IN PROGRESS", "PACKED", "IN TRANSIT", "DELIVERED", "CANCELLED"];
   orders: Array<Order> = [];
@@ -65,7 +66,94 @@ export class OrderComponent implements OnInit, OnDestroy {
   }
 
   print(orderId){
-    /*var mOrder = {
+    this.orderService.getOrderDetail(orderId).subscribe(order=>{
+      var order = Order.fromJSON(order);
+
+      const dialogRef = this.dialog.open(SaleRecieptDialogComponent, {
+        data: {
+          order: order,
+          person: order.person,
+          store: this.store
+        }
+      });
+    }, error=>{
+      if(error.error?.msg){
+        this.notifier.notify("error", error.error.msg);
+      }else{
+        this.notifier.notify("error", "Error occured");
+      }
+    });
+  }
+
+  refresh() {
+    this.fetchOrders(0);
+  }
+
+  statusUpdated(orderId, index, status){
+    this.orderService.updateStatus({id: orderId, status: status}).subscribe(result=>{
+      if(result['success']){
+        this.orders[index].status = status;
+        this.notifier.notify("success", "Status updated successfully");
+      }else{
+        this.notifier.notify("failed", "Status could not be updated");
+      }
+    });
+  }
+
+  updateStatusToPacked(orderId, index){
+    this.orderService.updateStatus({id: orderId, status: "PACKED"}).subscribe(result=>{
+      if(result['success']){
+        this.orders[index].status = "PACKED";
+        this.notifier.notify("success", "Status updated successfully");
+      }else{
+        this.notifier.notify("failed", "Status could not be updated");
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  shareOnWhatsApp(orderId): void{
+    this.orderService.getOrderDetail(orderId).subscribe(order=>{
+      var order = Order.fromJSON(order);
+      console.log(order);
+
+    }, error=>{
+      if(error.error?.msg){
+        this.notifier.notify("error", error.error.msg);
+      }else{
+        this.notifier.notify("error", "Error occured");
+      }
+    });
+  }
+
+  getAddressAsText(address){
+    var addressText="";
+    if(address['name']){
+      addressText = `${address['name']}, Mob - ${address.mob1}, <br>`;
+    }
+    if(address['line1']){
+      addressText += `${address['line1']}<br>`;
+    }
+    if(address['line2']){
+      addressText += `${address['line2']},<br>`;
+    }
+    if(address['landmark']){
+      addressText += `${address['landmark']}, <br>`;
+    }
+    addressText += `${address['city']} - ${address['pincode']}`;
+    return addressText;
+  }
+
+  convertToDate(timestamp){
+    var date = new Date(timestamp);
+    return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear() + " " + date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+  }
+
+  getTextFromOrder(){
+    var mOrder = {
       "items": [
         {
           "createdAt": 1704646906745,
@@ -181,67 +269,32 @@ export class OrderComponent implements OnInit, OnDestroy {
       "msg": "Order retrieved successfully"
     };
     var order = Order.fromJSON(mOrder, true);
-    var store = sessionStorage.getItem("store");
+    var customer = order.person;
+    var store = JSON.parse(store);
+    var address = this.getAddressAsText(order.fulfillment?.address);
+
+    var oText = `Bill To: ${customer.name}, ${customer.mobile}\n`;
+    if(address){
+      oText = `${oText}Deliver To:\n${address}\n`
+    }
+
+    oText = `${oText}Order: ${order.id}\nTotal Items: ${order.items.length}\nOrder Datetime: ${this.convertToDate(order.createdAt)}\n`;
+    for(var i=0; i < order.items.length; i++){
+      var item = order.items[i];
+      oText = `${oText}${i+1}. ${item.name} ${item.sellPrice} `;
+      if(item.discount && item.discount.length>0){
+        
+      }
+    }
+
+    /*var store = sessionStorage.getItem("store");
     const dialogRef = this.dialog.open(SaleRecieptDialogComponent, {
       data: {
         order: order,
         person: order.person,
         store: JSON.parse(store),
-        deliveryAddress: order.fulfillment?.address,
-        print: true
+        deliveryAddress: order.fulfillment?.address
       }
-    });
-
-    dialogRef.afterClosed().subscribe(result=>{
-      console.log(result);
     });*/
-
-    this.orderService.getOrderDetail(orderId).subscribe(order=>{
-      var order = Order.fromJSON(order);
-
-      const dialogRef = this.dialog.open(SaleRecieptDialogComponent, {
-        data: {
-          order: order,
-          person: order.person,
-          store: this.store
-        }
-      });
-    }, error=>{
-      if(error.error?.msg){
-        this.notifier.notify("error", error.error.msg);
-      }else{
-        this.notifier.notify("error", "Error occured");
-      }
-    });
-  }
-
-  refresh() {
-    this.fetchOrders(0);
-  }
-
-  statusUpdated(orderId, index, status){
-    this.orderService.updateStatus({id: orderId, status: status}).subscribe(result=>{
-      if(result['success']){
-        this.orders[index].status = status;
-        this.notifier.notify("success", "Status updated successfully");
-      }else{
-        this.notifier.notify("failed", "Status could not be updated");
-      }
-    });
-  }
-
-  updateStatusToPacked(orderId, index){
-    this.orderService.updateStatus({id: orderId, status: "PACKED"}).subscribe(result=>{
-      if(result['success']){
-        this.orders[index].status = "PACKED";
-        this.notifier.notify("success", "Status updated successfully");
-      }else{
-        this.notifier.notify("failed", "Status could not be updated");
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 }

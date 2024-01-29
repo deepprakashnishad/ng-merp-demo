@@ -23,6 +23,7 @@ import { AddEditAddressComponent } from './address/add-edit-address/add-edit-add
 import { AddressComponent } from './address/address.component';
 import { PersonModule } from '../person/person.module';
 import { LazyImgDirective } from '../directives/lazy-img.directive';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { LazyImgDirective } from '../directives/lazy-img.directive';
     FileUploadModule,
     FormsModule,
     ReactiveFormsModule,
+    InfiniteScrollModule
   ],
   exports:[
   	ConfirmDialogComponent, 
@@ -62,6 +64,7 @@ import { LazyImgDirective } from '../directives/lazy-img.directive';
   	MaterialModule,
   	CommonModule,
     FileUploadModule,
+    InfiniteScrollModule,
   	AssignRevokePermissionsComponent,
   	AddEditPermissionComponent,
   	ViewPermissionComponent,

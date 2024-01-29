@@ -68,6 +68,7 @@
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element; let i=index;">
           <div class="full-width" fxlayout fxLayoutAlign="end end">
+            <!-- <button mat-icon-button [color]="primary" (click)="shareOnWhatsApp(element.id)"><span class="material-symbols-outlined">share</span></button> -->
             <button mat-icon-button [color]="primary" (click)="statusUpdated(element.id, i, 'PACKED')" *ngIf="element.status.toUpperCase()==='IN PROGRESS' && checkPermission('PACKAGING')"><span class="material-symbols-outlined">package_2</span></button>
             <button mat-icon-button [color]="primary" (click)="statusUpdated(element.id, i, 'IN TRANSIT')" *ngIf="element.status.toUpperCase()==='PACKED' && checkPermission('DELIVERY')"><span class="material-symbols-outlined">local_shipping</span></button>
             <button mat-icon-button [color]="primary" (click)="statusUpdated(element.id, i, 'DELIVERED')" *ngIf="element.status.toUpperCase()==='IN TRANSIT' && checkPermission('DELIVERY')"><span class="material-symbols-outlined">local_shipping</span></button>
@@ -96,6 +97,7 @@
           <span>{{element.status}}</span>
         </div>
         <div class="full-width" fxlayout fxLayoutAlign="end end">
+          <!-- <button mat-icon-button [color]="primary" (click)="shareOnWhatsApp(element.id)"><span class="material-symbols-outlined">share</span></button> -->
           <button mat-icon-button [color]="primary" (click)="statusUpdated(element.id, i, 'PACKED')" *ngIf="element.status.toUpperCase()==='IN PROGRESS' && checkPermission('PACKAGING')"><span class="material-symbols-outlined">package_2</span></button>
           <button mat-icon-button [color]="primary" (click)="statusUpdated(element.id, i, 'IN TRANSIT')" *ngIf="element.status.toUpperCase()==='PACKED' && checkPermission('DELIVERY')"><span class="material-symbols-outlined">local_shipping</span></button>
           <button mat-icon-button [color]="primary" (click)="statusUpdated(element.id, i, 'DELIVERED')" *ngIf="element.status.toUpperCase()==='IN TRANSIT' && checkPermission('DELIVERY')"><span class="material-symbols-outlined">local_shipping</span></button>
