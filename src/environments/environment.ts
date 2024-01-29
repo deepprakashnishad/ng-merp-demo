@@ -9,8 +9,8 @@ export const environment = {
   minOrderFreeDelivery: 500,
   deliveryCharges: 100,
   // baseurl: "https://giriraj-store.herokuapp.com",
-  // baseurl: "http://localhost:1337",
-  baseurl: "http://localhost:1338",
+  baseurl: "http://localhost:1337",
+  // baseurl: "http://localhost:1338",
   // baseurl: "http://localhost:4200/api",
   // baseurl: "https://merp-demo.herokuapp.com/",
   firebase: {

@@ -36,14 +36,20 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           Old Value
         </th>
-        <td mat-cell *matCellDef="let row"><ngx-json-viewer [json]="row.oldValue" [expanded]="false"></ngx-json-viewer></td>
+        <td mat-cell *matCellDef="let row">
+          {{row.oldValue}}
+          <!-- <ngx-json-viewer [json]="row.oldValue" [expanded]="false"></ngx-json-viewer> -->
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="newValue">
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
           New Value
         </th>
-        <td mat-cell *matCellDef="let row"><ngx-json-viewer [json]="row.newValue" [expanded]="false"></ngx-json-viewer></td>
+        <td mat-cell *matCellDef="let row">
+          {{row.newValue}}
+          <!-- <ngx-json-viewer [json]="row.newValue" [expanded]="false"></ngx-json-viewer> -->
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

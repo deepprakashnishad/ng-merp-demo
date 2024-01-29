@@ -34,9 +34,9 @@
   <div class="container megha-menu" fxLayoutAlign="center">
       <ul class="menu-main">
           <li *ngFor="let node of categoryMenuItems; let i=index;"> 
-            <button mat-button class="menu-icon" (click)="navigateByDepartment(node.category)">
+            <button *ngIf="node.category?.title!=='Services'" mat-button class="menu-icon" (click)="navigateByDepartment(node.category)">
               <span *ngIf="node.category?.imgs?.downloadUrl">
-                <img [src]="node.category?.imgs?.downloadUrl" height="25" width="25" />
+                <!-- <img [src]="node.category?.imgs?.downloadUrl" height="25" width="25" /> -->
               </span>
               {{ node.category?.title }} 
             </button> 

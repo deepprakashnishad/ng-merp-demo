@@ -51,7 +51,7 @@ import { ProductSelectorComponent } from './product/product-selector/product-sel
 import { ShoppinModule } from '../shoppin/shoppin.module';
 import { SelectionProductCardComponent } from './product/selection-product-card/selection-product-card.component';
 import { ActivityLogComponent } from './activity-log/activity-log.component';
-import { NgxJsonViewerModule } from 'ngx-json-viewer';
+// import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { DeliveryConfigComponent } from './delivery-config/delivery-config.component';
 import { StoreSettingsComponent } from './store-settings/store-settings.component';
 import { UserReportComponent } from './reports/user-report/user-report.component';
@@ -127,7 +127,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     QuillModule,
     AdminRoutingModule,
     ColorPickerModule,
-    NgxJsonViewerModule,
+    // NgxJsonViewerModule,
     ShoppinModule,
     QRCodeModule
   ],

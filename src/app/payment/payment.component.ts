@@ -64,7 +64,7 @@ export class PaymentComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private zone: NgZone,
-    private checkoutService: CheckoutService
+    // private checkoutService: CheckoutService
   ) { 
   }
 
@@ -108,7 +108,7 @@ export class PaymentComponent implements OnInit {
             //Paytm
             else if (paymentGateway === this.paytm) {
               console.log(result);
-              this.checkoutService.init(
+              /*this.checkoutService.init(
                 //config
                 {
                   data: {
@@ -136,7 +136,7 @@ export class PaymentComponent implements OnInit {
 
               this.subs = this.checkoutService
                 .checkoutJsInstance$
-                .subscribe(instance => console.log(instance));
+                .subscribe(instance => console.log(instance));*/
             }
           }
         } else {
