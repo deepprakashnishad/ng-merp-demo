@@ -88,6 +88,14 @@ export class PriceComponent implements OnInit {
           this.initialFetchFlag = true;
           this.fetchPrice();
         }
+      }else if((this.priceType==="PRD" ||this.priceType==="VRT") && !this.itemId && this.store && this.priceType && !this.productId){
+        this.price = undefined;
+        this.isPriceSame = false;
+        this.originalProductPrice = undefined;
+
+        this.sellPrice = undefined;
+        this.saleDetailList = [];
+        this.dataSource.data = [];
       }
 	  }
   }

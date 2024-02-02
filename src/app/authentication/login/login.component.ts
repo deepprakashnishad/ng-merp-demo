@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit{
     private route: ActivatedRoute) {
     this.cardForm = fb.group({
       materialFormCardNameEx: ['', [Validators.required, Validators.minLength(4)]],
-      materialFormCardEmailEx: ['', [Validators.email, Validators.required]],
+      materialFormCardEmailEx: ['', [Validators.email]],
       materialFormCardMobile: ['', [Validators.maxLength(10), Validators.required, Validators.minLength(10), Validators.pattern('[0-9]*')]],
       materialFormCardPasswordEx: ['', [Validators.required, Validators.minLength(4)]],
       materialFormCardConfirmPass: ['', Validators.required],

@@ -58,6 +58,7 @@ export class DepartmentBarComponent implements OnInit {
 
   updateCategoryTree(){
     this.categoryService.fetchCategoryTree(true).subscribe(result => {
+      result = result.filter(ele=>ele.category.title.toLowerCase()!=="services");
       localStorage.setItem("cat-map", JSON.stringify(result));
       this.categoryMenuItems = result;
     });

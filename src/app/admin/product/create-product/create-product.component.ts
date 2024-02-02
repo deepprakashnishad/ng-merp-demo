@@ -32,6 +32,7 @@ export class CreateProductComponent implements OnInit {
   longDescription: string;
   uploadPath: string;
   variableFacets: Array<Facet>=[];
+  operation: string;
   // facets: Array<Facet> = [];
 
   storeSettings = JSON.parse(sessionStorage.getItem("storeSettings"));
@@ -61,6 +62,9 @@ export class CreateProductComponent implements OnInit {
         }
         if(this.product?.desc?.longDesc[0].val !== undefined){
           this.longDescription = this.product?.desc?.longDesc[0].val;
+        }
+        if(data.operation){
+          this.operation = data.operation;
         }
         /* this.variableFacets=[];
         if(this.product.variants.cnt > 0 && this.product.variants!==undefined && this.product.variants.attrs!==undefined){
@@ -98,6 +102,9 @@ export class CreateProductComponent implements OnInit {
           }
           if(this.product?.desc?.longDesc[0].val !== undefined){
             this.longDescription = this.product?.desc?.longDesc[0].val;
+          }
+          if(this.operation==="clone"){
+            this.createClone();
           }
           /* this.variableFacets=[];
           if(this.product.variants.cnt > 0 && this.product.variants!==undefined && this.product.variants.attrs!==undefined){
@@ -262,5 +269,16 @@ export class CreateProductComponent implements OnInit {
 
     navigateBack(){
       this.location.back();
+    }
+
+    createClone(){
+      this.product.id=undefined;
+      this.product.name = `${this.product.name} Copy`;
+      this.product.assets = { imgs: [] };
+      this.uploadPath = undefined;
+      this.product.prices = [];
+      this.product.variants = undefined;
+
+      this.notifierService.notify("success", "Product cloned. Please check details and enter prices and variants to save.")
     }
 }

@@ -13,6 +13,7 @@ import { AddressService } from './address.service';
 export class AddressComponent implements OnInit {
 
   addresses: Array<Address> = [];
+  @Input("myAddressOnly") myAddressOnly = false;
   @Input("selectedAddress") selectedAddress: Address;
   @Input("selectedAddressId") selectedAddressId: string;
   @Input("displayAddButton") displayAddButton: boolean = true;
@@ -37,7 +38,7 @@ export class AddressComponent implements OnInit {
   }
 
   fetchAddress(){
-    this.addressService.get(this.forType).subscribe(result=>{
+    this.addressService.get(this.forType, this.myAddressOnly).subscribe(result=>{
       this.addresses = Address.fromJSON(result);
 
       var mAddresses = this.addresses.filter(ele=>{

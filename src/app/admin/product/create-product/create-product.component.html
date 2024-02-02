@@ -1,4 +1,7 @@
 <div fxLayout fxLayoutAlign="end start" style="background-color: white;">
+	<button fxHide.gt-sm class="back-button" mat-icon-button color="primary" (click)="createClone()"><mat-icon>copy</mat-icon></button>
+	<button fxHide.lt-md class="back-button" mat-raised-button color="primary" (click)="createClone()">Copy Product <mat-icon>copy</mat-icon></button>	
+
 	<button fxHide.gt-sm class="back-button" mat-icon-button color="primary" (click)="navigateBack()"><mat-icon>close</mat-icon></button>
 	<button fxHide.lt-md class="back-button" mat-raised-button color="primary" (click)="navigateBack()">Close <mat-icon>close</mat-icon></button>	
 </div>
