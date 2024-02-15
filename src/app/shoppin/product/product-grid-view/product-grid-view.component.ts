@@ -9,6 +9,8 @@ import { Product } from "../../../admin/product/product";
 export class ProductGridViewComponent {
 
   @Input("products") products: Array<Product> = [];
+  @Input('loadingCompleted') loadingCompleted: boolean = false;
+  filterStr: string = '';
 
   constructor(
   ) {
@@ -16,6 +18,12 @@ export class ProductGridViewComponent {
 
   ngOnInit() {
 
+  }
+
+  get filteredList() {
+    return this.products.filter(item =>
+      item.name.toLowerCase().includes(this.filterStr.toLowerCase())
+    );
   }
 
   onScrollDown(event){

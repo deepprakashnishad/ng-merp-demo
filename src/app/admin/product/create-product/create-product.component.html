@@ -1,4 +1,7 @@
 <div fxLayout fxLayoutAlign="end start" style="background-color: white;">
+	<button fxHide.gt-sm class="back-button" mat-icon-button color="primary" (click)="reset()"><mat-icon>add</mat-icon></button>
+	<button fxHide.lt-md class="back-button" mat-raised-button color="primary" (click)="reset()">New Product <mat-icon>add</mat-icon></button>	
+
 	<button fxHide.gt-sm class="back-button" mat-icon-button color="primary" (click)="createClone()"><mat-icon>copy</mat-icon></button>
 	<button fxHide.lt-md class="back-button" mat-raised-button color="primary" (click)="createClone()">Copy Product <mat-icon>copy</mat-icon></button>	
 
@@ -7,11 +10,12 @@
 </div>
 <div class="form-container">
 	<mat-vertical-stepper linear>
-		<mat-step [stepControl]="productForm" label="Product title &amp; brand">
-			<form class="product-form" [formGroup]="productForm" fxLayout="row" fxLayoutGap="16px">
-				<mat-form-field>
+		<mat-step [stepControl]="productForm" label="Product title &amp; brand" [optional]="isOptional">
+			<form class="product-form" [formGroup]="productForm" fxLayout="row wrap" fxLayoutGap="16px">
+				<app-search-product class="full-width" fxFlex [searchStr]="product.name" (inputModified)="productNameUpdated($event)" (itemSelected)="searchItemSelected($event)" [isInventoryEditable]="false" [isProductEditable]="false" ></app-search-product>
+				<!-- <mat-form-field>
 					<input type="text" matInput formControlName="cntlName" required="true" [(ngModel)]="product.name" placeholder="Name" />
-				</mat-form-field>
+				</mat-form-field> -->
 				<mat-form-field *ngIf="false">
 					<input type="text" matInput formControlName="cntlLName" [(ngModel)]="product.lname" placeholder="Full Name" />
 				</mat-form-field>
@@ -86,7 +90,7 @@
 			<app-file-uploader [uploadUrl]="'Product/uploadImages'" [data]="product" (itemUploaded)="fileUploaded($event)"></app-file-uploader>
 		</mat-step> -->
 		<mat-step label="Price &amp; Inventory" optional="true">
-			<app-price [itemId]="product.id" [productId]="product.id" [priceType]="'PRD'"></app-price>
+			<app-price [itemId]="product.id" [productId]="product.id" [priceType]="'PRD'" [enableFetch]="true"></app-price>
 		</mat-step>
 		<mat-step label="Variant Attributes" optional="true">
 			<app-facet-control (facetControlSelected)="saveFacetControlType($event)" [jsonFacetControl]="product.variants?.attrs"></app-facet-control>

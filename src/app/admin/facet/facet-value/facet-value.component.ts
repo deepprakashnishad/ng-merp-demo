@@ -53,26 +53,28 @@ export class FacetValueComponent implements OnInit {
 				}));
 		  	});
 		}
-  	}
+	}
 
-  	ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-	    for (let propName in changes) {
-	      let changedProp = changes[propName];
-	      if (propName === "facetJson" && changedProp.currentValue) {
-	        this.facetJson = changedProp.currentValue;
-	        if(this.facetJson !== undefined){
-	        	if(this.facets){
-	        		this.populateFacetValuesMap();
-	        	}else{
-	        		this.facetService.getFacets()
+	ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    for (let propName in changes) {
+      let changedProp = changes[propName];
+      if (propName === "facetJson" && changedProp.currentValue) {
+        this.facetJson = changedProp.currentValue;
+        if(this.facetJson !== undefined){
+        	if(this.facets){
+        		this.populateFacetValuesMap();
+        	}else{
+        		this.facetService.getFacets()
 				  	.subscribe((facets)=>{
 				  		this.facets = facets;
 				  		this.populateFacetValuesMap();
 				  	});
-	        	}	    	    		
-	        }	        
-	      }
-	    }
+        	}	    	    		
+        }else{
+        	this.facetValuesMap = new Map<Facet, Array<string>>();
+        }	        
+      }
+    }
 	}
 
 	populateFacetValuesMap(){
@@ -91,14 +93,14 @@ export class FacetValueComponent implements OnInit {
 		}
 	}
 
-  	_filter(value:string, list: Array<any>): Array<any>{
-	    if(value && typeof value==="string"){
-	      const filterValue = value.toLowerCase();
-	        return list.filter(option => (option.title.toLowerCase()
-	        	.includes(filterValue)));  
-	    } else if(list){
-	      return list;
-	    }
+	_filter(value:string, list: Array<any>): Array<any>{
+    if(value && typeof value==="string"){
+      const filterValue = value.toLowerCase();
+        return list.filter(option => (option.title.toLowerCase()
+        	.includes(filterValue)));  
+    } else if(list){
+      return list;
+    }
 	} 
 
 	displayFn(facet?: Facet): string | undefined {

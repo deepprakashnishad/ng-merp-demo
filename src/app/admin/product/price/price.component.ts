@@ -28,6 +28,9 @@ export class PriceComponent implements OnInit {
   @Input()
   isViewMode: boolean=false;
 
+  @Input()
+  enableFetch: boolean=false;  
+
   sku: string;
 
 	index: number;
@@ -80,12 +83,38 @@ export class PriceComponent implements OnInit {
   	this.saleDetailList=[];
   }
 
+  reset(){
+    this.originalProductPrice = undefined;
+    this.priceType= "PRD";
+    this.productId = undefined;
+    this.itemId=undefined;
+    this.isViewMode=false;
+    this.enableFetch=false;  
+    this.sku=undefined;
+    this.index=0;
+    this.costPrice=0.0;
+    this.sellPrice=0;
+    this.inStockQty=0;
+    this.maxAlwdQty = 99;
+    this.currency="INR";
+    this.saleDetail = new SaleDetail();
+    this.saleDetailList = [];
+    this.price = undefined;
+    this.minDate = new Date();
+    this.saleDetailSelectedIndex = -1;
+    this.isPriceSame = false;
+    this.inventories = [];
+    this.initialFetchFlag = false;
+  }
+
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
   	for (let propName in changes) {
 	    let changedProp = changes[propName];
       if((this.priceType==="PRD" ||this.priceType==="VRT") && this.itemId && this.store && this.priceType && this.productId){
         if(!this.initialFetchFlag){
           this.initialFetchFlag = true;
+          this.fetchPrice();
+        }else if(this.enableFetch){
           this.fetchPrice();
         }
       }else if((this.priceType==="PRD" ||this.priceType==="VRT") && !this.itemId && this.store && this.priceType && !this.productId){

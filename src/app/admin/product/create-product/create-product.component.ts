@@ -3,6 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { TaxonomySelectorComponent } from './../../category/taxonomy-selector/taxonomy-selector.component';
+import { PriceComponent } from './../price/price.component';
 import { ProductService } from './../product.service';
 import { FacetService } from './../../facet/facet.service';
 import { Product } from './../product';
@@ -25,6 +26,9 @@ export class CreateProductComponent implements OnInit {
 	@ViewChild(TaxonomySelectorComponent)
 	private taxonomyComponent: TaxonomySelectorComponent;
 
+  @ViewChild(PriceComponent)
+  private priceComponent: PriceComponent;
+
 	product: Product = new Product();
   product$: Observable<Product>;
 	productForm: FormGroup;
@@ -33,6 +37,7 @@ export class CreateProductComponent implements OnInit {
   uploadPath: string;
   variableFacets: Array<Facet>=[];
   operation: string;
+  isOptional = false;
   // facets: Array<Facet> = [];
 
   storeSettings = JSON.parse(sessionStorage.getItem("storeSettings"));
@@ -48,36 +53,40 @@ export class CreateProductComponent implements OnInit {
       private afs: AngularFireStorage,
       @Optional() @Inject(MAT_DIALOG_DATA) data: any
 	) { 
-    console.log(this.storeSettings);
     if(data && data.productId){
-      this.productService.getProductById(data.productId).subscribe(product =>{
-        this.product = product;
-        this.uploadPath = `products/${this.product.id}`;
-        
-        if(this.product.assets===undefined || this.product.assets===null){
-          this.product.assets = {imgs:[]};
-        }
-        if(this.product?.desc?.shortDesc !== undefined && this.product?.desc?.shortDesc[0].val !== undefined){
-          this.shortDescription = this.product?.desc?.shortDesc[0].val;
-        }
-        if(this.product?.desc?.longDesc[0].val !== undefined){
-          this.longDescription = this.product?.desc?.longDesc[0].val;
-        }
-        if(data.operation){
-          this.operation = data.operation;
-        }
-        /* this.variableFacets=[];
-        if(this.product.variants.cnt > 0 && this.product.variants!==undefined && this.product.variants.attrs!==undefined){
-          this.setVariableFacets();
-        } */
-      });
-    }		
+      this.fetchProductAndPopulateForm(data.productId);
+    }	
+
+    if(data && data.operation){
+      this.operation = data.operation;
+    }	
 	}
+
+  fetchProductAndPopulateForm(productId){
+    this.productService.getProductById(productId).subscribe(product =>{
+      this.product = product;
+      this.uploadPath = `products/${this.product.id}`;
+      
+      if(this.product.assets===undefined || this.product.assets===null){
+        this.product.assets = {imgs:[]};
+      }
+      if(this.product?.desc?.shortDesc !== undefined && this.product?.desc?.shortDesc[0].val !== undefined){
+        this.shortDescription = this.product?.desc?.shortDesc[0].val;
+      }
+      if(this.product?.desc?.longDesc[0].val !== undefined){
+        this.longDescription = this.product?.desc?.longDesc[0].val;
+      }
+
+      this.isOptional = true;
+      /* this.variableFacets=[];
+      if(this.product.variants.cnt > 0 && this.product.variants!==undefined && this.product.variants.attrs!==undefined){
+        this.setVariableFacets();
+      } */
+    });
+  }
 
   	ngOnInit() {
 	  	this.productForm = this.fb.group({
-	  		cntlName: ['', [Validators.required]],
-	  		cntlLName: [''],
         taxCntl: [''],
         sortIndex: [''],
 	  	});
@@ -106,10 +115,6 @@ export class CreateProductComponent implements OnInit {
           if(this.operation==="clone"){
             this.createClone();
           }
-          /* this.variableFacets=[];
-          if(this.product.variants.cnt > 0 && this.product.variants!==undefined && this.product.variants.attrs!==undefined){
-            this.setVariableFacets();
-          } */
         });
       }      
       /*this.productService.getProductById("5cab49b30f94220929573f8b")
@@ -257,6 +262,7 @@ export class CreateProductComponent implements OnInit {
         .subscribe((result)=>{
           if(result.success){
             this.product = result.product;
+            this.isOptional = false;
             this.notifierService.notify("success", `${this.product.name} updated successfully`);
           }else{
             this.notifierService.notify("error", `Failed to update product`);
@@ -279,6 +285,32 @@ export class CreateProductComponent implements OnInit {
       this.product.prices = [];
       this.product.variants = undefined;
 
-      this.notifierService.notify("success", "Product cloned. Please check details and enter prices and variants to save.")
+      this.notifierService.notify("success", "Product cloned. Please check details and enter prices and variants to save.");
+    }
+
+    reset(){
+      this.product.id=undefined;
+      this.product.name = undefined;
+      this.product.assets = { imgs: [] };
+      this.uploadPath = undefined;
+      this.product.prices = [];
+      this.product.variants = undefined;
+      this.product.taxonomies = [];
+      this.product.attrs = undefined;
+      this.isOptional = false;
+
+      this.priceComponent.reset();
+
+      this.notifierService.notify("success", "Product reset. Please check enter everything from scratch or select a new product.")
+    }
+
+    productNameUpdated(event){
+      this.product.name = event;
+      console.log(event);
+      console.log(this.product.name);
+    }
+
+    searchItemSelected(event){
+      this.fetchProductAndPopulateForm(event.id);
     }
 }

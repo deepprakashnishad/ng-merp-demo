@@ -1,6 +1,6 @@
 <div fxLayout="row" fxFlex>
   	<mat-form-field>
-		<input type="text" placeholder="Type product name" matInput [formControl]="cntl" [matAutocomplete]="auto">
+		<input type="text" placeholder="Type product name" [(ngModel)]="searchStr" matInput [formControl]="cntl" [matAutocomplete]="auto">
 		<mat-hint>eg: haldiram</mat-hint>
 	</mat-form-field>
 	

@@ -5,7 +5,10 @@
        fxLayout.lt-sm="column"
        fxLayoutGap="32px"
        fxLayoutAlign="flex-center">
-    <ng-container *ngFor="let prod of products">
+    <mat-form-field>
+        <input type="text" matInput [(ngModel)]="filterStr" placeholder="Filter" />
+    </mat-form-field>
+    <ng-container *ngFor="let prod of filteredList">
       <app-prod-card [product]="prod"
                      fxFlex="0 1 calc(25% - 32px)"
                      fxFlex.lt-lg="0 1 calc(33.3% - 32px)"
@@ -15,7 +18,7 @@
   </div>
   <app-cart-floating-button></app-cart-floating-button>
 </div>
-<div class="container no-product" *ngIf="products.length===0">
+<div class="container no-product" *ngIf="products.length===0 && loadingCompleted">
   <h3>No products found</h3>
 </div>
 <app-cart-floating-button [isAbsolute]=true></app-cart-floating-button>

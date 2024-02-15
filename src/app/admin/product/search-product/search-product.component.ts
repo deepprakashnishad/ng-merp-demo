@@ -18,7 +18,8 @@ import { ProductService } from '../product.service';
 export class SearchProductComponent implements OnInit {
 
   @Output() itemSelected: EventEmitter<any> = new EventEmitter();
-
+  @Output() inputModified: EventEmitter<any> = new EventEmitter();
+  @Input() searchStr: string = "";
   @Input() isInventoryEditable: boolean = true;
   @Input() isProductEditable: boolean = true;
   @ViewChild(MatAutocompleteTrigger) autoCompletePanel: MatAutocompleteTrigger;
@@ -30,7 +31,6 @@ export class SearchProductComponent implements OnInit {
 
   limit: number=30;
   offset: number=0;
-  searchStr: string = "";
 
   constructor(
     private productService: ProductService,
@@ -39,10 +39,11 @@ export class SearchProductComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.cntl.valueChanges.pipe(debounceTime(500)).subscribe(val => {
-      if(typeof val === "string" && val.length > 3){
+    this.cntl.valueChanges.pipe(debounceTime(700)).subscribe(val => {
+      if(typeof val === "string" && val.length > 4){
         this.searchStr = val;
         this.offset = 0;
+        this.inputModified.emit(val);
         this.fetchProductList();
       }
   	});

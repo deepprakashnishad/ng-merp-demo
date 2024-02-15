@@ -72,7 +72,7 @@ export class TaxonomySelectorComponent implements OnInit {
   }
 
   toggleSelection(): void {
-    if(this.selectedTaxonomies){
+    if(this.selectedTaxonomies && this.selectedTaxonomies.length>0){
       for (let i = 0; i < this.treeControl.dataNodes.length; i++) {
         this.selectedTaxonomies.forEach(ele=>{
           if (this.treeControl.dataNodes[i].ancestors == ele) {
@@ -80,6 +80,14 @@ export class TaxonomySelectorComponent implements OnInit {
           }
         });
       }    
+    }else{
+      this.deselectAllNodes()
+    }
+  }
+
+  deselectAllNodes(){
+    for (let i = 0; i < this.treeControl.dataNodes.length; i++) {
+      this.checklistSelection.deselect(this.treeControl.dataNodes[i]);
     }
   }
 

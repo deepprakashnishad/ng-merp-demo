@@ -138,7 +138,7 @@ export class CartService implements OnDestroy {
     return 0;
   }
 
-  updateCart(product: any, qty: number, selectedPrice: Price){
+  updateCart(product: any, qty: number, selectedPrice: Price, callToServer: boolean=true){
     var cart = JSON.parse(localStorage.getItem("cart"));
     var FOUND_FLAG = false
     if(cart == null){
@@ -161,7 +161,7 @@ export class CartService implements OnDestroy {
     }
     localStorage.setItem("cart", JSON.stringify(cart));
     this.onSubject.next({ key: "cart", value: cart});
-    if(this.authService.isLoggedIn.getValue()){
+    if(this.authService.isLoggedIn.getValue() && callToServer){
       var postData = {
         qty: qty, 
         "selectedPrice": selectedPrice?.id

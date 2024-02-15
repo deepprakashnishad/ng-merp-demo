@@ -19,6 +19,8 @@ export class ProductByCategoryComponent implements OnInit {
   slidesPerView = 4;
   isProductExists: boolean;
 
+  loadingCompleted: boolean = false;
+
   categories: Map<string, string> = JSON.parse(localStorage.getItem("cat-map"))['catMap'];
 
   constructor(
@@ -27,7 +29,6 @@ export class ProductByCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.categories);
   }
 
   ngAfterViewInit(): void {
@@ -44,14 +45,16 @@ export class ProductByCategoryComponent implements OnInit {
 
   getProductListByCategoryId(){
     this.productService.getProductsByCategory(this.selectedCategoryId).subscribe(result=>{
+      this.loadingCompleted = true;
       delete result['msg'];
       delete result['success'];
       this.products = Product.fromJSON(result);
-    });
+    }, (e)=>{console.log(e); this.loadingCompleted=true;});
   }
 
   getCategoryWiseProductsByCategoryId(){
     this.productService.getProductsByCategory(this.selectedCategoryId).subscribe(result=>{
+      this.loadingCompleted = true;
       delete result['msg'];
       delete result['success'];
       for (const [key, value] of Object.entries(result)) {
@@ -70,6 +73,7 @@ export class ProductByCategoryComponent implements OnInit {
 
   getProductsByAncestors(){
     this.productService.getProductsByTaxonomy(this.ancestors).subscribe(result=>{
+      this.loadingCompleted = true;
       delete result['msg'];
       delete result['success'];
       this.products = Product.fromJSON(result);

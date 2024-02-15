@@ -52,7 +52,7 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
   title = 'Shop Admin';
   routeList = [
     { path: '/admin', title: 'Dashboard', permissions: ['SHOP_EDITOR'] },
-    { path: '/admin/sale-point', title: 'Sale Point', permissions: ['CREATE_ORDER', 'UPDATE_ORDER', 'DELETE_ORDER'] },
+    { path: '/admin/sale-point', title: 'Sale Point', permissions: ['CREATE_PERSON'] },
     // {path: '/admin/my-store', title: 'My Store', permissions:['CREATE_STORE', 'UPDATE_STORE', 'DELETE_STORE']},
     { path: '/admin/store-settings', title: 'Store Settings', permissions: ['MAIN_STORE_CONTROLLER'] },
     {path: '/admin/product', title: 'Product', permissions:['CREATE_PRODUCT', 'UPDATE_PRODUCT', 'DELETE_PRODUCT']},
@@ -63,7 +63,7 @@ export class SidenavComponent implements OnDestroy, OnInit, AfterViewInit {
     { path: '/admin/create-edit-section', title: 'Section Editor', permissions:['MAIN_STORE_CONTROLLER'] },
     {path: '/admin/permission', title: 'Permissions', permissions:['CREATE_PERMISSION', 'UPDATE_PERMISSION', 'DELETE_PERMISSION']},
     { path: '/admin/role', title: 'Role', permissions:['CREATE_ROLE', 'UPDATE_ROLE', 'DELETE_ROLE'] },
-    {path: '/admin/user-report', title: "User Report", permissions:['SHOP_EDITOR']},
+    {path: '/admin/user-report', title: "User Report", permissions:['CREATE_PERSON']},
     {path: '/admin/person', title: 'Users', permissions:['CREATE_PERSON', 'UPDATE_PERSON', 'DELETE_PERSON']},
     {path: '/admin/static-pages', title: 'Static Page', permissions:['MAIN_STORE_CONTROLLER']},
     {path: '/admin/delivery', title: 'Delivery', permissions:['SHOP_EDITOR']},

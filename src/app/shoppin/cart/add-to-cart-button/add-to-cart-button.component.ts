@@ -18,6 +18,8 @@ export class AddToCartButtonComponent implements OnInit {
   qtyControl = new FormControl('');
   qty: number;
 
+  clickTimeout: any;
+
   constructor(
     private cartService: CartService,
     private notifierService: NotifierService
@@ -40,13 +42,25 @@ export class AddToCartButtonComponent implements OnInit {
   updateQuantity(qty) {
     if (this.cartService.validateNewQuantity(this.product, qty, this.selectedPrice)) {
       this.qty = qty;
-      this.cartService.updateCart(this.product, this.qty, this.selectedPrice).subscribe(result => {
+      this.cartService.updateCart(this.product, this.qty, this.selectedPrice, false).subscribe(result => {
         if (result) {
           this.notifierService.notify("success", "Cart updated successfully");
         } else {
           this.notifierService.notify("success", "Cart updated successfully");
         }
       });
+
+      clearTimeout(this.clickTimeout);
+
+      this.clickTimeout = setTimeout(()=>{
+        this.cartService.updateCart(this.product, this.qty, this.selectedPrice, true).subscribe(result => {
+          if (result) {
+            this.notifierService.notify("success", "Cart updated successfully");
+          } else {
+            this.notifierService.notify("success", "Cart updated successfully");
+          }
+        });
+      }, 1000)
     }
   }
 
