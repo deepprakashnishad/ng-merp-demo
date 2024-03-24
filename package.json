@@ -28,6 +28,7 @@
     "@angular/platform-browser-dynamic": "^11.2.5",
     "@angular/router": "^11.2.5",
     "@angular/service-worker": "^11.2.5",
+    "@angular/youtube-player": "^11.2.13",
     "angular-notifier": "^9.0.1",
     "angular-recaptcha3": "^2.0.0",
     "angular7-csv": "^0.2.12",

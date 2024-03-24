@@ -15,6 +15,8 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { Location } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-create-product',
   templateUrl: './create-product.component.html',
@@ -40,6 +42,8 @@ export class CreateProductComponent implements OnInit {
   isOptional = false;
   // facets: Array<Facet> = [];
 
+  mYoutubeVideoEmbedText: string;
+
   storeSettings = JSON.parse(sessionStorage.getItem("storeSettings"));
 
   	constructor(
@@ -51,6 +55,7 @@ export class CreateProductComponent implements OnInit {
       private notifierService: NotifierService,
       private location: Location,
       private afs: AngularFireStorage,
+      private sanitizer: DomSanitizer,
       @Optional() @Inject(MAT_DIALOG_DATA) data: any
 	) { 
     if(data && data.productId){
@@ -68,7 +73,7 @@ export class CreateProductComponent implements OnInit {
       this.uploadPath = `products/${this.product.id}`;
       
       if(this.product.assets===undefined || this.product.assets===null){
-        this.product.assets = {imgs:[]};
+        this.product.assets = {imgs:[], vids: []};
       }
       if(this.product?.desc?.shortDesc !== undefined && this.product?.desc?.shortDesc[0].val !== undefined){
         this.shortDescription = this.product?.desc?.shortDesc[0].val;
@@ -104,7 +109,7 @@ export class CreateProductComponent implements OnInit {
           this.uploadPath = `products/${this.product.id}`;
           
           if(this.product.assets===undefined || this.product.assets===null){
-            this.product.assets = {imgs:[]};
+            this.product.assets = {imgs:[], vids: []};
           }
           if(this.product?.desc?.shortDesc !== undefined && this.product?.desc?.shortDesc[0].val !== undefined){
             this.shortDescription = this.product?.desc?.shortDesc[0].val;
@@ -132,6 +137,29 @@ export class CreateProductComponent implements OnInit {
         }
       })*/
     } 
+
+    addVideoAsset(){
+      if(!this.product?.assets?.vids){
+        if(!this.product?.assets){
+          this.product.assets = {imgs:[], vids: []};
+        }else{
+          this.product.assets['vids'] = [];
+        }
+      }
+      var index = this.product?.assets?.vids.indexOf(this.mYoutubeVideoEmbedText);
+
+      const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
+
+      if(index < 0 && this.mYoutubeVideoEmbedText && urlRegex.test(this.mYoutubeVideoEmbedText)){
+        this.product?.assets?.vids.push(this.mYoutubeVideoEmbedText);
+      }else{
+        this.notifierService.notify("error", "Invalid Url");
+      }
+    }
+
+    deleteVideo(videoUrl, index){
+      this.product.assets.vids.splice(index, 1);
+    }
 
     deleteImage(event, index){
       this.product.assets.imgs.splice(index, 1);
@@ -280,7 +308,7 @@ export class CreateProductComponent implements OnInit {
     createClone(){
       this.product.id=undefined;
       this.product.name = `${this.product.name} Copy`;
-      this.product.assets = { imgs: [] };
+      this.product.assets = { imgs: [], vids: [] };
       this.uploadPath = undefined;
       this.product.prices = [];
       this.product.variants = undefined;
@@ -291,7 +319,7 @@ export class CreateProductComponent implements OnInit {
     reset(){
       this.product.id=undefined;
       this.product.name = undefined;
-      this.product.assets = { imgs: [] };
+      this.product.assets = { imgs: [], vids: [] };
       this.uploadPath = undefined;
       this.product.prices = [];
       this.product.variants = undefined;

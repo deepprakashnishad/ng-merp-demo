@@ -24,6 +24,7 @@ import { AddressComponent } from './address/address.component';
 import { PersonModule } from '../person/person.module';
 import { LazyImgDirective } from '../directives/lazy-img.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { YouTubePlayerModule } from '@angular/youtube-player';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     FileUploadModule,
     FormsModule,
     ReactiveFormsModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    YouTubePlayerModule
   ],
   exports:[
   	ConfirmDialogComponent, 
@@ -76,7 +78,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     FirestorageUploaderComponent,
     UploaderComponent,
     AddressComponent,
-    AddressCardComponent
+    AddressCardComponent,
+    YouTubePlayerModule
   ],
   entryComponents:[AddEditPermissionComponent, ConfirmDialogComponent, AddEditAddressComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

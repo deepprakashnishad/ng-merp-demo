@@ -46,15 +46,40 @@
 					</div>
 				</cdk-virtual-scroll-viewport>
 			</div>
+			<div>
+				<div fxLayout>
+					<mat-form-field>
+						<mat-label>Youtube Video Embed Link</mat-label>
+						<input type="text" matInput [(ngModel)]="mYoutubeVideoEmbedText" placeholder="Youtube Video Embed Link" />
+					</mat-form-field>
+					<div>
+						<button mat-raised-button (click)="addVideoAsset()"><span fxHide.lt-md>Add</span><mat-icon>add</mat-icon></button>
+					</div>
+				</div>
+				<div class="cdk-virtual-scroll-data-source-example" *ngIf="product?.assets?.vids?.length>0">
+					<cdk-virtual-scroll-viewport orientation="horizontal" itemSize="5" class="example-viewport">
+						<div *cdkVirtualFor="let videoUrl of product?.assets?.vids; let i = index">
+							<mat-card>
+								<mat-card-content fxLayout="column" fxLayoutAlign="center center">
+
+									<iframe width="260" height="170" [src]="videoUrl | safeUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+									<button mat-icon-button color="error" (click)="deleteVideo(videoUrl, i)"><mat-icon>delete</mat-icon></button>
+								</mat-card-content>
+							</mat-card>
+						</div>
+					</cdk-virtual-scroll-viewport>
+				</div>
+			</div>
 			<button mat-raised-button color="primary" matStepperPrevious>Previous</button>
 			<button mat-raised-button color="primary" (click)="updateProduct()">Save</button>
 			<button mat-raised-button color="primary" matStepperNext>Next</button>
 		</mat-step>
 		<mat-step label="Taxonomy" optional="true">
 			<div fxLayout="row">
-				<app-taxonomy-selector [selectedTaxonomies]="product.taxonomies"></app-taxonomy-selector>
+				<app-taxonomy-selector [selectedTaxonomies]="product?.taxonomies"></app-taxonomy-selector>
 				<mat-list>
-					<mat-list-item *ngFor="let taxonomy of product.taxonomies">
+					<mat-list-item *ngFor="let taxonomy of product?.taxonomies">
 						{{taxonomy}}
 					</mat-list-item>
 				</mat-list>

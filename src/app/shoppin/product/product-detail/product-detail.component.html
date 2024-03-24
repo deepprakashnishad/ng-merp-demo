@@ -18,10 +18,20 @@
               (click)="onImageSelected(image.downloadUrl)"/>
             </div>
           </ng-template>
+          <ng-template swiperSlide *ngFor="let videoUrl of selectedProduct?.assets?.vids; let i=index">
+            <div class="guide-image-container">
+              <img           
+              src="/assets/images/youtube.jpg"
+              width="75"
+              height="75"
+              (click)="onVideoSelected(videoUrl)"/>
+            </div>
+          </ng-template>
         </swiper>
       </div>
       <div fxFlex="center" fxFlexOrder.lt-md="1" fxFlexOrder.gt-sm="2">
-          <img class="responsive full-width" [src]="selectedImage" [@fade]="state" (@fade.done)="onDone($event)" />
+          <img class="responsive full-width" [src]="selectedImage" [@fade]="state" (@fade.done)="onDone($event)" *ngIf="mode==='image'"/>
+          <iframe width="400" height="400" [src]="selectedYoutubeVideoId | safeUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen *ngIf="mode==='youtube'"></iframe>
       </div>
     </div>
     <div class="info-container" fxlayout="column" fxLayoutGap="10px" fxFlex="50%">
@@ -32,14 +42,14 @@
       <div class="sub-title" *ngIf="storeSettings?.isBrandEnabled">Brand: {{selectedProduct?.brand?.sname}}</div>
       <div class="sub-title" *ngIf="selectedProduct?.attrs && selectedProduct?.attrs['Weight']">Net Weight: {{selectedProduct?.attrs['Weight']}}</div>
       <br />
-      <div class="price" *ngIf="selectedPrice.discounts==null || selectedPrice.discounts?.length===0">
-        {{selectedPrice.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}
+      <div class="price" *ngIf="selectedPrice?.discounts==null || selectedPrice?.discounts?.length===0">
+        {{selectedPrice?.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}
       </div>
-      <div *ngIf="selectedPrice.discounts?.length>0" fxLayout fxLayoutGap="10px">
-        <div class="original-price">{{selectedPrice.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
+      <div *ngIf="selectedPrice?.discounts?.length>0" fxLayout fxLayoutGap="10px">
+        <div class="original-price">{{selectedPrice?.unitPrice | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
         <div class="price">{{selectedDiscount?.salePrice | currency:'INR':'symbol-narrow':'1.2-2'}}</div>
         <div class="secondary-title"
-             *ngIf="selectedPrice.discounts!=null && selectedPrice.discounts!=null">
+             *ngIf="selectedPrice?.discounts!=null && selectedPrice?.discounts!=null">
           {{selectedDiscount?.discountPercentage+"% off"}}
         </div>
       </div>

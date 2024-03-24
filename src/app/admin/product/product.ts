@@ -10,7 +10,7 @@ export class Product{
     lname: string;
     taxonomies: Array<string>;
     brand: Brand;
-    assets: {imgs:Array<any>};
+    assets: {imgs:Array<any>, vids: Array<any>};
     /* maxAlwdQty: number;
     qty: number; */
     shipping: {};
@@ -31,7 +31,7 @@ export class Product{
 
     constructor(){
       this.desc = {shortDesc: [{lang:"en", val:""}], longDesc:[{lang:"en", val:""}]};
-      this.assets = { imgs: [] };
+      this.assets = { imgs: [], vids: [] };
       this.sortIndex = 999;
     }
 

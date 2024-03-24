@@ -270,7 +270,7 @@ export class CartService implements OnDestroy {
       return false;
     }
 
-    if (qty > selectedPrice.qty) {
+    if (selectedPrice.qty && qty > selectedPrice.qty) {
       var msg = `Only ${selectedPrice.qty} ${selectedPrice.qty === 1 ? 'is' : 'are'} available`;
       if (product.qty === 0) {
         msg = "Out of stock";

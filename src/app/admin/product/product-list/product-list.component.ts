@@ -41,7 +41,7 @@ export class ProductListComponent {
 
   totalProdCnt: number = 0;
 
-  pageSize: number=10;
+  pageSize: number=5;
 
   selectedPage:  number = 1;
 
@@ -283,8 +283,8 @@ export class ProductListComponent {
       data: {
         productId: product.id
       },
-      width: "500px",
-      height: "500px"
+      width: "1000px",
+      height: "700px"
     });
   }
 
